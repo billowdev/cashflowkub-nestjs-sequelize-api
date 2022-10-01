@@ -78,3 +78,11 @@ yarn add class-transformer class-validator
 
 
 yarn add -D @types/sequelize
+
+
+## migration
+https://github.com/sequelize/cli/pull/987#issuecomment-1153105548
+
+npx sequelize-cli@6.2.0 db:migrate
+
+npx sequelize-cli migration:generate --name create-user

@@ -3,54 +3,55 @@ import { UUIDV4 } from "sequelize";
 import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany } from "sequelize-typescript";
 
 @Table({
-	tableName: 'users'
+	tableName: 'user'
 })
 export class UserAttributes extends Model<UserAttributes> {
 	@ApiProperty()
 	@Column({
-	  type: DataType.UUID,
-	  defaultValue: UUIDV4,
-	  allowNull: false,
-	  primaryKey: true,
+		type: DataType.UUID,
+		defaultValue: UUIDV4,
+		allowNull: false,
+		primaryKey: true,
 	})
 	id: string
-  
+
 	@ApiProperty()
 	@Column({
-	  type: DataType.STRING(100),
+		type: DataType.STRING(100),
 	})
 	username: string;
-  
+
 	@ApiProperty()
 	@Column({
-	  type: DataType.STRING(100),
-	  field: 'hash_password',
+		type: DataType.STRING(100),
+		field: 'hash_password',
 	})
 	hashPassword: string;
-  
+
 	@ApiProperty()
 	@Column({
-	  field: 'first_name',
-	  type: DataType.STRING(150),
+		type: DataType.STRING(150),
+		field: 'first_name',
 	})
 	firstName: string;
-  
+
 	@ApiProperty()
 	@Column({
-	  field: 'last_name',
-	  type: DataType.STRING(150),
+		type: DataType.STRING(150),
+		field: 'last_name',
 	})
 	lastName: string;
-  
+
 	@ApiProperty()
 	@Column({
-	  type: DataType.STRING(200),
+		type: DataType.STRING(200),
 	})
 	email: string;
-  
+
 	@Column({
-	  field: 'is_active',
-	  defaultValue: true,
+		type: DataType.BOOLEAN,
+		field: 'is_active',
+		defaultValue: true,
 	})
 	isActive: boolean;
 
