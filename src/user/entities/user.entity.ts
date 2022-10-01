@@ -4,41 +4,47 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @ApiTags('User')
 @Entity()
 export class User {
-	@PrimaryGeneratedColumn('uuid')
-	id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-	@ApiProperty()
-	@Column({
-		length: 100
-	})
-	username: string
+  @ApiProperty()
+  @Column({
+    type: 'varchar',
+    length: 100,
+  })
+  username: string;
 
-	@ApiProperty()
-	@Column({
-		length: 100
-	})
-	password: string
+  @ApiProperty()
+  @Column({
+    name: 'hash_password',
+    type: 'varchar',
+    length: 100,
+  })
+  hashPassword: string;
 
-	@ApiProperty()
-	@Column({
-		name: 'first_name',
-		length: 150
-	})
-	firstName: string
+  @ApiProperty()
+  @Column({
+    name: 'first_name',
+    type: 'varchar',
+    length: 150,
+  })
+  firstName: string;
 
-	@ApiProperty()
-	@Column({
-		name: 'last_name',
-		length: 150
-	})
-	lastName: string
+  @ApiProperty()
+  @Column({
+    name: 'last_name',
+    type: 'varchar',
+    length: 150,
+  })
+  lastName: string;
 
-	@ApiProperty()
-	@Column({
-		length: 200
-	})
-	email: string
+  @ApiProperty()
+  @Column({
+    type: 'varchar',
+    length: 200,
+  })
+  email: string;
 
-	@Column({ default: true, name: 'is_active' })
-	isActive: boolean;
+  @Column({ default: true, name: 'is_active' })
+  isActive: boolean;
 }

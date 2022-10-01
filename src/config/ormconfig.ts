@@ -10,6 +10,7 @@ import {
 } from '../core';
 
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
+import { TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 let isSynchronize = false;
 let envDbConfig = dbDevelopmentConstants;
@@ -30,11 +31,30 @@ export const dbConfig: PostgresConnectionOptions = {
   type: 'postgres',
   database: envDbConfig.Name,
   host: envDbConfig.Host,
-  port: 5432,
+  port: parseInt(envDbConfig.Port, 10),
   username: envDbConfig.Username,
   password: envDbConfig.Passsword,
   synchronize: isSynchronize, // make sure this not ture in production
   // in production you should be using migrations
   entities: ['dist/**/*.entity{.ts,.js}'],
-  migrationsTableName: 'migrations',
+  migrations: ['src/migrations/**/*.ts'],
+  logging: true
 };
+
+export const typeOrmASyncConfig: TypeOrmModuleAsyncOptions = {
+  useFactory: async (): Promise<TypeOrmModuleOptions> => {
+    return {
+      type: 'postgres',
+      host: envDbConfig.Host,
+      port: 5432,
+      username: envDbConfig.Username,
+      password: envDbConfig.Passsword,
+      synchronize: isSynchronize, // make sure this not ture in production
+      // in production you should be using migrations
+      entities: ['dist/**/*.entity{.ts,.js}'],
+      migrations: ['src/migrations/**/*.ts'],
+      logging: true
+
+    }
+  }
+}

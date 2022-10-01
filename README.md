@@ -76,3 +76,6 @@ Nest is [MIT licensed](LICENSE).
 <!-- yarn add -->
 yarn add @nestjs/swagger dotenv pg pg-hstore
 yarn add class-transformer class-validator
+
+
+npm run typeorm migration:create -d ./src/migrations/UserMigration

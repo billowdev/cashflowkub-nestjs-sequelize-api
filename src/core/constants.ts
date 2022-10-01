@@ -13,6 +13,7 @@ export const dbDevelopmentConstants = {
   Username: process.env.DEVDBUSERNAME,
   Passsword: process.env.DEVDBPASSWORD,
   Host: process.env.DEVDBHOST,
+  Port: process.env.DBPORT
 };
 
 export const dbProductionConstants = {
@@ -20,6 +21,7 @@ export const dbProductionConstants = {
   Username: process.env.PRODDBUSERNAME,
   Passsword: process.env.PRODDBPASSWORD,
   Host: process.env.PRODDBHOST,
+  Port: process.env.DBPORT
 };
 
 export const dbTestConstants = {
@@ -27,4 +29,5 @@ export const dbTestConstants = {
   Username: process.env.TESTDBUSERNAME,
   Passsword: process.env.TESTDBPASSWORD,
   Host: process.env.TESTDBHOST,
+  Port: process.env.DBPORT
 };
