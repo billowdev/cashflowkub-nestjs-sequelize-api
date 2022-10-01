@@ -38,13 +38,7 @@ module.exports = {
         type: DataType.BOOLEAN,
         field: 'is_active',
         defaultValue: true,
-      },
-      isPremium: {
-        type: DataType.BOOLEAN,
-        field: 'is_active',
-        defaultValue: true,
       }
-
 
     });
   },
