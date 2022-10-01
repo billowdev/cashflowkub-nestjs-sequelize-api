@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
-import { dbConfig } from './config';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { DatabaseModule } from './db/database.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(dbConfig), UserModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }), 
+    DatabaseModule,
+    UserModule
+  ],
 })
-export class AppModule {}
+export class AppModule { }

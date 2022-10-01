@@ -1,50 +1,57 @@
-import { ApiProperty, ApiTags } from '@nestjs/swagger';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ApiProperty } from "@nestjs/swagger";
+import { UUIDV4 } from "sequelize";
+import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany } from "sequelize-typescript";
 
-@ApiTags('User')
-@Entity()
-export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+@Table({
+	tableName: 'users'
+})
+export class UserAttributes extends Model<UserAttributes> {
+	@ApiProperty()
+	@Column({
+	  type: DataType.UUID,
+	  defaultValue: UUIDV4,
+	  allowNull: false,
+	  primaryKey: true,
+	})
+	id: string
+  
+	@ApiProperty()
+	@Column({
+	  type: DataType.STRING(100),
+	})
+	username: string;
+  
+	@ApiProperty()
+	@Column({
+	  type: DataType.STRING(100),
+	  field: 'hash_password',
+	})
+	hashPassword: string;
+  
+	@ApiProperty()
+	@Column({
+	  field: 'first_name',
+	  type: DataType.STRING(150),
+	})
+	firstName: string;
+  
+	@ApiProperty()
+	@Column({
+	  field: 'last_name',
+	  type: DataType.STRING(150),
+	})
+	lastName: string;
+  
+	@ApiProperty()
+	@Column({
+	  type: DataType.STRING(200),
+	})
+	email: string;
+  
+	@Column({
+	  field: 'is_active',
+	  defaultValue: true,
+	})
+	isActive: boolean;
 
-  @ApiProperty()
-  @Column({
-    type: 'varchar',
-    length: 100,
-  })
-  username: string;
-
-  @ApiProperty()
-  @Column({
-    name: 'hash_password',
-    type: 'varchar',
-    length: 100,
-  })
-  hashPassword: string;
-
-  @ApiProperty()
-  @Column({
-    name: 'first_name',
-    type: 'varchar',
-    length: 150,
-  })
-  firstName: string;
-
-  @ApiProperty()
-  @Column({
-    name: 'last_name',
-    type: 'varchar',
-    length: 150,
-  })
-  lastName: string;
-
-  @ApiProperty()
-  @Column({
-    type: 'varchar',
-    length: 200,
-  })
-  email: string;
-
-  @Column({ default: true, name: 'is_active' })
-  isActive: boolean;
 }

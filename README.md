@@ -73,9 +73,8 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 Nest is [MIT licensed](LICENSE).
 
 
-<!-- yarn add -->
-yarn add @nestjs/swagger dotenv pg pg-hstore
-yarn add class-transformer class-validator
+yarn add @nestjs/swagger dotenv pg pg-hstore sequelize sequelize-typescript @nestjs/config
+yarn add class-transformer class-validator 
 
 
-npm run typeorm migration:create -d ./src/migrations/UserMigration
+yarn add -D @types/sequelize
