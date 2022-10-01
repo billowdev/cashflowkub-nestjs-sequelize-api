@@ -63,12 +63,11 @@ export class AuthService {
 	}
 
 	// signup : register service
-	public async signup(user): Promise<SignDto> {
+	public async signup(user): Promise<any> {
 		try {
-			const hassPassword = await this.hashPassword(user.password);
-			const result = await this.userService.create({ ...user, password: hassPassword });
-			delete result['dataValues'].password
-
+			const hashPassword = await this.hashPassword(user.password);
+			const result = await this.userService.create({ ...user, hashPassword });
+			delete result['dataValues'].hashPassword
 			const payload = {
 				sub: result['dataValues'].id,
 				role: result['dataValues'].role
@@ -76,8 +75,10 @@ export class AuthService {
 			const token = await this.generateToken(payload);
 			return { user: result, token };
 		} catch (error) {
-			console.error(error)
-			throw new BadRequestException()
+			console.log('====================================');
+			console.log("error");
+			console.log('====================================');
+			// throw new BadRequestException()
 		}
 	}
 

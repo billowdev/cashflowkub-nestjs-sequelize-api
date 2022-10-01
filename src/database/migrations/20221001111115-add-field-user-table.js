@@ -9,10 +9,10 @@ module.exports = {
       // --------------------------------------
       queryInterface.addColumn(
         'user',  // tablename
-        'is_premium',
+        'phone',
         {
-          type: Sequelize.BOOLEAN,
-          field: 'is_premium',
+          type: Sequelize.STRING(10),
+          field: 'phone',
           defaultValue: false,
         }
       )
@@ -24,7 +24,7 @@ module.exports = {
   down: async (queryInterface, Sequelize) => {
     return Promise.all([
       // --------------------------------------
-      queryInterface.removeColumn('user', 'is_premium'),
+      queryInterface.removeColumn('user', 'phone'),
       // --------------------------------------
 
     ])

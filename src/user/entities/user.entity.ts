@@ -59,7 +59,7 @@ export class UserAttributes extends Model<UserAttributes> {
 	@ApiProperty()
 	@Column({
 		type: DataType.ENUM({
-			values: [Role.USER, Role.ADMIN]
+			values: [Role.USER, Role.ADMIN, Role.PREMIUM]
 		}),
 		defaultValue: Role.USER
 	})

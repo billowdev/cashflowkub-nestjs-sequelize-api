@@ -32,7 +32,7 @@ export class UserService {
     try {
       return await this.userRepo.findOne<UserAttributes>({
         where: { username },
-        attributes: { include: ['id', 'username', 'password', 'role'] }
+        attributes: { include: ['id', 'username', 'hash_password', 'role'] }
       });
     } catch (error) {
       throw new BadRequestException()
@@ -40,9 +40,9 @@ export class UserService {
   }
 
   // create : create account for login
-  public async create(createUserDto: CreateUserDto): Promise<UserAttributes> {
+  public async create(createUserDto: CreateUserDto): Promise<any> {
     try {
-      return await this.userRepo.create<UserAttributes>(createUserDto);
+      return await this.userRepo.create<any>(createUserDto);
     } catch (error) {
       throw new BadRequestException()
     }

@@ -4,10 +4,10 @@ import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class UserIsExist implements CanActivate {
-    constructor(private readonly userService: UserService) {}
+    constructor(private readonly userService: UserService) { }
 
     canActivate(
-      context: ExecutionContext,
+        context: ExecutionContext,
     ): boolean | Promise<boolean> | Observable<boolean> {
         const request = context.switchToHttp().getRequest();
         return this.validateRequest(request);
@@ -15,9 +15,11 @@ export class UserIsExist implements CanActivate {
 
     async validateRequest(request) {
         const userExist = await this.userService.findOneByUsername(request.body.username);
+
         if (userExist) {
             throw new ForbiddenException('This username already exist');
+        } else {
+            return true;
         }
-        return true;
     }
 }

@@ -20,7 +20,7 @@ export class AuthController {
 		return this.authService.signin(dto);
 	}
 
-	@ApiResponse({ type: UserAttributes })
+
 	@UseGuards(UserIsExist)
 	@Post('signup')
 	signup(@Body() dto: AuthDto) {
