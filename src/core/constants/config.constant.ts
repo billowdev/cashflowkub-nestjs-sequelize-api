@@ -7,3 +7,4 @@ export const DEVELOPMENT = 'development';
 export const TEST = 'test';
 export const PRODUCTION = 'production';
 export const SERVEPORT = process.env.PORT
+export const CLIENT_URL = process.env.CLIENT_URL

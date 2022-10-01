@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UUIDV4 } from "sequelize";
 import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany } from "sequelize-typescript";
+import { Role } from "./role.enum";
 
 @Table({
 	tableName: 'user'
@@ -54,5 +55,14 @@ export class UserAttributes extends Model<UserAttributes> {
 		defaultValue: true,
 	})
 	isActive: boolean;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.ENUM({
+			values: [Role.USER, Role.ADMIN]
+		}),
+		defaultValue: Role.USER
+	})
+	role: Role;
 
 }
