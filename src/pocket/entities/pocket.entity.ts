@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model, ForeignKey, BelongsTo, HasMany } from "sequelize-typescript";
-import { TransferAttributes } from "src/transfer/entities/transfer.entity";
+import { CashflowAttributes } from "src/cashflow/entities/cashflow.entity";
 import { UserAttributes } from "src/user/entities/user.entity";
 
 @Table({
@@ -33,7 +33,6 @@ export class PocketAttributes extends Model<PocketAttributes> {
 
 	@BelongsTo(() => UserAttributes, {onDelete: 'casCade'})
 	user: UserAttributes
-
 	@ForeignKey(()=> UserAttributes)
 	@Column({
 		type: DataType.UUID,
@@ -42,8 +41,8 @@ export class PocketAttributes extends Model<PocketAttributes> {
 	})
 	userId: string;
 
-	@HasMany(()=>TransferAttributes)
-	transfers: TransferAttributes[]
+	@HasMany(() => CashflowAttributes)
+	cashflows: CashflowAttributes[]
 
 
 }

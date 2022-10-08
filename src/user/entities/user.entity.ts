@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UUIDV4 } from "sequelize";
 import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany, HasMany } from "sequelize-typescript";
+import { CashflowAttributes } from "src/cashflow/entities/cashflow.entity";
 import { PocketAttributes } from "src/pocket/entities/pocket.entity";
 import { Role } from "./role.enum";
 
@@ -68,5 +69,8 @@ export class UserAttributes extends Model<UserAttributes> {
 
 	@HasMany(() => PocketAttributes)
 	pockets: PocketAttributes[]
+
+	@HasMany(() => CashflowAttributes)
+	cashflows: CashflowAttributes[]
 
 }
