@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UUIDV4 } from "sequelize";
-import { Column, DataType, Table, Model, ForeignKey, BelongsTo } from "sequelize-typescript";
+import { Column, DataType, Table, Model, ForeignKey, BelongsTo, HasMany } from "sequelize-typescript";
+import { TransferAttributes } from "src/transfer/entities/transfer.entity";
 import { UserAttributes } from "src/user/entities/user.entity";
 
 @Table({
@@ -41,7 +42,8 @@ export class PocketAttributes extends Model<PocketAttributes> {
 	})
 	userId: string;
 
-
+	@HasMany(()=>TransferAttributes)
+	transfers: TransferAttributes[]
 
 
 }
