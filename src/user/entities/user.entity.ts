@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UUIDV4 } from "sequelize";
-import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany } from "sequelize-typescript";
+import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany, HasMany } from "sequelize-typescript";
+import { PocketAttributes } from "src/pocket/entities/pocket.entity";
 import { Role } from "./role.enum";
 
 @Table({
@@ -64,5 +65,8 @@ export class UserAttributes extends Model<UserAttributes> {
 		defaultValue: Role.USER
 	})
 	role: Role;
+
+	@HasMany(() => PocketAttributes)
+	pockets: PocketAttributes[]
 
 }
