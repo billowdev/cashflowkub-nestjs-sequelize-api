@@ -1,7 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model, ForeignKey, BelongsTo, HasMany } from "sequelize-typescript";
-import { CashflowAttributes } from "src/cashflow/entities/cashflow.entity";
+import { CashflowinAttributes } from "src/cashflowin/entities/cashflowin.entity";
+import { CashflowoutAttributes } from "src/cashflowout/entities/cashflowout.entity";
 import { UserAttributes } from "src/user/entities/user.entity";
 
 @Table({
@@ -41,8 +42,11 @@ export class PocketAttributes extends Model<PocketAttributes> {
 	})
 	userId: string;
 
-	@HasMany(() => CashflowAttributes)
-	cashflows: CashflowAttributes[]
+	@HasMany(() => CashflowinAttributes)
+	cashflowins: CashflowinAttributes[]
+
+	@HasMany(() => CashflowoutAttributes)
+	cashflowouts: CashflowoutAttributes[]
 
 
 }
