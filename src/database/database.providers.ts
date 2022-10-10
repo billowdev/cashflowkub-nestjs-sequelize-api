@@ -1,11 +1,14 @@
 import { Sequelize } from 'sequelize-typescript';
-import { CashflowAttributes } from 'src/cashflow/entities/cashflow.entity';
-import { CategoryAttributes } from 'src/categories/entities/category.entity';
-import { PocketAttributes } from 'src/pocket/entities/pocket.entity';
-import { TransferAttributes } from 'src/transfer/entities/transfer.entity';
-import { UserAttributes } from 'src/user/entities/user.entity';
 import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../core/constants';
 import { dbConfig } from './database.config';
+import { AssetAttributes } from '../asset/entities/asset.entity';
+import { CashflowinAttributes } from '../cashflowin/entities/cashflowin.entity';
+import { CashflowoutAttributes } from '../cashflowout/entities/cashflowout.entity';
+import { CategoryAttributes } from '../category/entities/category.entity';
+import { DebtAttributes } from '../debt/entities/debt.entity';
+import { PocketAttributes } from '../pocket/entities/pocket.entity';
+import { TransferAttributes } from '../transfer/entities/transfer.entity';
+import { UserAttributes } from '../user/entities/user.entity';
 
 export const databaseProviders = [{
    provide: SEQUELIZE,
@@ -33,10 +36,11 @@ export const databaseProviders = [{
          UserAttributes,
          CategoryAttributes,
          PocketAttributes,
+         CashflowinAttributes,
+         CashflowoutAttributes,
          TransferAttributes,
-         CashflowAttributes,
-
-
+         AssetAttributes,
+         DebtAttributes
       ]);
       // { force: true } should be fasle in production
       await sequelize.sync({ force: isForce });
