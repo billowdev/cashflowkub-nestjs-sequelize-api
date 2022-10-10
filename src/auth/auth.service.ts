@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { SignDto } from './dto';
+import { authDataDto, AuthDto, SignDto } from './dto';
 import { UserService } from 'src/user/user.service';
 import * as argon from 'argon2'
 
@@ -40,30 +40,30 @@ export class AuthService {
 		if (!match) {
 			return null;
 		}
+
 		const result = user['dataValues']
 		delete result.hashPassword
 		return result;
 	}
 
-	// service for auth controller
-
-	// signin : login service
-	public async signin(auth): Promise<SignDto> {
+	public async signin(auth: AuthDto): Promise<SignDto> {
 		try {
-			const { id, role } = await this.userService.findOneByUsername(auth.username)
-			// agency shop account
-			const user = await this.userService.findOne(id);
-			delete auth.password
-			const token = await this.generateToken({ sub: id, uid: user.id, role });
-			return { user: { id, role, ...auth }, token }
+			const user = await this.userService.findOneByUsername(auth.username, true)
+			const token = await this.generateToken({ sub: user.id, role: user.role });
+			const response: SignDto = {
+				success: true,
+				message: "User logged in successfully",
+				data: { user: user, token, role: user.role }
+			}
+			return response
 		} catch (error) {
-			throw new BadRequestException()
+			throw new BadRequestException("User logged in failure")
 		}
 
 	}
 
 	// signup : register service
-	public async signup(user): Promise<any> {
+	public async signup(user): Promise<SignDto> {
 		try {
 			const hashPassword = await this.hashPassword(user.password);
 			const result = await this.userService.create({ ...user, hashPassword });
@@ -73,12 +73,14 @@ export class AuthService {
 				role: result['dataValues'].role
 			}
 			const token = await this.generateToken(payload);
-			return { user: result, token };
+			const response: SignDto = {
+				success: true,
+				message: "user signup successfully",
+				data: { user: result, token, role: result.role }
+			}
+			return response;
 		} catch (error) {
-			console.log('====================================');
-			console.log("error");
-			console.log('====================================');
-			// throw new BadRequestException()
+			throw new BadRequestException("User registered failure")
 		}
 	}
 

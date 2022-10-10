@@ -2,6 +2,7 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { USER_REPOSITORY } from 'src/core/constants';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserDto } from './dto/user.dto';
 import { UserAttributes } from './entities/user.entity';
 
 @Injectable()
@@ -10,16 +11,25 @@ export class UserService {
     @Inject(USER_REPOSITORY) private readonly userRepo: typeof UserAttributes
   ) { }
   // repository
-  async findOne(id: string): Promise<UserAttributes> {
+  async findOne(id: string, excludePassword?: boolean): Promise<UserDto> {
     try {
-      return await this.userRepo.findOne<UserAttributes>({
-        where: { id },
-      });
+      if (excludePassword) {
+        return await this.userRepo.findOne<UserAttributes>({
+          attributes: { exclude: ['hashPassword'] },
+          where: { id },
+        });
+      } else {
+        return await this.userRepo.findOne<UserAttributes>({
+          where: { id },
+        });
+      }
+
     } catch (error) {
       throw new BadRequestException()
     }
   }
-  async findAll(): Promise<UserAttributes[]> {
+
+  async findAll(): Promise<UserDto[]> {
     try {
       return this.userRepo.findAll()
     } catch (error) {
@@ -28,19 +38,26 @@ export class UserService {
   }
 
   // find user by username
-  async findOneByUsername(username: string): Promise<UserAttributes> {
+  async findOneByUsername(username: string, excludePassword?: boolean): Promise<UserDto> {
     try {
-      return await this.userRepo.findOne<UserAttributes>({
-        where: { username },
-        attributes: { include: ['id', 'username', 'hash_password', 'role'] }
-      });
+      if (excludePassword) {
+        return await this.userRepo.findOne<UserAttributes>({
+          attributes: { exclude: ['hashPassword'] },
+          where: { username }
+        });
+      } else {
+        return await this.userRepo.findOne<UserAttributes>({
+          where: { username }
+        });
+      }
+
     } catch (error) {
       throw new BadRequestException()
     }
   }
 
   // create : create account for login
-  public async create(createUserDto: CreateUserDto): Promise<any> {
+  public async create(createUserDto: CreateUserDto): Promise<UserDto> {
     try {
       return await this.userRepo.create<any>(createUserDto);
     } catch (error) {
@@ -49,7 +66,7 @@ export class UserService {
   }
 
   // update : update account
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<any> {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     try {
       return this.userRepo.update(
         {
@@ -66,7 +83,7 @@ export class UserService {
   }
 
   // remove: delete the account
-  async remove(id: string): Promise<number> {
+  async remove(id: string){
     try {
       return this.userRepo.destroy({ where: { id } })
     } catch (error) {
