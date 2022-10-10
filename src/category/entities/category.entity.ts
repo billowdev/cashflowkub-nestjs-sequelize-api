@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { UUIDV4 } from "sequelize";
 import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany, HasMany } from "sequelize-typescript";
 
-export enum CategoryType {
+export enum CategoryEnum {
 	INCOME = 'income',
 	EXPENSE = 'expense',
 	INVESTMENT = 'investment',
@@ -39,12 +39,17 @@ export class CategoryAttributes extends Model<CategoryAttributes> {
 	@ApiProperty()
 	@Column({
 		type: DataType.ENUM({
-			values: [CategoryType.INCOME, CategoryType.EXPENSE, CategoryType.INVESTMENT, CategoryType.SAVING]
+			values: [
+				CategoryEnum.INCOME,
+				CategoryEnum.EXPENSE,
+				CategoryEnum.INVESTMENT,
+				CategoryEnum.SAVING
+			]
 		}),
+		defaultValue: CategoryEnum.EXPENSE,
 		allowNull: false
-
 	})
-	type: CategoryType;
+	type: CategoryEnum;
 
 	// @HasMany(() => CashflowinAttributes)
 	// cashflows: CashflowAttributes[]
