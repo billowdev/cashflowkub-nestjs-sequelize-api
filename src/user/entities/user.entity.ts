@@ -1,8 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UUIDV4 } from "sequelize";
 import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany, HasMany } from "sequelize-typescript";
-import { CashflowAttributes } from "src/cashflow/entities/cashflow.entity";
+import { AssetAttributes } from "src/asset/entities/asset.entity";
+import { CashflowinAttributes } from "src/cashflowin/entities/cashflowin.entity";
+import { CashflowoutAttributes } from "src/cashflowout/entities/cashflowout.entity";
+import { DebtAttributes } from "src/debt/entities/debt.entity";
 import { PocketAttributes } from "src/pocket/entities/pocket.entity";
+import { TransferAttributes } from "src/transfer/entities/transfer.entity";
 import { Role } from "./role.enum";
 
 @Table({
@@ -70,7 +74,21 @@ export class UserAttributes extends Model<UserAttributes> {
 	@HasMany(() => PocketAttributes)
 	pockets: PocketAttributes[]
 
-	@HasMany(() => CashflowAttributes)
-	cashflows: CashflowAttributes[]
+	@HasMany(() => CashflowinAttributes)
+	cashflowins: CashflowinAttributes[]
+
+	@HasMany(() => CashflowoutAttributes)
+	cashflowouts: CashflowoutAttributes[]
+
+	@HasMany(() => AssetAttributes)
+	assets: AssetAttributes[]
+
+	@HasMany(() => DebtAttributes)
+	debts: DebtAttributes[]
+
+	@HasMany(() => TransferAttributes)
+	transfers: TransferAttributes[]
+
+	
 
 }
