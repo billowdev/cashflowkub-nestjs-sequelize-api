@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { authDataDto, AuthDto, SignDto } from './dto';
+import { AuthDto, SignDto } from './dto';
 import { UserService } from 'src/user/user.service';
 import * as argon from 'argon2'
 
@@ -51,7 +51,6 @@ export class AuthService {
 			const user = await this.userService.findOneByUsername(auth.username, true)
 			const token = await this.generateToken({ sub: user.id, role: user.role });
 			const response: SignDto = {
-				success: true,
 				message: "User logged in successfully",
 				data: { user: user, token, role: user.role }
 			}
@@ -74,7 +73,6 @@ export class AuthService {
 			}
 			const token = await this.generateToken(payload);
 			const response: SignDto = {
-				success: true,
 				message: "user signup successfully",
 				data: { user: result, token, role: result.role }
 			}
