@@ -3,12 +3,13 @@ import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './auth/auth.module';
-import { CashflowModule } from './cashflow/cashflow.module';
 import { PocketModule } from './pocket/pocket.module';
-import { TaxplanModule } from './taxplan/taxplan.module';
-import { BalancesheetModule } from './balancesheet/balancesheet.module';
 import { TransferModule } from './transfer/transfer.module';
-import { CategoriesModule } from './categories/categories.module';
+import { CashflowinModule } from './cashflowin/cashflowin.module';
+import { CashflowoutModule } from './cashflowout/cashflowout.module';
+import { AssetModule } from './asset/asset.module';
+import { DebtModule } from './debt/debt.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
   imports: [
@@ -16,12 +17,13 @@ import { CategoriesModule } from './categories/categories.module';
     DatabaseModule,
     AuthModule,
     UserModule,
-    CashflowModule,
     PocketModule,
-    TaxplanModule,
-    BalancesheetModule,
     TransferModule,
-    CategoriesModule
+    CashflowinModule,
+    CashflowoutModule,
+    AssetModule,
+    DebtModule,
+    CategoryModule
   ],
 })
 export class AppModule { }

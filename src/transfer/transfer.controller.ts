@@ -3,7 +3,7 @@ import { TransferService } from './transfer.service';
 import { CreateTransferDto } from './dto/create-transfer.dto';
 import { UpdateTransferDto } from './dto/update-transfer.dto';
 
-@Controller('transfer')
+@Controller('transfers')
 export class TransferController {
   constructor(private readonly transferService: TransferService) {}
 

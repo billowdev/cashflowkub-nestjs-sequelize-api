@@ -3,7 +3,7 @@ import { PocketService } from './pocket.service';
 import { CreatePocketDto } from './dto/create-pocket.dto';
 import { UpdatePocketDto } from './dto/update-pocket.dto';
 
-@Controller('pocket')
+@Controller('pockets')
 export class PocketController {
   constructor(private readonly pocketService: PocketService) {}
 
