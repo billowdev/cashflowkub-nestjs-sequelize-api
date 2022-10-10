@@ -23,9 +23,10 @@ export class TransferAttributes extends Model<TransferAttributes> {
 	})
 	amount: string;
 
-	@BelongsTo(() => PocketAttributes, { as: "fromPocketId" })
-	fromPockets: PocketAttributes
-	@ForeignKey(() => PocketAttributes)
+	// @BelongsTo(() => PocketAttributes, { as: "fromPocketId" })
+	// fromPockets: PocketAttributes
+	// @ForeignKey(() => PocketAttributes)
+
 	@Column({
 		type: DataType.UUID,
 		field: "from_pocket_id",
@@ -34,9 +35,10 @@ export class TransferAttributes extends Model<TransferAttributes> {
 	})
 	fromPocketId: string;
 
-	@BelongsTo(() => PocketAttributes, { as: "toPocketId" })
-	toPockets: PocketAttributes
-	@ForeignKey(() => PocketAttributes)
+	// @BelongsTo(() => PocketAttributes, { as: "toPocketId" })
+	// toPockets: PocketAttributes
+	// @ForeignKey(() => PocketAttributes)
+
 	@Column({
 		type: DataType.UUID,
 		field: "to_pocket_id",

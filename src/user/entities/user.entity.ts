@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UUIDV4 } from "sequelize";
-import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany, HasMany } from "sequelize-typescript";
+import { Column, DataType, Table, Model, HasMany } from "sequelize-typescript";
 import { AssetAttributes } from "src/asset/entities/asset.entity";
 import { CashflowinAttributes } from "src/cashflowin/entities/cashflowin.entity";
 import { CashflowoutAttributes } from "src/cashflowout/entities/cashflowout.entity";
