@@ -1,9 +1,13 @@
 import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards, Request } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UserAttributes } from 'src/user/entities/user.entity';
 import { AuthService } from './auth.service';
-import { AuthDto, SessionDto, SignDto } from './dto';
+import { AuthDto, sessionDataDto, SessionDto, SignDto } from './dto';
 import { JwtAuthGuard, LocalGuard, UserIsExist } from './guards';
+// import { Request } from '@nestjs/common/decorators';
+
+export interface requestAuthUser extends Request {
+	user: sessionDataDto
+}
 
 @ApiTags('auth')
 @Controller('auth')
@@ -31,12 +35,16 @@ export class AuthController {
 	@UseGuards(JwtAuthGuard)
 	@Get('session')
 	session(
-		@Request() req: any
-	): Promise<any> {
+		@Request() req: requestAuthUser
+	): SessionDto {
 		try {
-			return req.user
+			return {
+				success: true,
+				message: "request session successfuly",
+				data: req.user
+			}
 		} catch (error) {
 			throw new BadRequestException()
-			}
 		}
+	}
 }

@@ -1,16 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsObject, IsString } from 'class-validator';
 
-export class SessionDto {
+export class sessionDataDto {
 	@ApiProperty()
 	@IsString()
 	@IsNotEmpty()
-	id: string;
+	sub: string;
 
 	@ApiProperty()
 	@IsString()
 	@IsNotEmpty()
-	uid: string;
+	role: string;
 
 	@ApiProperty()
 	@IsNumber()
@@ -21,4 +21,22 @@ export class SessionDto {
 	@IsNumber()
 	@IsNotEmpty()
 	exp: number;
+
 }
+
+export class SessionDto {
+	@ApiProperty()
+	@IsBoolean()
+	@IsNotEmpty()
+	success: boolean;
+
+	@ApiProperty()
+	@IsString()
+	@IsNotEmpty()
+	message: string;
+
+	@ApiProperty()
+	@IsObject()
+	data: sessionDataDto;
+}
+
