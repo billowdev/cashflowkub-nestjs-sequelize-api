@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UUIDV4 } from "sequelize";
-import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany, HasMany } from "sequelize-typescript";
+import { Column, DataType, Table, Model} from "sequelize-typescript";
 
 export enum CategoryEnum {
 	INCOME = 'income',
@@ -51,6 +51,4 @@ export class CategoryAttributes extends Model<CategoryAttributes> {
 	})
 	type: CategoryEnum;
 
-	// @HasMany(() => CashflowinAttributes)
-	// cashflows: CashflowAttributes[]
 }
