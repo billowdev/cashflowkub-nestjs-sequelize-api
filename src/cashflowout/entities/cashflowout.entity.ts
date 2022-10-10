@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { UUIDV4 } from "sequelize/types";
+import { UserAttributes } from "src/user/entities/user.entity";
 
 export enum CashflowoutEnum {
 	FIXED = 'fixed',
@@ -48,5 +49,15 @@ export class CashflowoutAttributes extends Model<CashflowoutAttributes> {
 
 	})
 	type: CashflowoutEnum;
+
+	@BelongsTo(() => UserAttributes, {onDelete: 'casCade'})
+	user: UserAttributes
+	@ForeignKey(()=> UserAttributes)
+	@Column({
+		type: DataType.UUID,
+		field: "user_id",
+		allowNull: false
+	})
+	userId: string;
 
 }
