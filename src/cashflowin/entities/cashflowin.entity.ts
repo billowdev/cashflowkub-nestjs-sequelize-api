@@ -1,7 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
-import { UUIDV4 } from "sequelize/types";
+import { UUIDV4 } from "sequelize";
 import { UserAttributes } from "src/user/entities/user.entity";
+import { PocketAttributes } from "src/pocket/entities/pocket.entity";
+import { CategoryAttributes } from "src/category/entities/category.entity";
 
 @Table({
 	tableName: "cashflowin"
@@ -28,14 +30,34 @@ export class CashflowinAttributes extends Model<CashflowinAttributes> {
 	})
 	amount: number;
 
-	@BelongsTo(() => UserAttributes, {onDelete: 'casCade'})
+	@BelongsTo(() => UserAttributes, { onDelete: 'casCade' })
 	user: UserAttributes
-	@ForeignKey(()=> UserAttributes)
+	@ForeignKey(() => UserAttributes)
 	@Column({
 		type: DataType.UUID,
 		field: "user_id",
 		allowNull: false
 	})
 	userId: string;
+
+	@BelongsTo(() => PocketAttributes, { onDelete: 'casCade' })
+	pocket: PocketAttributes
+	@ForeignKey(() => PocketAttributes)
+	@Column({
+		type: DataType.UUID,
+		field: "pocket_id",
+		allowNull: false
+	})
+	pocketId: string;
+
+	@BelongsTo(() => CategoryAttributes, { onDelete: 'casCade' })
+	category: CategoryAttributes
+	@ForeignKey(() => CategoryAttributes)
+	@Column({
+		type: DataType.UUID,
+		field: "category_id",
+		allowNull: false
+	})
+	categoryId: string;
 
 }
