@@ -1,14 +1,17 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UUIDV4 } from "sequelize";
-import { Column, DataType, Table, Model, ForeignKey, BelongsTo, HasMany } from "sequelize-typescript";
-import { CashflowinAttributes } from "src/cashflowin/entities/cashflowin.entity";
-import { CashflowoutAttributes } from "src/cashflowout/entities/cashflowout.entity";
+import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany, HasMany } from "sequelize-typescript";
 import { UserAttributes } from "src/user/entities/user.entity";
 
+export enum DebtType {
+	LONG = 'long',
+	SHORT = 'short',
+}
+
 @Table({
-	tableName: 'pocket'
+	tableName: 'debt'
 })
-export class PocketAttributes extends Model<PocketAttributes> {
+export class DebtAttributes extends Model<DebtAttributes> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
@@ -20,17 +23,30 @@ export class PocketAttributes extends Model<PocketAttributes> {
 
 	@ApiProperty()
 	@Column({
-		type: DataType.STRING(100),
+		type: DataType.DECIMAL(10, 2),
 	})
-	name: string;
+	value: number;
 
 	@ApiProperty()
 	@Column({
 		type: DataType.DECIMAL(10, 2),
-		allowNull: true
+		field: "cashflow_per_year"
+	})
+	cashflowPerYear: number;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.ENUM({
+			values: [
+				DebtType.LONG,
+				DebtType.SHORT,
+			]
+		}),
+		defaultValue: DebtType.SHORT,
+		allowNull: false
 
 	})
-	balance: number;
+	type: DebtType;
 
 	@BelongsTo(() => UserAttributes, {onDelete: 'casCade'})
 	user: UserAttributes
@@ -41,12 +57,6 @@ export class PocketAttributes extends Model<PocketAttributes> {
 		allowNull: false
 	})
 	userId: string;
-
-	@HasMany(() => CashflowinAttributes)
-	cashflowins: CashflowinAttributes[]
-
-	@HasMany(() => CashflowoutAttributes)
-	cashflowouts: CashflowoutAttributes[]
 
 
 }

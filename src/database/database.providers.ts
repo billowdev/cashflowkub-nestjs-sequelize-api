@@ -1,7 +1,14 @@
 import { Sequelize } from 'sequelize-typescript';
-import { UserAttributes } from 'src/user/entities/user.entity';
 import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../core/constants';
 import { dbConfig } from './database.config';
+import { AssetAttributes } from '../asset/entities/asset.entity';
+import { CashflowinAttributes } from '../cashflowin/entities/cashflowin.entity';
+import { CashflowoutAttributes } from '../cashflowout/entities/cashflowout.entity';
+import { CategoryAttributes } from '../category/entities/category.entity';
+import { DebtAttributes } from '../debt/entities/debt.entity';
+import { PocketAttributes } from '../pocket/entities/pocket.entity';
+import { TransferAttributes } from '../transfer/entities/transfer.entity';
+import { UserAttributes } from '../user/entities/user.entity';
 
 export const databaseProviders = [{
    provide: SEQUELIZE,
@@ -27,7 +34,13 @@ export const databaseProviders = [{
       const sequelize = new Sequelize(config);
       sequelize.addModels([
          UserAttributes,
-
+         CategoryAttributes,
+         PocketAttributes,
+         CashflowinAttributes,
+         CashflowoutAttributes,
+         TransferAttributes,
+         AssetAttributes,
+         DebtAttributes
       ]);
       // { force: true } should be fasle in production
       await sequelize.sync({ force: isForce });
