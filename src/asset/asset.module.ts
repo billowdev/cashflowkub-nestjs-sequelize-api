@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AssetService } from './asset.service';
 import { AssetController } from './asset.controller';
-
+import { assetProviders } from './entities/asset.providers'
 @Module({
   controllers: [AssetController],
-  providers: [AssetService]
+  providers: [AssetService, ...assetProviders]
 })
-export class AssetModule {}
+export class AssetModule { }
