@@ -5,7 +5,7 @@ import { AssetEntity } from '../asset/entities/asset.entity';
 import { CashflowinEntity } from '../cashflowin/entities/cashflowin.entity';
 import { CashflowoutEntity } from '../cashflowout/entities/cashflowout.entity';
 import { CategoryEntity } from '../category/entities/category.entity';
-import { DebtAttributes } from '../debt/entities/debt.entity';
+import { DebtEntity } from '../debt/entities/debt.entity';
 import { PocketAttributes } from '../pocket/entities/pocket.entity';
 import { TransferAttributes } from '../transfer/entities/transfer.entity';
 import { UserEntity } from '../user/entities/user.entity';
@@ -40,7 +40,7 @@ export const databaseProviders = [{
          CashflowoutEntity,
          TransferAttributes,
          AssetEntity,
-         DebtAttributes
+         DebtEntity
       ]);
       // { force: true } should be fasle in production
       await sequelize.sync({ force: false });

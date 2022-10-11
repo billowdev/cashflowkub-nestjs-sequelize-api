@@ -11,7 +11,7 @@ export enum DebtType {
 @Table({
 	tableName: 'debt'
 })
-export class DebtAttributes extends Model<DebtAttributes> {
+export class DebtEntity extends Model<DebtEntity> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
