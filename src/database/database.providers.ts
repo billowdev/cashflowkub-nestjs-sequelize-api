@@ -7,7 +7,7 @@ import { CashflowoutEntity } from '../cashflowout/entities/cashflowout.entity';
 import { CategoryEntity } from '../category/entities/category.entity';
 import { DebtEntity } from '../debt/entities/debt.entity';
 import { PocketEntity } from '../pocket/entities/pocket.entity';
-import { TransferAttributes } from '../transfer/entities/transfer.entity';
+import { TransferEntity } from '../transfer/entities/transfer.entity';
 import { UserEntity } from '../user/entities/user.entity';
 
 export const databaseProviders = [{
@@ -38,7 +38,7 @@ export const databaseProviders = [{
          PocketEntity,
          CashflowinEntity,
          CashflowoutEntity,
-         TransferAttributes,
+         TransferEntity,
          AssetEntity,
          DebtEntity
       ]);

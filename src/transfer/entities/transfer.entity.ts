@@ -6,7 +6,7 @@ import { UserEntity } from "src/user/entities/user.entity";
 @Table({
 	tableName: 'transfer'
 })
-export class TransferAttributes extends Model<TransferAttributes> {
+export class TransferEntity extends Model<TransferEntity> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
