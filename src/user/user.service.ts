@@ -34,7 +34,9 @@ export class UserService {
 
   async findAll(): Promise<UserDto[]> {
     try {
-      return this.userRepo.findAll()
+      return this.userRepo.findAll({
+        attributes: { exclude: ['hashPassword'] },
+      })
     } catch (error) {
       throw new BadRequestException()
     }
@@ -64,6 +66,7 @@ export class UserService {
     try {
       const user = new UserEntity();
       user.email = createUserDto.email.trim().toLowerCase()
+      user.username = createUserDto.username.trim().toLowerCase()
       user.hashPassword = await this.authService.hashPassword(createUserDto.password);
       user.firstName = createUserDto.firstName;
       user.lastName = createUserDto.lastName;
