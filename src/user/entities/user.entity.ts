@@ -3,7 +3,7 @@ import { Optional, UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model, HasMany } from "sequelize-typescript";
 import { AssetEntity } from "src/asset/entities/asset.entity";
 import { CashflowinEntity } from "src/cashflowin/entities/cashflowin.entity";
-import { CashflowoutAttributes } from "src/cashflowout/entities/cashflowout.entity";
+import { CashflowoutEntity } from "src/cashflowout/entities/cashflowout.entity";
 import { DebtAttributes } from "src/debt/entities/debt.entity";
 import { PocketAttributes } from "src/pocket/entities/pocket.entity";
 import { TransferAttributes } from "src/transfer/entities/transfer.entity";
@@ -78,8 +78,8 @@ export class UserEntity extends Model<UserEntity> {
 	@HasMany(() => CashflowinEntity)
 	cashflowins: CashflowinEntity[]
 
-	@HasMany(() => CashflowoutAttributes)
-	cashflowouts: CashflowoutAttributes[]
+	@HasMany(() => CashflowoutEntity)
+	cashflowouts: CashflowoutEntity[]
 
 	@HasMany(() => AssetEntity)
 	assets: AssetEntity[]

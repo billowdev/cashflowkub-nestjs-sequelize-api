@@ -1,9 +1,9 @@
 import { CASHFLOWOUT_REPOSITORY } from '../../core/constants';
-import { CashflowoutAttributes } from './cashflowout.entity';
+import { CashflowoutEntity } from './cashflowout.entity';
 
 export const cashflowoutProviders = [
   {
     provide: CASHFLOWOUT_REPOSITORY,
-    useValue: CashflowoutAttributes,
+    useValue: CashflowoutEntity,
   },
 ];

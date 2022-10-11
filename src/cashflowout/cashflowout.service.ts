@@ -2,11 +2,11 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CASHFLOWOUT_REPOSITORY } from 'src/core/constants';
 import { CreateCashflowoutDto } from './dto/create-cashflowout.dto';
 import { UpdateCashflowoutDto } from './dto/update-cashflowout.dto';
-import { CashflowoutAttributes } from './entities/cashflowout.entity';
+import { CashflowoutEntity } from './entities/cashflowout.entity';
 
 @Injectable()
 export class CashflowoutService {
-  constructor(@Inject(CASHFLOWOUT_REPOSITORY) private readonly cashflowoutRepo: typeof CashflowoutAttributes) { }
+  constructor(@Inject(CASHFLOWOUT_REPOSITORY) private readonly cashflowoutRepo: typeof CashflowoutEntity) { }
   create(createCashflowoutDto: CreateCashflowoutDto) {
     return 'This action adds a new cashflowout';
   }

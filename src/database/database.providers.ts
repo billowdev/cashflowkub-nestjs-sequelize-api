@@ -3,7 +3,7 @@ import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../core/constants';
 import { dbConfig } from './database.config';
 import { AssetEntity } from '../asset/entities/asset.entity';
 import { CashflowinEntity } from '../cashflowin/entities/cashflowin.entity';
-import { CashflowoutAttributes } from '../cashflowout/entities/cashflowout.entity';
+import { CashflowoutEntity } from '../cashflowout/entities/cashflowout.entity';
 import { CategoryAttributes } from '../category/entities/category.entity';
 import { DebtAttributes } from '../debt/entities/debt.entity';
 import { PocketAttributes } from '../pocket/entities/pocket.entity';
@@ -37,7 +37,7 @@ export const databaseProviders = [{
          CategoryAttributes,
          PocketAttributes,
          CashflowinEntity,
-         CashflowoutAttributes,
+         CashflowoutEntity,
          TransferAttributes,
          AssetEntity,
          DebtAttributes

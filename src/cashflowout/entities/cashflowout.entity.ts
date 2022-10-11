@@ -15,7 +15,7 @@ export enum CashflowoutEnum {
 @Table({
 	tableName: "cashflowout"
 })
-export class CashflowoutAttributes extends Model<CashflowoutAttributes> {
+export class CashflowoutEntity extends Model<CashflowoutEntity> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
