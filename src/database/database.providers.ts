@@ -4,7 +4,7 @@ import { dbConfig } from './database.config';
 import { AssetEntity } from '../asset/entities/asset.entity';
 import { CashflowinEntity } from '../cashflowin/entities/cashflowin.entity';
 import { CashflowoutEntity } from '../cashflowout/entities/cashflowout.entity';
-import { CategoryAttributes } from '../category/entities/category.entity';
+import { CategoryEntity } from '../category/entities/category.entity';
 import { DebtAttributes } from '../debt/entities/debt.entity';
 import { PocketAttributes } from '../pocket/entities/pocket.entity';
 import { TransferAttributes } from '../transfer/entities/transfer.entity';
@@ -34,7 +34,7 @@ export const databaseProviders = [{
       const sequelize = new Sequelize(config);
       sequelize.addModels([
          UserEntity,
-         CategoryAttributes,
+         CategoryEntity,
          PocketAttributes,
          CashflowinEntity,
          CashflowoutEntity,

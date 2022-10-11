@@ -3,7 +3,7 @@ import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize
 import { UUIDV4 } from "sequelize";
 import { UserEntity } from "src/user/entities/user.entity";
 import { PocketAttributes } from "src/pocket/entities/pocket.entity";
-import { CategoryAttributes } from "src/category/entities/category.entity";
+import { CategoryEntity } from "src/category/entities/category.entity";
 
 export enum CashflowoutEnum {
 	FIXED = 'fixed',
@@ -72,9 +72,9 @@ export class CashflowoutEntity extends Model<CashflowoutEntity> {
 	})
 	pocketId: string;
 
-	@BelongsTo(() => CategoryAttributes, {onDelete: 'casCade'})
-	category: CategoryAttributes
-	@ForeignKey(()=> CategoryAttributes)
+	@BelongsTo(() => CategoryEntity, {onDelete: 'casCade'})
+	category: CategoryEntity
+	@ForeignKey(()=> CategoryEntity)
 	@Column({
 		type: DataType.UUID,
 		field: "category_id",

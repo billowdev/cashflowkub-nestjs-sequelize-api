@@ -12,7 +12,7 @@ export enum CategoryEnum {
 @Table({
 	tableName: 'category'
 })
-export class CategoryAttributes extends Model<CategoryAttributes> {
+export class CategoryEntity extends Model<CategoryEntity> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
