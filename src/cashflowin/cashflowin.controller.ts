@@ -19,16 +19,16 @@ export class CashflowinController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.cashflowinService.findOne(+id);
+    return this.cashflowinService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCashflowinDto: UpdateCashflowinDto) {
-    return this.cashflowinService.update(+id, updateCashflowinDto);
+    return this.cashflowinService.update(id, updateCashflowinDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.cashflowinService.remove(+id);
+    return this.cashflowinService.remove(id);
   }
 }
