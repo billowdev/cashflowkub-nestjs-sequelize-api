@@ -1,4 +1,4 @@
-export interface UserDto {
+export class UserDto  {
 	id?: string
 	username?: string
 	hashPassword?: string
@@ -9,5 +9,4 @@ export interface UserDto {
 	role?: string
 	createdAt?: string
 	updatedAt?: string
-  }
-  
+}

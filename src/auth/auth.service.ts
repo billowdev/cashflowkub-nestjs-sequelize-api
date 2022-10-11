@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthDto, SignDto } from './dto';
 import { UserService } from 'src/user/user.service';
@@ -7,6 +7,7 @@ import * as argon from 'argon2'
 @Injectable()
 export class AuthService {
 	constructor(
+		@Inject(forwardRef(() => UserService)) 
 		private readonly userService: UserService,
 		private readonly jwtService: JwtService,
 	) { }

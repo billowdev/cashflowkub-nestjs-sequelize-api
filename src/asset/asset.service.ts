@@ -10,7 +10,7 @@ export class AssetService {
     @Inject(ASSET_REPOSITORY) private readonly assetRepo: typeof AssetAttributes
   ) { }
   create(createAssetDto: CreateAssetDto) {
-    return 'This action adds a new asset';
+    return "this.assetRepo.create(createAssetDto)"
   }
 
   findAll() {

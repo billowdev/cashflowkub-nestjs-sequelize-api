@@ -3,7 +3,7 @@ import { UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model, ForeignKey, BelongsTo, HasMany } from "sequelize-typescript";
 import { CashflowinAttributes } from "src/cashflowin/entities/cashflowin.entity";
 import { CashflowoutAttributes } from "src/cashflowout/entities/cashflowout.entity";
-import { UserAttributes } from "src/user/entities/user.entity";
+import {  UserEntity } from "src/user/entities/user.entity";
 
 @Table({
 	tableName: 'pocket'
@@ -32,9 +32,9 @@ export class PocketAttributes extends Model<PocketAttributes> {
 	})
 	balance: number;
 
-	@BelongsTo(() => UserAttributes, {onDelete: 'casCade'})
-	user: UserAttributes
-	@ForeignKey(()=> UserAttributes)
+	@BelongsTo(() => UserEntity, {onDelete: 'casCade'})
+	user: UserEntity
+	@ForeignKey(()=> UserEntity)
 	@Column({
 		type: DataType.UUID,
 		field: "user_id",

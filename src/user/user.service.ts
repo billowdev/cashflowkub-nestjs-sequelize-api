@@ -1,25 +1,28 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
+import { AuthService } from 'src/auth/auth.service';
 import { USER_REPOSITORY } from 'src/core/constants';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
-import { UserAttributes } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
   constructor(
-    @Inject(USER_REPOSITORY) private readonly userRepo: typeof UserAttributes
+    @Inject(USER_REPOSITORY) private readonly userRepo: typeof UserEntity,
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
   ) { }
   // repository
   async findOne(id: string, excludePassword?: boolean): Promise<UserDto> {
     try {
       if (excludePassword) {
-        return await this.userRepo.findOne<UserAttributes>({
+        return await this.userRepo.findOne<UserEntity>({
           attributes: { exclude: ['hashPassword'] },
           where: { id },
         });
       } else {
-        return await this.userRepo.findOne<UserAttributes>({
+        return await this.userRepo.findOne<UserEntity>({
           where: { id },
         });
       }
@@ -41,12 +44,12 @@ export class UserService {
   async findOneByUsername(username: string, excludePassword?: boolean): Promise<UserDto> {
     try {
       if (excludePassword) {
-        return await this.userRepo.findOne<UserAttributes>({
+        return await this.userRepo.findOne<UserEntity>({
           attributes: { exclude: ['hashPassword'] },
           where: { username }
         });
       } else {
-        return await this.userRepo.findOne<UserAttributes>({
+        return await this.userRepo.findOne<UserEntity>({
           where: { username }
         });
       }
@@ -57,9 +60,15 @@ export class UserService {
   }
 
   // create : create account for login
-  public async create(createUserDto: CreateUserDto): Promise<UserDto> {
+  public async create(createUserDto: CreateUserDto): Promise<UserEntity> {
     try {
-      return await this.userRepo.create<any>(createUserDto);
+      const user = new UserEntity();
+      user.email = createUserDto.email.trim().toLowerCase()
+      user.hashPassword = await this.authService.hashPassword(createUserDto.password);
+      user.firstName = createUserDto.firstName;
+      user.lastName = createUserDto.lastName;
+      user.role = createUserDto.role;
+      return await this.userRepo.create<UserEntity>(user);
     } catch (error) {
       throw new BadRequestException()
     }
@@ -83,7 +92,7 @@ export class UserService {
   }
 
   // remove: delete the account
-  async remove(id: string){
+  async remove(id: string) {
     try {
       return this.userRepo.destroy({ where: { id } })
     } catch (error) {

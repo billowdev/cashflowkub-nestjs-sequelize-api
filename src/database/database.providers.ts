@@ -8,7 +8,7 @@ import { CategoryAttributes } from '../category/entities/category.entity';
 import { DebtAttributes } from '../debt/entities/debt.entity';
 import { PocketAttributes } from '../pocket/entities/pocket.entity';
 import { TransferAttributes } from '../transfer/entities/transfer.entity';
-import { UserAttributes } from '../user/entities/user.entity';
+import { UserEntity } from '../user/entities/user.entity';
 
 export const databaseProviders = [{
    provide: SEQUELIZE,
@@ -33,7 +33,7 @@ export const databaseProviders = [{
       }
       const sequelize = new Sequelize(config);
       sequelize.addModels([
-         UserAttributes,
+         UserEntity,
          CategoryAttributes,
          PocketAttributes,
          CashflowinAttributes,

@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UUIDV4 } from "sequelize";
+import { Optional, UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model, HasMany } from "sequelize-typescript";
 import { AssetAttributes } from "src/asset/entities/asset.entity";
 import { CashflowinAttributes } from "src/cashflowin/entities/cashflowin.entity";
@@ -12,7 +12,8 @@ import { Role } from "./role.enum";
 @Table({
 	tableName: 'user'
 })
-export class UserAttributes extends Model<UserAttributes> {
+export class UserEntity extends Model<UserEntity> {
+
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
@@ -89,6 +90,6 @@ export class UserAttributes extends Model<UserAttributes> {
 	@HasMany(() => TransferAttributes)
 	transfers: TransferAttributes[]
 
-	
+
 
 }
