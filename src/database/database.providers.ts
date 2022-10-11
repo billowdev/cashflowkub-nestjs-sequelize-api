@@ -2,7 +2,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../core/constants';
 import { dbConfig } from './database.config';
 import { AssetEntity } from '../asset/entities/asset.entity';
-import { CashflowinAttributes } from '../cashflowin/entities/cashflowin.entity';
+import { CashflowinEntity } from '../cashflowin/entities/cashflowin.entity';
 import { CashflowoutAttributes } from '../cashflowout/entities/cashflowout.entity';
 import { CategoryAttributes } from '../category/entities/category.entity';
 import { DebtAttributes } from '../debt/entities/debt.entity';
@@ -36,7 +36,7 @@ export const databaseProviders = [{
          UserEntity,
          CategoryAttributes,
          PocketAttributes,
-         CashflowinAttributes,
+         CashflowinEntity,
          CashflowoutAttributes,
          TransferAttributes,
          AssetEntity,

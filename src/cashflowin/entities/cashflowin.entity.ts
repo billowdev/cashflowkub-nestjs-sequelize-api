@@ -8,7 +8,7 @@ import { CategoryAttributes } from "src/category/entities/category.entity";
 @Table({
 	tableName: "cashflowin"
 })
-export class CashflowinAttributes extends Model<CashflowinAttributes> {
+export class CashflowinEntity extends Model<CashflowinEntity> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,

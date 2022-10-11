@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Optional, UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model, HasMany } from "sequelize-typescript";
 import { AssetEntity } from "src/asset/entities/asset.entity";
-import { CashflowinAttributes } from "src/cashflowin/entities/cashflowin.entity";
+import { CashflowinEntity } from "src/cashflowin/entities/cashflowin.entity";
 import { CashflowoutAttributes } from "src/cashflowout/entities/cashflowout.entity";
 import { DebtAttributes } from "src/debt/entities/debt.entity";
 import { PocketAttributes } from "src/pocket/entities/pocket.entity";
@@ -75,8 +75,8 @@ export class UserEntity extends Model<UserEntity> {
 	@HasMany(() => PocketAttributes)
 	pockets: PocketAttributes[]
 
-	@HasMany(() => CashflowinAttributes)
-	cashflowins: CashflowinAttributes[]
+	@HasMany(() => CashflowinEntity)
+	cashflowins: CashflowinEntity[]
 
 	@HasMany(() => CashflowoutAttributes)
 	cashflowouts: CashflowoutAttributes[]
