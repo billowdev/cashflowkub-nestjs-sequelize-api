@@ -5,7 +5,7 @@ import { AssetEntity } from "src/asset/entities/asset.entity";
 import { CashflowinEntity } from "src/cashflowin/entities/cashflowin.entity";
 import { CashflowoutEntity } from "src/cashflowout/entities/cashflowout.entity";
 import { DebtEntity } from "src/debt/entities/debt.entity";
-import { PocketAttributes } from "src/pocket/entities/pocket.entity";
+import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { TransferAttributes } from "src/transfer/entities/transfer.entity";
 import { Role } from "./role.enum";
 
@@ -72,8 +72,8 @@ export class UserEntity extends Model<UserEntity> {
 	})
 	role: Role;
 
-	@HasMany(() => PocketAttributes)
-	pockets: PocketAttributes[]
+	@HasMany(() => PocketEntity)
+	pockets: PocketEntity[]
 
 	@HasMany(() => CashflowinEntity)
 	cashflowins: CashflowinEntity[]

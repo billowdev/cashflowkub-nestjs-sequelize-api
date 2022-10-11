@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { UUIDV4 } from "sequelize";
 import { UserEntity } from "src/user/entities/user.entity";
-import { PocketAttributes } from "src/pocket/entities/pocket.entity";
+import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { CategoryEntity } from "src/category/entities/category.entity";
 
 export enum CashflowoutEnum {
@@ -62,9 +62,9 @@ export class CashflowoutEntity extends Model<CashflowoutEntity> {
 	})
 	userId: string;
 
-	@BelongsTo(() => PocketAttributes, {onDelete: 'casCade'})
-	pocket: PocketAttributes
-	@ForeignKey(()=> PocketAttributes)
+	@BelongsTo(() => PocketEntity, {onDelete: 'casCade'})
+	pocket: PocketEntity
+	@ForeignKey(()=> PocketEntity)
 	@Column({
 		type: DataType.UUID,
 		field: "pocket_id",

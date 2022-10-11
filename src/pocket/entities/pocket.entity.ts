@@ -8,7 +8,7 @@ import {  UserEntity } from "src/user/entities/user.entity";
 @Table({
 	tableName: 'pocket'
 })
-export class PocketAttributes extends Model<PocketAttributes> {
+export class PocketEntity extends Model<PocketEntity> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
