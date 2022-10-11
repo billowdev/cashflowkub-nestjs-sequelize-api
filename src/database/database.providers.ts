@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../core/constants';
 import { dbConfig } from './database.config';
-import { AssetAttributes } from '../asset/entities/asset.entity';
+import { AssetEntity } from '../asset/entities/asset.entity';
 import { CashflowinAttributes } from '../cashflowin/entities/cashflowin.entity';
 import { CashflowoutAttributes } from '../cashflowout/entities/cashflowout.entity';
 import { CategoryAttributes } from '../category/entities/category.entity';
@@ -39,7 +39,7 @@ export const databaseProviders = [{
          CashflowinAttributes,
          CashflowoutAttributes,
          TransferAttributes,
-         AssetAttributes,
+         AssetEntity,
          DebtAttributes
       ]);
       // { force: true } should be fasle in production

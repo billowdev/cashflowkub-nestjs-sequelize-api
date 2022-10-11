@@ -1,9 +1,9 @@
 import { ASSET_REPOSITORY } from '../../core/constants';
-import { AssetAttributes } from './asset.entity';
+import { AssetEntity } from './asset.entity';
 
 export const assetProviders = [
   {
     provide: ASSET_REPOSITORY,
-    useValue: AssetAttributes,
+    useValue: AssetEntity,
   },
 ];

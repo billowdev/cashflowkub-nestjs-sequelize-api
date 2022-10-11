@@ -13,7 +13,7 @@ export enum AssetEnum {
 @Table({
 	tableName: 'asset'
 })
-export class AssetAttributes extends Model<AssetAttributes> {
+export class AssetEntity extends Model<AssetEntity> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
