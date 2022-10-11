@@ -18,7 +18,7 @@ export class AuthService {
 	}
 
 	// password hasing
-	private async hashPassword(password) {
+	public async hashPassword(password) {
 		const hash = await argon.hash(password, { type: argon.argon2id });
 		return hash;
 	}
