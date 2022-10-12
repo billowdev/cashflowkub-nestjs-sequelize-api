@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UUIDV4 } from "sequelize";
-import { Column, DataType, Table, Model } from "sequelize-typescript";
+import { Column, DataType, Table, Model, BelongsTo, ForeignKey } from "sequelize-typescript";
+import { UserEntity } from "src/user/entities/user.entity";
 
 export enum CategoryEnum {
 	INCOME = 'income',
@@ -57,4 +57,14 @@ export class CategoryEntity extends Model<CategoryEntity> {
 	})
 	isCustom: boolean;
 
+	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
+	user: UserEntity
+	@ForeignKey(() => UserEntity)
+	@Column({
+		type: DataType.UUID,
+		field: "user_id",
+		allowNull: false
+	})
+	userId: string;
+	
 }
