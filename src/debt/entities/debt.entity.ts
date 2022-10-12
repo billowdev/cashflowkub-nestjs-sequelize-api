@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UUIDV4 } from "sequelize";
 import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany, HasMany } from "sequelize-typescript";
-import { UserAttributes } from "src/user/entities/user.entity";
+import { UserEntity } from "src/user/entities/user.entity";
 
 export enum DebtType {
 	LONG = 'long',
@@ -11,7 +11,7 @@ export enum DebtType {
 @Table({
 	tableName: 'debt'
 })
-export class DebtAttributes extends Model<DebtAttributes> {
+export class DebtEntity extends Model<DebtEntity> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
@@ -48,9 +48,9 @@ export class DebtAttributes extends Model<DebtAttributes> {
 	})
 	type: DebtType;
 
-	@BelongsTo(() => UserAttributes, {onDelete: 'casCade'})
-	user: UserAttributes
-	@ForeignKey(()=> UserAttributes)
+	@BelongsTo(() => UserEntity, {onDelete: 'casCade'})
+	user: UserEntity
+	@ForeignKey(()=> UserEntity)
 	@Column({
 		type: DataType.UUID,
 		field: "user_id",

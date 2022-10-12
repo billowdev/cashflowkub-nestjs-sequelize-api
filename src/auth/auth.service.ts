@@ -1,12 +1,13 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { authDataDto, AuthDto, SignDto } from './dto';
+import { AuthDto, SignDto } from './dto';
 import { UserService } from 'src/user/user.service';
 import * as argon from 'argon2'
 
 @Injectable()
 export class AuthService {
 	constructor(
+		@Inject(forwardRef(() => UserService)) 
 		private readonly userService: UserService,
 		private readonly jwtService: JwtService,
 	) { }
@@ -18,7 +19,7 @@ export class AuthService {
 	}
 
 	// password hasing
-	private async hashPassword(password) {
+	public async hashPassword(password) {
 		const hash = await argon.hash(password, { type: argon.argon2id });
 		return hash;
 	}
@@ -51,7 +52,6 @@ export class AuthService {
 			const user = await this.userService.findOneByUsername(auth.username, true)
 			const token = await this.generateToken({ sub: user.id, role: user.role });
 			const response: SignDto = {
-				success: true,
 				message: "User logged in successfully",
 				data: { user: user, token, role: user.role }
 			}
@@ -74,7 +74,6 @@ export class AuthService {
 			}
 			const token = await this.generateToken(payload);
 			const response: SignDto = {
-				success: true,
 				message: "user signup successfully",
 				data: { user: result, token, role: result.role }
 			}

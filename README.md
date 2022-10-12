@@ -78,6 +78,8 @@ yarn add class-transformer class-validator
 yarn add @nestjs/passport @nestjs/jwt passport passport-local passport-jwt
 yarn add argon2
 
+
+
 yarn add -D @types/passport-jwt @types/passport-local
 yarn add -D @types/sequelize
 
@@ -89,3 +91,37 @@ https://github.com/sequelize/cli/pull/987#issuecomment-1153105548
 npx sequelize-cli@6.2.0 db:migrate
 
 npx sequelize-cli migration:generate --name create-user
+
+
+
+
+
+##### FASTIFY
+
+yarn add @nestjs/platform-fastify @fastify/static fastify
+----
+main.ts
+----
+
+
+const envToLogger = {
+  development: {
+    transport: {
+      target: 'pino-pretty',
+      options: {
+        translateTime: 'HH:MM:ss Z',
+        ignore: 'pid,hostname',
+      },
+    },
+  },
+  production: true,
+  test: false,
+}
+
+async function bootstrap() {
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter({
+      logger: envToLogger[process.env.NODE_ENV] ?? true
+    })
+  );

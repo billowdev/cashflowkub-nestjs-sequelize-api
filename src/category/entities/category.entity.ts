@@ -1,6 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UUIDV4 } from "sequelize";
-import { Column, DataType, Table, Model} from "sequelize-typescript";
+import { Column, DataType, Table, Model } from "sequelize-typescript";
 
 export enum CategoryEnum {
 	INCOME = 'income',
@@ -12,12 +11,11 @@ export enum CategoryEnum {
 @Table({
 	tableName: 'category'
 })
-export class CategoryAttributes extends Model<CategoryAttributes> {
+export class CategoryEntity extends Model<CategoryEntity> {
 	@ApiProperty()
 	@Column({
-		type: DataType.UUID,
-		defaultValue: UUIDV4,
-		allowNull: false,
+		type: DataType.INTEGER,
+		autoIncrement: true,
 		primaryKey: true,
 	})
 	id: string

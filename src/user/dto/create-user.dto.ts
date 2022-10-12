@@ -1,30 +1,34 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsOptional, IsString } from "class-validator"
-import { UserAttributes } from "../entities/user.entity";
+import { Role } from "../entities/role.enum";
 
 
 export class CreateUserDto {
+	@ApiProperty()
+	@IsString()
+	readonly username: string;
 
 	@ApiProperty()
 	@IsString()
-    readonly username: string;
-	
-	@ApiProperty()
-	@IsString()
-    readonly password: string;
-
-	@ApiProperty()
-	@IsString()
-	@IsOptional()
-    readonly firstName: string;
+	readonly password: string;
 
 	@ApiProperty()
 	@IsString()
 	@IsOptional()
-    readonly lastName: string;
+	readonly firstName?: string;
+
+	@ApiProperty()
+	@IsString()
+	@IsOptional()
+	readonly lastName?: string;
 
 	@ApiProperty()
 	@IsEmail()
 	@IsOptional()
-    readonly email: string;
+	readonly email?: string;
+
+	@ApiProperty()
+	@IsEmail()
+	@IsOptional()
+	readonly role?: Role;
 }

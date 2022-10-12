@@ -1,14 +1,14 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { UUIDV4 } from "sequelize";
-import { UserAttributes } from "src/user/entities/user.entity";
-import { PocketAttributes } from "src/pocket/entities/pocket.entity";
-import { CategoryAttributes } from "src/category/entities/category.entity";
+import { UserEntity } from "src/user/entities/user.entity";
+import { PocketEntity } from "src/pocket/entities/pocket.entity";
+import { CategoryEntity } from "src/category/entities/category.entity";
 
 @Table({
 	tableName: "cashflowin"
 })
-export class CashflowinAttributes extends Model<CashflowinAttributes> {
+export class CashflowinEntity extends Model<CashflowinEntity> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
@@ -30,9 +30,9 @@ export class CashflowinAttributes extends Model<CashflowinAttributes> {
 	})
 	amount: number;
 
-	@BelongsTo(() => UserAttributes, { onDelete: 'casCade' })
-	user: UserAttributes
-	@ForeignKey(() => UserAttributes)
+	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
+	user: UserEntity
+	@ForeignKey(() => UserEntity)
 	@Column({
 		type: DataType.UUID,
 		field: "user_id",
@@ -40,9 +40,9 @@ export class CashflowinAttributes extends Model<CashflowinAttributes> {
 	})
 	userId: string;
 
-	@BelongsTo(() => PocketAttributes, { onDelete: 'casCade' })
-	pocket: PocketAttributes
-	@ForeignKey(() => PocketAttributes)
+	@BelongsTo(() => PocketEntity, { onDelete: 'casCade' })
+	pocket: PocketEntity
+	@ForeignKey(() => PocketEntity)
 	@Column({
 		type: DataType.UUID,
 		field: "pocket_id",
@@ -50,9 +50,9 @@ export class CashflowinAttributes extends Model<CashflowinAttributes> {
 	})
 	pocketId: string;
 
-	@BelongsTo(() => CategoryAttributes, { onDelete: 'casCade' })
-	category: CategoryAttributes
-	@ForeignKey(() => CategoryAttributes)
+	@BelongsTo(() => CategoryEntity, { onDelete: 'casCade' })
+	category: CategoryEntity
+	@ForeignKey(() => CategoryEntity)
 	@Column({
 		type: DataType.UUID,
 		field: "category_id",
