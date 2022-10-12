@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model, ForeignKey, BelongsTo } from "sequelize-typescript";
+import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { UserEntity } from "src/user/entities/user.entity";
 
 @Table({
@@ -22,9 +23,9 @@ export class TransferEntity extends Model<TransferEntity> {
 	})
 	amount: string;
 
-	// @BelongsTo(() => PocketAttributes, { as: "fromPocketId" })
-	// fromPockets: PocketAttributes
-	// @ForeignKey(() => PocketAttributes)
+	@BelongsTo(() => PocketEntity, { as: "fromPockets", foreignKey: "from_pocket_id" })
+	fromPockets: PocketEntity
+	@ForeignKey(() => PocketEntity)
 
 	@Column({
 		type: DataType.UUID,
@@ -34,9 +35,9 @@ export class TransferEntity extends Model<TransferEntity> {
 	})
 	fromPocketId: string;
 
-	// @BelongsTo(() => PocketAttributes, { as: "toPocketId" })
-	// toPockets: PocketAttributes
-	// @ForeignKey(() => PocketAttributes)
+	@BelongsTo(() => PocketEntity, { as: "toPockets", foreignKey: "to_pocket_id" })
+	toPockets: PocketEntity
+	@ForeignKey(() => PocketEntity)
 
 	@Column({
 		type: DataType.UUID,

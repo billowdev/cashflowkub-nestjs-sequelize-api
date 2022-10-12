@@ -1,5 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, DataType, Table, Model, BelongsTo, ForeignKey } from "sequelize-typescript";
+import { Column, DataType, Table, Model, BelongsTo, ForeignKey, HasMany } from "sequelize-typescript";
+import { CashflowinEntity } from "src/cashflowin/entities/cashflowin.entity";
+import { CashflowoutEntity } from "src/cashflowout/entities/cashflowout.entity";
 import { UserEntity } from "src/user/entities/user.entity";
 
 export enum CategoryEnum {
@@ -66,5 +68,11 @@ export class CategoryEntity extends Model<CategoryEntity> {
 		allowNull: false
 	})
 	userId: string;
+
+	@HasMany(() => CashflowinEntity)
+	cashflowins: CashflowinEntity[]
+
+	@HasMany(() => CashflowoutEntity)
+	cashflowouts: CashflowoutEntity[]
 	
 }
