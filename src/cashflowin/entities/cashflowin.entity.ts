@@ -40,22 +40,24 @@ export class CashflowinEntity extends Model<CashflowinEntity> {
 	})
 	userId: string;
 
-	@BelongsTo(() => PocketEntity, { onDelete: 'casCade' })
+	@BelongsTo(() => PocketEntity, { onDelete: 'NO ACTION' })
 	pocket: PocketEntity
 	@ForeignKey(() => PocketEntity)
 	@Column({
 		type: DataType.UUID,
 		field: "pocket_id",
+		unique: false,
 		allowNull: false
 	})
 	pocketId: string;
 
-	@BelongsTo(() => CategoryEntity, { onDelete: 'casCade' })
+	@BelongsTo(() => CategoryEntity, { onDelete: 'NO ACTION' })
 	category: CategoryEntity
 	@ForeignKey(() => CategoryEntity)
 	@Column({
-		type: DataType.UUID,
+		type: DataType.INTEGER,
 		field: "category_id",
+		unique: false,
 		allowNull: false
 	})
 	categoryId: string;

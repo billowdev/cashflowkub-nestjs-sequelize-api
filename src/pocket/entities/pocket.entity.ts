@@ -3,6 +3,7 @@ import { UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model, ForeignKey, BelongsTo, HasMany } from "sequelize-typescript";
 import { CashflowinEntity } from "src/cashflowin/entities/cashflowin.entity";
 import { CashflowoutEntity } from "src/cashflowout/entities/cashflowout.entity";
+import { TransferEntity } from "src/transfer/entities/transfer.entity";
 import {  UserEntity } from "src/user/entities/user.entity";
 
 @Table({
@@ -47,6 +48,28 @@ export class PocketEntity extends Model<PocketEntity> {
 
 	@HasMany(() => CashflowoutEntity)
 	cashflowouts: CashflowoutEntity[]
+
+	@HasMany(() => TransferEntity, {
+		as: 'fromPockets',
+		foreignKey: "from_pocket_id"
+	})
+	fromPockets: TransferEntity[]
+
+	@HasMany(() => TransferEntity, {
+		as: 'toPockets',
+		foreignKey: "to_pocket_id"
+	})
+	toPockets: TransferEntity[]
+
+	// db.User.hasMany(db.Message, {
+	// 	as: 'sentMessages',
+	// 	foreignKey: 'sender_id',
+	//   });
+	  
+	//   db.User.hasMany(db.Message, {
+	// 	as: 'receivedMessages',
+	// 	foreignKey: 'receiver_id',
+	//   });
 
 
 }

@@ -1,5 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Column, DataType, Table, Model } from "sequelize-typescript";
+import { Column, DataType, Table, Model, BelongsTo, ForeignKey, HasMany } from "sequelize-typescript";
+import { CashflowinEntity } from "src/cashflowin/entities/cashflowin.entity";
+import { CashflowoutEntity } from "src/cashflowout/entities/cashflowout.entity";
+import { UserEntity } from "src/user/entities/user.entity";
 
 export enum CategoryEnum {
 	INCOME = 'income',
@@ -49,4 +52,27 @@ export class CategoryEntity extends Model<CategoryEntity> {
 	})
 	type: CategoryEnum;
 
+	@ApiProperty()
+	@Column({
+		type: DataType.BOOLEAN,
+		defaultValue: true
+	})
+	isCustom: boolean;
+
+	@BelongsTo(() => UserEntity, { onDelete: 'NO ACTION' })
+	user: UserEntity
+	@ForeignKey(() => UserEntity)
+	@Column({
+		type: DataType.UUID,
+		field: "user_id",
+		allowNull: false
+	})
+	userId: string;
+
+	@HasMany(() => CashflowinEntity)
+	cashflowins: CashflowinEntity[]
+
+	@HasMany(() => CashflowoutEntity)
+	cashflowouts: CashflowoutEntity[]
+	
 }

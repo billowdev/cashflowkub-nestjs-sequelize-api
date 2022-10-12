@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { sessionDataDto } from "./session.dto";
 import { FastifyRequest} from 'fastify';
 
@@ -14,6 +14,22 @@ export class AuthDto {
   @IsString()
   @IsNotEmpty()
   password: string;
+
+  @ApiProperty()
+  @IsEmail()
+  @IsOptional()
+  email?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  firstName?: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  lastName?: string;
+
 }
 
 export interface requestAuthUserDto extends FastifyRequest {

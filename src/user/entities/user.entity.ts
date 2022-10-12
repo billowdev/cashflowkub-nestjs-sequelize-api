@@ -4,6 +4,7 @@ import { Column, DataType, Table, Model, HasMany } from "sequelize-typescript";
 import { AssetEntity } from "src/asset/entities/asset.entity";
 import { CashflowinEntity } from "src/cashflowin/entities/cashflowin.entity";
 import { CashflowoutEntity } from "src/cashflowout/entities/cashflowout.entity";
+import { CategoryEntity } from "src/category/entities/category.entity";
 import { DebtEntity } from "src/debt/entities/debt.entity";
 import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { TransferEntity } from "src/transfer/entities/transfer.entity";
@@ -26,6 +27,7 @@ export class UserEntity extends Model<UserEntity> {
 	@ApiProperty()
 	@Column({
 		type: DataType.STRING(100),
+		unique: true
 	})
 	username: string;
 
@@ -53,6 +55,7 @@ export class UserEntity extends Model<UserEntity> {
 	@ApiProperty()
 	@Column({
 		type: DataType.STRING(200),
+		unique: true
 	})
 	email: string;
 
@@ -90,6 +93,8 @@ export class UserEntity extends Model<UserEntity> {
 	@HasMany(() => TransferEntity)
 	transfers: TransferEntity[]
 
+	@HasMany(() => CategoryEntity)
+	categories: CategoryEntity[]
 
 
 }
