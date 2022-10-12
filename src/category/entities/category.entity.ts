@@ -59,7 +59,7 @@ export class CategoryEntity extends Model<CategoryEntity> {
 	})
 	isCustom: boolean;
 
-	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
+	@BelongsTo(() => UserEntity, { onDelete: 'NO ACTION' })
 	user: UserEntity
 	@ForeignKey(() => UserEntity)
 	@Column({

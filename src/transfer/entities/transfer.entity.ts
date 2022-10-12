@@ -26,7 +26,6 @@ export class TransferEntity extends Model<TransferEntity> {
 	@BelongsTo(() => PocketEntity, { as: "fromPockets", foreignKey: "from_pocket_id" })
 	fromPockets: PocketEntity
 	@ForeignKey(() => PocketEntity)
-
 	@Column({
 		type: DataType.UUID,
 		field: "from_pocket_id",
@@ -38,7 +37,6 @@ export class TransferEntity extends Model<TransferEntity> {
 	@BelongsTo(() => PocketEntity, { as: "toPockets", foreignKey: "to_pocket_id" })
 	toPockets: PocketEntity
 	@ForeignKey(() => PocketEntity)
-
 	@Column({
 		type: DataType.UUID,
 		field: "to_pocket_id",
