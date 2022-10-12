@@ -27,6 +27,7 @@ export class UserEntity extends Model<UserEntity> {
 	@ApiProperty()
 	@Column({
 		type: DataType.STRING(100),
+		unique: true
 	})
 	username: string;
 
@@ -54,6 +55,7 @@ export class UserEntity extends Model<UserEntity> {
 	@ApiProperty()
 	@Column({
 		type: DataType.STRING(200),
+		unique: true
 	})
 	email: string;
 

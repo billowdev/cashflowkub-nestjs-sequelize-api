@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { UUIDV4 } from "sequelize";
-import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany, HasMany } from "sequelize-typescript";
+import { Column, DataType, Table, Model, ForeignKey, BelongsTo } from "sequelize-typescript";
 import { UserEntity } from "src/user/entities/user.entity";
 
 export enum AssetEnum {
@@ -46,15 +46,15 @@ export class AssetEntity extends Model<AssetEntity> {
 				AssetEnum.INTANGIBLE
 			]
 		}),
-		defaultValue: AssetEnum.LIQUID, 
+		defaultValue: AssetEnum.LIQUID,
 		allowNull: false
 
 	})
 	type: AssetEnum;
 
-	@BelongsTo(() => UserEntity, {onDelete: 'casCade'})
+	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity
-	@ForeignKey(()=> UserEntity)
+	@ForeignKey(() => UserEntity)
 	@Column({
 		type: DataType.UUID,
 		field: "user_id",

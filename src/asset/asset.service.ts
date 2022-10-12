@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ASSET_REPOSITORY } from 'src/core/constants';
 import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';
@@ -9,23 +9,53 @@ export class AssetService {
   constructor(
     @Inject(ASSET_REPOSITORY) private readonly assetRepo: typeof AssetEntity
   ) { }
-  create(createAssetDto: CreateAssetDto) {
-    return "this.assetRepo.create(createAssetDto)"
+  async create(createAssetDto: CreateAssetDto): Promise<AssetEntity> {
+    try {
+      return await this.assetRepo.create<AssetEntity | any>(createAssetDto);
+    } catch (error) {
+      throw new BadRequestException()
+    }
   }
 
-  findAll() {
-    return `This action returns all asset`;
+  async findAll(userId: string): Promise<AssetEntity[]> {
+    try {
+      return await this.assetRepo.findAll<AssetEntity>({
+        where: { userId }
+      })
+    } catch (error) {
+      throw new BadRequestException('get all assets failed')
+    }
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} asset`;
+  async findOne(id: string, userId): Promise<AssetEntity> {
+    try {
+      return await this.assetRepo.findOne<AssetEntity>({
+        where: { id, userId }
+      })
+    } catch (error) {
+      throw new BadRequestException('get asset by id failed');
+    }
   }
 
-  update(id: string, updateAssetDto: UpdateAssetDto) {
-    return `This action updates a #${id} asset`;
+  async update(id: string, userId: string, updateAssetDto: UpdateAssetDto): Promise<AssetEntity | number[] | unknown> {
+    try {
+      return await this.assetRepo.update<AssetEntity>(
+        { ...updateAssetDto },
+        {
+          where: { id, userId }
+        })
+    } catch (error) {
+      throw new BadRequestException()
+    }
   }
 
-  remove(id: string) {
-    return `This action removes a #${id} asset`;
+  async remove(id: string, userId: string): Promise<number> {
+    try {
+      return await this.assetRepo.destroy({
+        where: { id, userId }
+      })
+    } catch (error) {
+      throw new BadRequestException('delete asset failed')
+    }
   }
 }
