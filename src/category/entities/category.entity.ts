@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model } from "sequelize-typescript";
 
 export enum CategoryEnum {
@@ -48,5 +49,12 @@ export class CategoryEntity extends Model<CategoryEntity> {
 		allowNull: false
 	})
 	type: CategoryEnum;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.BOOLEAN,
+		defaultValue: true
+	})
+	isCustom: boolean;
 
 }
