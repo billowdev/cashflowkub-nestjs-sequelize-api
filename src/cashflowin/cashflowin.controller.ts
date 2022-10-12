@@ -59,7 +59,7 @@ export class CashflowinController {
     @Req() { user }: requestAuthUserDto,) {
     const data = await this.cashflowinService.update(id, updateCashflowinDto, user.sub);
     if (data[0]) {
-      res.status(204).send({
+      res.status(200).send({
         statusCode: res.statusCode,
         message: "update cashflow in by id successfuly",
         data
@@ -78,7 +78,7 @@ export class CashflowinController {
   async remove(@Param('id') id: string, @Res() res: FastifyReply, @Req() { user }: requestAuthUserDto) {
     const data = await this.cashflowinService.remove(id, user.sub);
     if (data) {
-      res.status(204).send({
+      res.status(200).send({
         statusCode: res.statusCode,
         message: "delete cashflow in by id successfuly",
         data

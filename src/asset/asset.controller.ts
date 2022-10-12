@@ -45,7 +45,7 @@ export class AssetController {
     @Res() res: FastifyReply) {
     const data = await this.assetService.findOne(id, req.user.sub)
     if (data[0]) {
-      res.status(204).send({
+      res.status(200).send({
         statusCode: res.statusCode,
         message: "get asset by id successfuly",
         data
@@ -67,7 +67,7 @@ export class AssetController {
   ) {
     const data = await this.assetService.update(id, req.user.sub, updateAssetDto);
     if (data[0]) {
-      res.status(204).send({
+      res.status(200).send({
         statusCode: res.statusCode,
         message: "update asset successfully",
         data
