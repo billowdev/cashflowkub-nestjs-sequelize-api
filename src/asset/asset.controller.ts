@@ -44,7 +44,7 @@ export class AssetController {
     @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply) {
     const data = await this.assetService.findOne(id, req.user.sub)
-    if (data[0]) {
+    if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
         message: "get asset by id successfuly",
@@ -66,6 +66,7 @@ export class AssetController {
     @Res() res: FastifyReply,
   ) {
     const data = await this.assetService.update(id, req.user.sub, updateAssetDto);
+
     if (data[0]) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -88,7 +89,7 @@ export class AssetController {
     @Res() res: FastifyReply,) {
     const data = await this.assetService.remove(id, req.user.sub);
     if (data) {
-      res.status(204).send({
+      res.status(200).send({
         statusCode: res.statusCode,
         message: "delete asset successfully",
         data
