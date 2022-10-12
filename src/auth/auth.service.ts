@@ -1,4 +1,4 @@
-import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthDto, SignDto } from './dto';
 import { UserService } from 'src/user/user.service';
@@ -7,7 +7,7 @@ import * as argon from 'argon2'
 @Injectable()
 export class AuthService {
 	constructor(
-		@Inject(forwardRef(() => UserService)) 
+		@Inject(forwardRef(() => UserService))
 		private readonly userService: UserService,
 		private readonly jwtService: JwtService,
 	) { }
@@ -65,8 +65,7 @@ export class AuthService {
 	// signup : register service
 	public async signup(user): Promise<SignDto> {
 		try {
-			const hashPassword = await this.hashPassword(user.password);
-			const result = await this.userService.create({ ...user, hashPassword });
+			const result = await this.userService.registerUser(user);
 			delete result['dataValues'].hashPassword
 			const payload = {
 				sub: result['dataValues'].id,
@@ -79,6 +78,9 @@ export class AuthService {
 			}
 			return response;
 		} catch (error) {
+			console.log('====================================');
+			console.log(error);
+			console.log('====================================');
 			throw new BadRequestException("User registered failure")
 		}
 	}

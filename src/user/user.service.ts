@@ -1,4 +1,4 @@
-import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, ForbiddenException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { USER_REPOSITORY } from 'src/core/constants';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -61,8 +61,17 @@ export class UserService {
     }
   }
 
-  // create : create account for login
-  public async create(createUserDto: CreateUserDto): Promise<UserEntity> {
+  async findOneByEmail(email): Promise<UserDto> {
+    try {
+      return await this.userRepo.findOne<UserEntity>({
+        where: { email }
+      })
+    } catch (error) {
+      throw new BadRequestException()
+    }
+  }
+
+  public async registerUser(createUserDto: CreateUserDto): Promise<UserEntity> {
     try {
       const user = new UserEntity();
       user.email = createUserDto.email.trim().toLowerCase()
@@ -70,7 +79,25 @@ export class UserService {
       user.hashPassword = await this.authService.hashPassword(createUserDto.password);
       user.firstName = createUserDto.firstName;
       user.lastName = createUserDto.lastName;
+
+      return await this.userRepo.create<UserEntity>(user['dataValues']);
+    } catch (error) {
+      throw new BadRequestException()
+    }
+  }
+
+  // create : create account for login
+  public async create(createUserDto: CreateUserDto): Promise<UserEntity> {
+    try {
+
+      const user = new UserEntity();
+      user.email = createUserDto.email.trim().toLowerCase()
+      user.username = createUserDto.username.trim().toLowerCase()
+      user.hashPassword = await this.authService.hashPassword(createUserDto.password);
+      user.firstName = createUserDto.firstName;
+      user.lastName = createUserDto.lastName;
       user.role = createUserDto.role;
+
       return await this.userRepo.create<UserEntity>(user);
     } catch (error) {
       throw new BadRequestException()
