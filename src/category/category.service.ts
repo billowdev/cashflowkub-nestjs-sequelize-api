@@ -1,8 +1,9 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CATEGORY_REPOSITORY } from 'src/core/constants';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryEntity } from './entities/category.entity';
+import { Role } from 'src/user/entities/role.enum';
 
 @Injectable()
 export class CategoryService {
@@ -10,23 +11,94 @@ export class CategoryService {
     @Inject(CATEGORY_REPOSITORY) private readonly categoryRepo: typeof CategoryEntity
 
   ) { }
-  create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+  async create(createCategoryDto: CreateCategoryDto, userId: string, role: string): Promise<CategoryEntity> {
+    try {
+      if (role === Role.ADMIN) {
+        const category = new CategoryEntity()
+        category.name = createCategoryDto.name
+        category.desc = createCategoryDto.desc
+        category.type = createCategoryDto.type
+        category.isCustom = false
+        category.userId = userId
+        return await this.categoryRepo.create<CategoryEntity>(category['dataValues'])
+      } else {
+        const category = new CategoryEntity()
+        category.name = createCategoryDto.name
+        category.desc = createCategoryDto.desc
+        category.type = createCategoryDto.type
+        category.isCustom = true
+        category.userId = userId
+        return await this.categoryRepo.create<CategoryEntity>(category['dataValues'])
+      }
+    } catch (error) {
+      throw new BadRequestException('create category failed')
+    }
   }
 
-  findAll() {
-    return `This action returns all category`;
+  async findAll(userId: string): Promise<any> {
+    try {
+      const systemCategories = await this.categoryRepo.findAll<CategoryEntity>({
+        attributes: {
+          exclude: ['userId']
+        },
+        where: { isCustom: false },
+        raw: true
+      })
+
+      const customCategories = await this.categoryRepo.findAll<CategoryEntity>({
+        attributes: {
+          exclude: ['userId']
+        },
+        where: { userId, isCustom: true },
+        raw: true
+      })
+      return { customCategories, systemCategories }
+    } catch (error) {
+      throw new BadRequestException('get all category failed')
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: string, userId: string, role: string) {
+    try {
+      if (role === Role.ADMIN) {
+        return await this.categoryRepo.findOne({
+          where: { id, isCustom: false, userId }
+        })
+      } else {
+        return await this.categoryRepo.findOne({
+          where: { id, isCustom: true, userId }
+        })
+      }
+    } catch (error) {
+      throw new BadRequestException('get category by id failed')
+    }
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: string, updateCategoryDto: UpdateCategoryDto, userId: string) {
+    try {
+      return await this.categoryRepo.update(
+        { ...updateCategoryDto },
+        {
+          where: { id, userId }
+        })
+    } catch (error) {
+      throw new BadRequestException()
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: string, userId: string, role: string) {
+    try {
+      if (role === Role.ADMIN) {
+        return await this.categoryRepo.destroy({
+          where: { id, isCustom: false }
+        })
+      } else {
+        return await this.categoryRepo.destroy({
+          where: { id, userId, isCustom: true }
+        })
+      }
+    } catch (error) {
+      throw new BadRequestException()
+    }
   }
 }

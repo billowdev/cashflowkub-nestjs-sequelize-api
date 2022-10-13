@@ -1,34 +1,106 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
+import { FastifyReply } from 'fastify';
+import { requestAuthUserDto } from 'src/auth/dto';
+import { JwtAuthGuard } from 'src/auth/guards';
+
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
+@UseGuards(JwtAuthGuard)
 @Controller('categories')
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(private readonly categoryService: CategoryService) { }
 
   @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoryService.create(createCategoryDto);
+  async create(
+    @Body() createCategoryDto: CreateCategoryDto,
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply
+  ) {
+    const userId = req.user.sub
+    const role = req.user.role
+    const data = await this.categoryService.create(createCategoryDto, userId, role);
+    res.status(200).send({
+      statusCode: res.statusCode,
+      message: "create category successfuly",
+      data
+    })
   }
 
   @Get()
-  findAll() {
-    return this.categoryService.findAll();
+  async findAll(
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply
+  ) {
+    const userId = req.user.sub
+    const data = await this.categoryService.findAll(userId);
+    res.status(200).send({
+      statusCode: res.statusCode,
+      message: "get all category successfuly",
+      data
+    })
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.categoryService.findOne(+id);
+  async findOne(
+    @Param('id') id: string,
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply
+  ) {
+    const userId = req.user.sub
+    const role = req.user.role
+    const data = await this.categoryService.findOne(id, userId, role);
+    res.status(200).send({
+      statusCode: res.statusCode,
+      message: "get category by id successfuly",
+      data
+    })
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
-    return this.categoryService.update(+id, updateCategoryDto);
+  async update(
+    @Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto,
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply
+  ) {
+    const userId = req.user.sub
+    const data = await this.categoryService.update(id, updateCategoryDto, userId);
+    if (data[0]) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "update category by id successfuly",
+        data
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "update category by id failed",
+        data
+      })
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.categoryService.remove(+id);
+  async remove(
+    @Param('id') id: string,
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply) {
+    const userId = req.user.sub
+    const role = req.user.role
+    const data = await this.categoryService.remove(id, userId, role);
+    if (data) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "delete category by id successfuly",
+        data
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "delete category by id failed",
+        data
+      })
+    }
   }
 }
