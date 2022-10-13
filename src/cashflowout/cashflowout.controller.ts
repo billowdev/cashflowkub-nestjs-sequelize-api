@@ -1,34 +1,119 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
+import { FastifyReply } from 'fastify';
+import { requestAuthUserDto } from 'src/auth/dto';
+import { JwtAuthGuard } from 'src/auth/guards';
 import { CashflowoutService } from './cashflowout.service';
 import { CreateCashflowoutDto } from './dto/create-cashflowout.dto';
 import { UpdateCashflowoutDto } from './dto/update-cashflowout.dto';
 
+@UseGuards(JwtAuthGuard)
 @Controller('cashflowouts')
 export class CashflowoutController {
-  constructor(private readonly cashflowoutService: CashflowoutService) {}
+  constructor(private readonly cashflowoutService: CashflowoutService) { }
 
   @Post()
-  create(@Body() createCashflowoutDto: CreateCashflowoutDto) {
-    return this.cashflowoutService.create(createCashflowoutDto);
+  async create(
+    @Body() createCashflowoutDto: CreateCashflowoutDto,
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply
+  ) {
+    const userId = req.user.sub
+    const data = await this.cashflowoutService.create(createCashflowoutDto, userId);
+    res.status(200).send({
+      statusCode: res.statusCode,
+      message: "create cashflow out successfuly",
+      data
+    })
   }
 
   @Get()
-  findAll() {
-    return this.cashflowoutService.findAll();
+  async findAll(
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply
+  ) {
+    const data = await this.cashflowoutService.findAll(req.user.sub);
+    if (data) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "get all cashflow out successfuly",
+        data
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "get all cashflow out failed",
+        data: {}
+      })
+    }
+
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cashflowoutService.findOne(id);
+  async findOne(
+    @Param('id') id: string,
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply) {
+    const data = await this.cashflowoutService.findOne(id, req.user.sub);
+    console.log('====================================');
+    console.log(data);
+    console.log('====================================');
+    if (data) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "get cashflow out by id successfuly",
+        data
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "get cashflow out by id failed",
+        data: {}
+      })
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCashflowoutDto: UpdateCashflowoutDto) {
-    return this.cashflowoutService.update(id, updateCashflowoutDto);
+  async update(@Param('id') id: string, @Body() updateCashflowoutDto: UpdateCashflowoutDto,
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply
+  ) {
+    const data = await this.cashflowoutService.update(id, updateCashflowoutDto, req.user.sub);
+    if (data[0]) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "update cashflow out by id successfuly",
+        data
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "update cashflow out by id failed",
+        data: {}
+      })
+    }
+
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cashflowoutService.remove(id);
+  async remove(
+    @Param('id') id: string,
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply
+  ) {
+    const data = await this.cashflowoutService.remove(id, req.user.sub);
+
+    if (data) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "delete cashflow in by id successfuly",
+        data
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "delete cashflow in by id failed",
+        data: {}
+      })
+    }
   }
 }

@@ -23,7 +23,7 @@ export class CashflowoutEntity extends Model<CashflowoutEntity> {
 		allowNull: false,
 		primaryKey: true,
 	})
-	id: string
+	id?: string
 
 	@ApiProperty()
 	@Column({
