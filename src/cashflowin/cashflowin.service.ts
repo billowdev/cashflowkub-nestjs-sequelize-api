@@ -45,9 +45,9 @@ export class CashflowinService {
     }
   }
 
-  async update(id: string, updateCashflowinDto: UpdateCashflowinDto, userId: string) {
+  async update(id: string, updateCashflowinDto: UpdateCashflowinDto, userId: string): Promise<[number, CashflowinEntity[]]> {
     try {
-      return await this.cashflowinRepo.update(
+      return await this.cashflowinRepo.update<CashflowinEntity>(
         { ...updateCashflowinDto },
         { where: { id, userId } }
       )
@@ -56,9 +56,9 @@ export class CashflowinService {
     }
   }
 
-  async remove(id: string, userId: string) {
+  async remove(id: string, userId: string): Promise<number> {
     try {
-      return await this.cashflowinRepo.destroy({
+      return await this.cashflowinRepo.destroy<CashflowinEntity>({
         where: { id, userId }
       })
     } catch (error) {
