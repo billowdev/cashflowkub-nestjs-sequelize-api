@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Column, DataType, Table, Model, BelongsTo, ForeignKey, HasMany } from "sequelize-typescript";
+import { UUIDV4 } from "sequelize";
 import { CashflowinEntity } from "src/cashflowin/entities/cashflowin.entity";
 import { CashflowoutEntity } from "src/cashflowout/entities/cashflowout.entity";
 import { UserEntity } from "src/user/entities/user.entity";
@@ -17,8 +18,8 @@ export enum CategoryEnum {
 export class CategoryEntity extends Model<CategoryEntity> {
 	@ApiProperty()
 	@Column({
-		type: DataType.INTEGER,
-		autoIncrement: true,
+		type: DataType.UUID,
+		defaultValue: UUIDV4,
 		primaryKey: true,
 	})
 	id: string
@@ -74,5 +75,5 @@ export class CategoryEntity extends Model<CategoryEntity> {
 
 	@HasMany(() => CashflowoutEntity)
 	cashflowouts: CashflowoutEntity[]
-	
+
 }

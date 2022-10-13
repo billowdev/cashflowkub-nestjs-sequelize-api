@@ -55,7 +55,7 @@ export class CashflowinEntity extends Model<CashflowinEntity> {
 	category: CategoryEntity
 	@ForeignKey(() => CategoryEntity)
 	@Column({
-		type: DataType.INTEGER,
+		type: DataType.UUID,
 		field: "category_id",
 		unique: false,
 		allowNull: false
