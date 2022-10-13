@@ -35,14 +35,12 @@ export class CashflowoutController {
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
-        success: true,
         message: "get all cashflow out successfuly",
         data
       })
     } else {
       res.status(400).send({
         statusCode: res.statusCode,
-        success: false,
         message: "get all cashflow out failed",
         data: {}
       })
@@ -62,14 +60,12 @@ export class CashflowoutController {
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
-        success: true,
         message: "get cashflow out by id successfuly",
         data
       })
     } else {
       res.status(400).send({
         statusCode: res.statusCode,
-        success: false,
         message: "get cashflow out by id failed",
         data: {}
       })
@@ -85,14 +81,12 @@ export class CashflowoutController {
     if (data[0]) {
       res.status(200).send({
         statusCode: res.statusCode,
-        success: true,
         message: "update cashflow out by id successfuly",
         data
       })
     } else {
       res.status(400).send({
         statusCode: res.statusCode,
-        success: false,
         message: "update cashflow out by id failed",
         data: {}
       })
@@ -111,14 +105,12 @@ export class CashflowoutController {
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
-        success: true,
         message: "delete cashflow in by id successfuly",
         data
       })
     } else {
       res.status(400).send({
         statusCode: res.statusCode,
-        success: false,
         message: "delete cashflow in by id failed",
         data: {}
       })
