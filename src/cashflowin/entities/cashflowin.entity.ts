@@ -1,14 +1,24 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
-import { UUIDV4 } from "sequelize";
+import { Optional, UUIDV4 } from "sequelize";
 import { UserEntity } from "src/user/entities/user.entity";
 import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { CategoryEntity } from "src/category/entities/category.entity";
 
+type CashflowinAttributes = {
+	id: string,
+	desc: string,
+	amount: number,
+	userId: string,
+	pocketId: string,
+	categoryId: string,
+}
+type CashflowinCreationAttributes = Optional<CashflowinAttributes, 'id'>;
+
 @Table({
 	tableName: "cashflowin"
 })
-export class CashflowinEntity extends Model<CashflowinEntity> {
+export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCreationAttributes> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
@@ -16,19 +26,19 @@ export class CashflowinEntity extends Model<CashflowinEntity> {
 		allowNull: false,
 		primaryKey: true,
 	})
-	id: string
+	declare id: string
 
 	@ApiProperty()
 	@Column({
 		type: DataType.STRING(150),
 	})
-	desc: string;
+	declare desc: string;
 
 	@ApiProperty()
 	@Column({
 		type: DataType.DECIMAL(10, 2),
 	})
-	amount: number;
+	declare amount: number;
 
 	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity
@@ -38,7 +48,7 @@ export class CashflowinEntity extends Model<CashflowinEntity> {
 		field: "user_id",
 		allowNull: false
 	})
-	userId: string;
+	declare userId: string;
 
 	@BelongsTo(() => PocketEntity, { onDelete: 'NO ACTION' })
 	pocket: PocketEntity
@@ -49,7 +59,7 @@ export class CashflowinEntity extends Model<CashflowinEntity> {
 		unique: false,
 		allowNull: false
 	})
-	pocketId: string;
+	declare pocketId: string;
 
 	@BelongsTo(() => CategoryEntity, { onDelete: 'NO ACTION' })
 	category: CategoryEntity
@@ -60,6 +70,6 @@ export class CashflowinEntity extends Model<CashflowinEntity> {
 		unique: false,
 		allowNull: false
 	})
-	categoryId: string;
+	declare categoryId: string;
 
 }

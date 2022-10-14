@@ -1,5 +1,4 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model, HasMany } from "sequelize-typescript";
 import { AssetEntity } from "src/asset/entities/asset.entity";
 import { CashflowinEntity } from "src/cashflowin/entities/cashflowin.entity";
@@ -10,11 +9,28 @@ import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { TransferEntity } from "src/transfer/entities/transfer.entity";
 import { Role } from "./role.enum";
 
+import {
+	Optional,
+	UUIDV4,
+} from "sequelize";
+
+type UserAttributes = {
+	id: string,
+	username: string,
+	hashPassword: string,
+	email: string,
+	firstName: string,
+	lastName: string,
+	phone: string,
+	isActive: boolean,
+	role: Role
+}
+type UserCreationAttributes = Optional<UserAttributes, 'id' | 'firstName' | 'lastName' | 'phone'>;
+
 @Table({
 	tableName: 'user'
 })
-export class UserEntity extends Model<UserEntity> {
-
+export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
@@ -22,49 +38,56 @@ export class UserEntity extends Model<UserEntity> {
 		allowNull: false,
 		primaryKey: true,
 	})
-	id: string
+	declare id: string
 
 	@ApiProperty()
 	@Column({
 		type: DataType.STRING(100),
 		unique: true
 	})
-	username: string;
+	declare username: string;
 
 	@ApiProperty()
 	@Column({
 		type: DataType.STRING(100),
 		field: 'hash_password',
 	})
-	hashPassword: string;
+	declare hashPassword: string;
 
 	@ApiProperty()
 	@Column({
 		type: DataType.STRING(150),
 		field: 'first_name',
 	})
-	firstName: string;
+	declare firstName: string;
 
 	@ApiProperty()
 	@Column({
 		type: DataType.STRING(150),
 		field: 'last_name',
 	})
-	lastName: string;
+	declare lastName: string;
 
 	@ApiProperty()
 	@Column({
 		type: DataType.STRING(200),
 		unique: true
 	})
-	email: string;
+	declare email: string;
+
+	
+	@ApiProperty()
+	@Column({
+		type: DataType.STRING(10),
+	})
+	declare phone: string;
 
 	@Column({
 		type: DataType.BOOLEAN,
 		field: 'is_active',
 		defaultValue: true,
 	})
-	isActive: boolean;
+	declare isActive: boolean;
 
 	@ApiProperty()
 	@Column({
@@ -73,7 +96,7 @@ export class UserEntity extends Model<UserEntity> {
 		}),
 		defaultValue: Role.USER
 	})
-	role: Role;
+	declare role: Role;
 
 	@HasMany(() => PocketEntity)
 	pockets: PocketEntity[]

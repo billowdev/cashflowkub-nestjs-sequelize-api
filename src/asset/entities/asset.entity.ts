@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UUIDV4 } from "sequelize";
+import { Optional, UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model, ForeignKey, BelongsTo } from "sequelize-typescript";
 import { UserEntity } from "src/user/entities/user.entity";
 
@@ -10,10 +10,19 @@ export enum AssetEnum {
 	INTANGIBLE = 'intangible'
 }
 
+type AssetAttributes = {
+	id: string,
+	value: number,
+	cashflowPerYear: number,
+	type: AssetEnum,
+	userId: string,
+}
+type AssetCreationAttributes = Optional<AssetAttributes, 'id'>;
+
 @Table({
 	tableName: 'asset'
 })
-export class AssetEntity extends Model<AssetEntity> {
+export class AssetEntity extends Model<AssetAttributes, AssetCreationAttributes> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
@@ -21,20 +30,20 @@ export class AssetEntity extends Model<AssetEntity> {
 		allowNull: false,
 		primaryKey: true,
 	})
-	id: string
+	declare id: string
 
 	@ApiProperty()
 	@Column({
 		type: DataType.DECIMAL(10, 2),
 	})
-	value: number;
+	declare value: number;
 
 	@ApiProperty()
 	@Column({
 		type: DataType.DECIMAL(10, 2),
 		field: "cashflow_per_year"
 	})
-	cashflowPerYear: number;
+	declare cashflowPerYear: number;
 
 	@ApiProperty()
 	@Column({
@@ -50,7 +59,7 @@ export class AssetEntity extends Model<AssetEntity> {
 		allowNull: false
 
 	})
-	type: AssetEnum;
+	declare type: AssetEnum;
 
 	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity
@@ -60,7 +69,7 @@ export class AssetEntity extends Model<AssetEntity> {
 		field: "user_id",
 		allowNull: false
 	})
-	userId: string;
+	declare userId: string;
 
 
 

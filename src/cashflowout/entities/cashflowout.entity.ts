@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
-import { UUIDV4 } from "sequelize";
+import { Optional, UUIDV4 } from "sequelize";
 import { UserEntity } from "src/user/entities/user.entity";
 import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { CategoryEntity } from "src/category/entities/category.entity";
@@ -12,10 +12,21 @@ export enum CashflowoutEnum {
 	SAVING = 'saving'
 }
 
+type CashflowoutAttributes = {
+	id: string,
+	desc: string,
+	amount: number,
+	type: CashflowoutEnum,
+	userId: string,
+	pocketId: string,
+	categoryId: string,
+}
+type CashflowoutCreationAttributes = Optional<CashflowoutAttributes, 'id'>;
+
 @Table({
 	tableName: "cashflowout"
 })
-export class CashflowoutEntity extends Model<CashflowoutEntity> {
+export class CashflowoutEntity extends Model<CashflowoutAttributes, CashflowoutCreationAttributes> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
@@ -23,19 +34,19 @@ export class CashflowoutEntity extends Model<CashflowoutEntity> {
 		allowNull: false,
 		primaryKey: true,
 	})
-	id?: string
+	declare id: string
 
 	@ApiProperty()
 	@Column({
 		type: DataType.STRING(150),
 	})
-	desc: string;
+	declare desc: string;
 
 	@ApiProperty()
 	@Column({
 		type: DataType.DECIMAL(10, 2),
 	})
-	amount: number;
+	declare amount: number;
 
 	@ApiProperty()
 	@Column({
@@ -50,7 +61,7 @@ export class CashflowoutEntity extends Model<CashflowoutEntity> {
 		allowNull: false
 
 	})
-	type: CashflowoutEnum;
+	declare type: CashflowoutEnum;
 
 	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity
@@ -60,7 +71,7 @@ export class CashflowoutEntity extends Model<CashflowoutEntity> {
 		field: "user_id",
 		allowNull: false
 	})
-	userId: string;
+	declare userId: string;
 
 	@BelongsTo(() => PocketEntity, { onDelete: 'NO ACTION' })
 	pocket: PocketEntity
@@ -71,7 +82,7 @@ export class CashflowoutEntity extends Model<CashflowoutEntity> {
 		unique: false,
 		allowNull: false
 	})
-	pocketId: string;
+	declare pocketId: string;
 
 	@BelongsTo(() => CategoryEntity, { onDelete: 'NO ACTION' })
 	category: CategoryEntity
@@ -82,6 +93,6 @@ export class CashflowoutEntity extends Model<CashflowoutEntity> {
 		unique: false,
 		allowNull: false
 	})
-	categoryId: string;
+	declare categoryId: string;
 
 }
