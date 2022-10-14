@@ -104,7 +104,7 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	@Column({
 		type: DataType.DATE,
 		field: "created_at",
-		defaultValue: Date.now
+		defaultValue: new Date()
 	})
 	declare createdAt: Date;
 
@@ -112,7 +112,7 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	@Column({
 		type: DataType.DATE,
 		field: "updated_at",
-		defaultValue: Date.now
+		defaultValue: new Date()
 	})
 	declare updatedAt: Date;
 

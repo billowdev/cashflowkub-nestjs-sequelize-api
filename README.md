@@ -79,6 +79,7 @@ yarn add class-transformer class-validator
 yarn add @nestjs/passport @nestjs/jwt passport passport-local passport-jwt
 yarn add argon2
 yarn add @nestjs/sequelize
+yarn add uuid
 
 
 yarn add -D @types/passport-jwt @types/passport-local

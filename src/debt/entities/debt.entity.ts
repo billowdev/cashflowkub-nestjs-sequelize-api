@@ -10,10 +10,14 @@ export enum DebtEnum {
 
 type DebtAttributes = {
 	id: string,
-	value: number,
-	cashflowPerYear: number,
 	type: DebtEnum,
-	userId: string
+	amount: number,
+	interest: number,
+	minimumPay: number,
+	priority: number,
+	userId: string,
+	createdAt: Date,
+	updatedAt: Date
 }
 type DebtCreationAttributes = Optional<DebtAttributes, 'id'>;
 
@@ -34,14 +38,27 @@ export class DebtEntity extends Model<DebtAttributes, DebtCreationAttributes> {
 	@Column({
 		type: DataType.DECIMAL(10, 2),
 	})
-	declare value: number;
+	declare amount: number;
 
 	@ApiProperty()
 	@Column({
 		type: DataType.DECIMAL(10, 2),
-		field: "cashflow_per_year"
 	})
-	declare cashflowPerYear: number;
+	declare interest: number;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DECIMAL(10, 2),
+		field: "minimum_pay"
+	})
+	declare minimumPay: number;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.INTEGER,
+		allowNull: true
+	})
+	declare priority: number;
 
 	@ApiProperty()
 	@Column({
@@ -56,6 +73,22 @@ export class DebtEntity extends Model<DebtAttributes, DebtCreationAttributes> {
 
 	})
 	declare type: DebtEnum;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "created_at",
+		defaultValue: new Date()
+	})
+	declare createdAt: Date;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "updated_at",
+		defaultValue: new Date()
+	})
+	declare updatedAt: Date;
 
 	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity
