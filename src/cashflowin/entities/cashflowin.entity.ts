@@ -12,6 +12,8 @@ type CashflowinAttributes = {
 	userId: string,
 	pocketId: string,
 	categoryId: string,
+	createdAt: Date,
+	updatedAt: Date
 }
 type CashflowinCreationAttributes = Optional<CashflowinAttributes, 'id'>;
 
@@ -71,5 +73,21 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 		allowNull: false
 	})
 	declare categoryId: string;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "created_at",
+		defaultValue: new Date()
+	})
+	declare createdAt: Date;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "updated_at",
+		defaultValue: new Date()
+	})
+	declare updatedAt: Date;
 
 }
