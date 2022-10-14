@@ -31,7 +31,6 @@ type UserCreationAttributes = Optional<UserAttributes, 'id' | 'firstName' | 'las
 	tableName: 'user'
 })
 export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
-
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
