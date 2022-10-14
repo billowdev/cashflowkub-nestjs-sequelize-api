@@ -15,7 +15,7 @@ module.exports = {
 	up: async (queryInterface: QueryInterface) => {
 		const transferData: Array<TransferType> = [
 			{
-				id: uuidv4(),
+				id: "0733228a-dc88-4ec8-99c9-b4d82b0746a1",
 				amount: 200,
 				from_pocket_id: "1755fae2-ebf9-480c-849d-6ad23db0fdd0",
 				to_pocket_id: "1755fae2-ebf9-480c-849d-6ad23db0fdd1",
@@ -24,7 +24,7 @@ module.exports = {
 				updated_at: new Date(),
 			},
 			{
-				id: uuidv4(),
+				id: "0733228a-dc88-4ec8-99c9-b4d82b0746a2",
 				amount: 400,
 				from_pocket_id: "1755fae2-ebf9-480c-849d-6ad23db0fdd1",
 				to_pocket_id: "1755fae2-ebf9-480c-849d-6ad23db0fdd0",
