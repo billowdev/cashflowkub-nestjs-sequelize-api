@@ -19,6 +19,8 @@ type CategoryAttributes = {
 	type: CategoryEnum,
 	isCustom: boolean,
 	userId: string,
+	createdAt: Date,
+	updatedAt: Date
 }
 type CategoryCreationAttributes = Optional<CategoryAttributes, 'id' | 'desc'>;
 
@@ -79,6 +81,22 @@ export class CategoryEntity extends Model<CategoryAttributes, CategoryCreationAt
 		allowNull: false
 	})
 	declare userId: string;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "created_at",
+		defaultValue: new Date()
+	})
+	declare createdAt: Date;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "updated_at",
+		defaultValue: new Date()
+	})
+	declare updatedAt: Date;
 
 	@HasMany(() => CashflowinEntity)
 	cashflowins: CashflowinEntity[]

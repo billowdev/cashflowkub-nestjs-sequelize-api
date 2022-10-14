@@ -1,19 +1,31 @@
 'use strict';
 
-import { QueryInterface, Sequelize } from "sequelize";
+import { QueryInterface } from "sequelize";
 import * as argon from 'argon2'
-import {v4 as uuidv4} from 'uuid';
+import { Role } from "src/user/entities/role.enum";
 
 async function hashPassword(password) {
   const hash = await argon.hash(password, { type: argon.argon2id });
   return hash;
 }
-
+type UserType = {
+  id: string,
+	username: string,
+	hash_password: string,
+	email: string,
+	first_name: string,
+	last_name: string,
+	phone: string,
+	is_active: boolean,
+	role: Role,
+	created_at: Date,
+	updated_at: Date
+}
 
 module.exports = {
-  up: async (queryInterface: QueryInterface, Sequelize: Sequelize) => {
+  up: async (queryInterface: QueryInterface) => {
 
-    const userData: Array<any> = [
+    const userData: Array<UserType> = [
       {
         id: "8731c5ce-2dcb-47da-8efd-ff0e07a6b050",
         username: "test1",
@@ -23,7 +35,7 @@ module.exports = {
         last_name: "test1",
         phone: "0999321232",
         is_active: true,
-        role: "user",
+        role: Role.USER,
         created_at: new Date(),
         updated_at: new Date(),
       },
@@ -36,7 +48,7 @@ module.exports = {
         last_name: "test2",
         phone: "0999321232",
         is_active: true,
-        role: "user",
+        role: Role.ADMIN,
         created_at: new Date(),
         updated_at: new Date(),
       }
@@ -46,7 +58,7 @@ module.exports = {
       userData)
   },
 
-  down: async (queryInterface: QueryInterface, Sequelize: Sequelize) => {
+  down: async (queryInterface: QueryInterface) => {
     return queryInterface.bulkDelete('User', null, {})
   }
 };
