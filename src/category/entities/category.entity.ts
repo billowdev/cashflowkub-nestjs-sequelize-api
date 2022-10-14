@@ -68,7 +68,8 @@ export class CategoryEntity extends Model<CategoryAttributes, CategoryCreationAt
 	@ApiProperty()
 	@Column({
 		type: DataType.BOOLEAN,
-		defaultValue: true
+		defaultValue: true,
+		field: "is_custom"
 	})
 	declare isCustom: boolean;
 
