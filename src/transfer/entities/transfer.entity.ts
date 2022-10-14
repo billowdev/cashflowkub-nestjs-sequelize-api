@@ -10,6 +10,8 @@ type TransferAttributes = {
 	fromPocketId: string,
 	toPocketId: string,
 	userId: string,
+	createdAt: Date,
+	updatedAt: Date
 }
 type TransferCreationAttributes = Optional<TransferAttributes, 'id'>;
 
@@ -63,4 +65,20 @@ export class TransferEntity extends Model<TransferAttributes, TransferCreationAt
 		allowNull: false
 	})
 	declare userId: string;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "created_at",
+		defaultValue: new Date()
+	})
+	declare createdAt: Date;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "updated_at",
+		defaultValue: new Date()
+	})
+	declare updatedAt: Date;
 }

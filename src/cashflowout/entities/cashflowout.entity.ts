@@ -20,6 +20,8 @@ type CashflowoutAttributes = {
 	userId: string,
 	pocketId: string,
 	categoryId: string,
+	createdAt: Date,
+	updatedAt: Date
 }
 type CashflowoutCreationAttributes = Optional<CashflowoutAttributes, 'id'>;
 
@@ -62,6 +64,23 @@ export class CashflowoutEntity extends Model<CashflowoutAttributes, CashflowoutC
 
 	})
 	declare type: CashflowoutEnum;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "created_at",
+		defaultValue: new Date()
+	})
+	declare createdAt: Date;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "updated_at",
+		defaultValue: new Date()
+	})
+	declare updatedAt: Date;
+
 
 	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity
