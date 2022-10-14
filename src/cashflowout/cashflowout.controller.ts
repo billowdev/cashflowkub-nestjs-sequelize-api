@@ -56,9 +56,6 @@ export class CashflowoutController {
     @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply) {
     const data = await this.cashflowoutService.findOne(id, req.user.sub);
-    console.log('====================================');
-    console.log(data);
-    console.log('====================================');
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
