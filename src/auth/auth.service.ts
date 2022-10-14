@@ -1,4 +1,4 @@
-import { BadRequestException, ForbiddenException, forwardRef, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthDto, SignDto } from './dto';
 import { UserService } from 'src/user/user.service';
@@ -17,10 +17,9 @@ export class AuthService {
 		const token = await this.jwtService.signAsync(auth);
 		return token
 	}
-
 	// password hasing
 	public async hashPassword(password) {
-		const hash = await argon.hash(password, { type: argon.argon2id });
+		const hash = await argon.hash(password, { type: argon.argon2id});
 		return hash;
 	}
 
@@ -78,9 +77,6 @@ export class AuthService {
 			}
 			return response;
 		} catch (error) {
-			console.log('====================================');
-			console.log(error);
-			console.log('====================================');
 			throw new BadRequestException("User registered failure")
 		}
 	}

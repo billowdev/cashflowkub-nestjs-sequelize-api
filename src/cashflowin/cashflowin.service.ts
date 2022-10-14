@@ -1,8 +1,8 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CASHFLOWIN_REPOSITORY } from 'src/core/constants';
-import { CreateCashflowinDto } from './dto/create-cashflowin.dto';
+import { BulkCreateCashflowinDto, CreateCashflowinDto } from './dto/create-cashflowin.dto';
 import { UpdateCashflowinDto } from './dto/update-cashflowin.dto';
-import { CashflowinEntity } from './entities/cashflowin.entity';
+import { CashflowinCreationAttributes, CashflowinEntity } from './entities/cashflowin.entity';
 
 @Injectable()
 export class CashflowinService {
@@ -17,6 +17,19 @@ export class CashflowinService {
       cashflowin.desc = createCashflowinDto.desc
       cashflowin.categoryId = createCashflowinDto.categoryId
       return await this.cashflowinRepo.create<CashflowinEntity>(cashflowin['dataValues'])
+    } catch (error) {
+      throw new BadRequestException()
+    }
+
+  }
+
+  async bulkCreate(createCashflowinDto: BulkCreateCashflowinDto): Promise<CashflowinEntity[]> {
+    try {
+      return await this.cashflowinRepo.bulkCreate<CashflowinEntity | any>(
+        createCashflowinDto,
+        {
+          returning: true
+        })
     } catch (error) {
       throw new BadRequestException()
     }

@@ -2,7 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PocketService } from './pocket.service';
 import { CreatePocketDto } from './dto/create-pocket.dto';
 import { UpdatePocketDto } from './dto/update-pocket.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('pockets')
 @Controller('pockets')
 export class PocketController {
   constructor(private readonly pocketService: PocketService) {}
