@@ -14,7 +14,7 @@ import {
 	UUIDV4,
 } from "sequelize";
 
-type UserAttributes = {
+export type UserAttributes = {
 	id: string,
 	username: string,
 	hashPassword: string,
@@ -23,9 +23,11 @@ type UserAttributes = {
 	lastName: string,
 	phone: string,
 	isActive: boolean,
-	role: Role
+	role: Role,
+	createdAt: Date,
+	updatedAt: Date
 }
-type UserCreationAttributes = Optional<UserAttributes, 'id' | 'firstName' | 'lastName' | 'phone'>;
+export type UserCreationAttributes = Optional<UserAttributes, 'id' | 'firstName' | 'lastName' | 'phone' | 'createdAt' | 'updatedAt'>;
 
 @Table({
 	tableName: 'user'
@@ -75,7 +77,7 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	})
 	declare email: string;
 
-	
+
 	@ApiProperty()
 	@Column({
 		type: DataType.STRING(10),
@@ -98,6 +100,22 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	})
 	declare role: Role;
 
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "created_at",
+		defaultValue: new Date()
+	})
+	declare createdAt: Date;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "updated_at",
+		defaultValue: new Date()
+	})
+	declare updatedAt: Date;
+
 	@HasMany(() => PocketEntity)
 	pockets: PocketEntity[]
 
@@ -119,5 +137,5 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	@HasMany(() => CategoryEntity)
 	categories: CategoryEntity[]
 
-
 }
+

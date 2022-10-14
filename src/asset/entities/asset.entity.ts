@@ -13,9 +13,12 @@ export enum AssetEnum {
 type AssetAttributes = {
 	id: string,
 	value: number,
+	desc: string,
 	cashflowPerYear: number,
 	type: AssetEnum,
 	userId: string,
+	createdAt: Date
+	updatedAt: Date,
 }
 type AssetCreationAttributes = Optional<AssetAttributes, 'id'>;
 
@@ -31,6 +34,12 @@ export class AssetEntity extends Model<AssetAttributes, AssetCreationAttributes>
 		primaryKey: true,
 	})
 	declare id: string
+
+	@ApiProperty()
+	@Column({
+		type: DataType.STRING(200),
+	})
+	declare desc: string
 
 	@ApiProperty()
 	@Column({
@@ -60,6 +69,22 @@ export class AssetEntity extends Model<AssetAttributes, AssetCreationAttributes>
 
 	})
 	declare type: AssetEnum;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "created_at",
+		defaultValue: new Date()
+	})
+	declare createdAt: Date;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "updated_at",
+		defaultValue: new Date()
+	})
+	declare updatedAt: Date;
 
 	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity

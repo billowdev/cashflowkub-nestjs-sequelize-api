@@ -1,9 +1,8 @@
-import { BadRequestException, ForbiddenException, forwardRef, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { AuthService } from 'src/auth/auth.service';
 import { USER_REPOSITORY } from 'src/core/constants';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UserDto } from './dto/user.dto';
 import { UserEntity } from './entities/user.entity';
 
 @Injectable()
@@ -14,7 +13,7 @@ export class UserService {
     private readonly authService: AuthService,
   ) { }
   // repository
-  async findOne(id: string, excludePassword?: boolean): Promise<UserDto> {
+  async findOne(id: string, excludePassword?: boolean): Promise<UserEntity> {
     try {
       if (excludePassword) {
         return await this.userRepo.findOne<UserEntity>({
@@ -32,7 +31,7 @@ export class UserService {
     }
   }
 
-  async findAll(): Promise<UserDto[]> {
+  async findAll(): Promise<UserEntity[]> {
     try {
       return this.userRepo.findAll({
         attributes: { exclude: ['hashPassword'] },
@@ -43,7 +42,7 @@ export class UserService {
   }
 
   // find user by username
-  async findOneByUsername(username: string, excludePassword?: boolean): Promise<UserDto> {
+  async findOneByUsername(username: string, excludePassword?: boolean): Promise<UserEntity> {
     try {
       if (excludePassword) {
         return await this.userRepo.findOne<UserEntity>({
@@ -61,7 +60,7 @@ export class UserService {
     }
   }
 
-  async findOneByEmail(email): Promise<UserDto> {
+  async findOneByEmail(email): Promise<UserEntity> {
     try {
       return await this.userRepo.findOne<UserEntity>({
         where: { email }
