@@ -1,17 +1,26 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UUIDV4 } from "sequelize";
+import { Optional, UUIDV4 } from "sequelize";
 import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany, HasMany } from "sequelize-typescript";
 import { UserEntity } from "src/user/entities/user.entity";
 
-export enum DebtType {
+export enum DebtEnum {
 	LONG = 'long',
 	SHORT = 'short',
 }
 
+type DebtAttributes = {
+	id: string,
+	value: number,
+	cashflowPerYear: number,
+	type: DebtEnum,
+	userId: string
+}
+type DebtCreationAttributes = Optional<DebtAttributes, 'id'>;
+
 @Table({
 	tableName: 'debt'
 })
-export class DebtEntity extends Model<DebtEntity> {
+export class DebtEntity extends Model<DebtAttributes, DebtCreationAttributes> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
@@ -19,44 +28,44 @@ export class DebtEntity extends Model<DebtEntity> {
 		allowNull: false,
 		primaryKey: true,
 	})
-	id: string
+	declare id: string
 
 	@ApiProperty()
 	@Column({
 		type: DataType.DECIMAL(10, 2),
 	})
-	value: number;
+	declare value: number;
 
 	@ApiProperty()
 	@Column({
 		type: DataType.DECIMAL(10, 2),
 		field: "cashflow_per_year"
 	})
-	cashflowPerYear: number;
+	declare cashflowPerYear: number;
 
 	@ApiProperty()
 	@Column({
 		type: DataType.ENUM({
 			values: [
-				DebtType.LONG,
-				DebtType.SHORT,
+				DebtEnum.LONG,
+				DebtEnum.SHORT,
 			]
 		}),
-		defaultValue: DebtType.SHORT,
+		defaultValue: DebtEnum.SHORT,
 		allowNull: false
 
 	})
-	type: DebtType;
+	declare type: DebtEnum;
 
-	@BelongsTo(() => UserEntity, {onDelete: 'casCade'})
+	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity
-	@ForeignKey(()=> UserEntity)
+	@ForeignKey(() => UserEntity)
 	@Column({
 		type: DataType.UUID,
 		field: "user_id",
 		allowNull: false
 	})
-	userId: string;
+	declare userId: string;
 
 
 }
