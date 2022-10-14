@@ -1,6 +1,5 @@
 'use strict';
 import { QueryInterface } from "sequelize";
-import { v4 as uuidv4 } from 'uuid';
 
 type PocketType = {
 	id: string,
@@ -14,18 +13,18 @@ module.exports = {
 	up: async (queryInterface: QueryInterface) => {
 		const pocketData: Array<PocketType> = [
 			{
-				id: uuidv4(),
+				id: "1755fae2-ebf9-480c-849d-6ad23db0fdd0",
 				name: "my wallet 1",
-				balance: 5000,
-				user_id: "1755fae2-ebf9-480c-849d-6ad23db0fdd0",
+				balance: 0,
+				user_id: "8731c5ce-2dcb-47da-8efd-ff0e07a6b050",
 				created_at: new Date(),
 				updated_at: new Date(),
 			},
 			{
-				id: uuidv4(),
+				id: "1755fae2-ebf9-480c-849d-6ad23db0fdd1",
 				name: "my wallet 2",
-				balance: 200,
-				user_id: "81755fae2-ebf9-480c-849d-6ad23db0fdd1",
+				balance: 0,
+				user_id: "8731c5ce-2dcb-47da-8efd-ff0e07a6b051",
 				created_at: new Date(),
 				updated_at: new Date(),
 			}
