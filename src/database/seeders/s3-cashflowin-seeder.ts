@@ -20,7 +20,7 @@ module.exports = {
 
 		const cashflowinData: Array<CashflowinType> = [
 			{
-				id: uuidv4(),
+				id:"d483eacd-9255-4561-a450-9751ad5d0ca1",
 				desc: "income 1",
 				amount: 5000,
 				user_id: "8731c5ce-2dcb-47da-8efd-ff0e07a6b050",
@@ -30,7 +30,7 @@ module.exports = {
 				updated_at: new Date(),
 			},
 			{
-				id: uuidv4(),
+				id: "d483eacd-9255-4561-a450-9751ad5d0ca2",
 				desc: "income 2",
 				amount: 1000,
 				user_id: "8731c5ce-2dcb-47da-8efd-ff0e07a6b050",

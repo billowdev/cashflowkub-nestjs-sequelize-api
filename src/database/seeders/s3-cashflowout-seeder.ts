@@ -20,7 +20,7 @@ module.exports = {
 	up: async (queryInterface: QueryInterface) => {
 		const cashflowoutData: Array<CashflowinType> = [
 			{
-				id: uuidv4(),
+				id: "2b57822d-827a-4e02-8d18-47dd36b0da01",
 				desc: "expense 1",
 				amount: 150,
 				type: CashflowoutEnum.VARIABLE,
@@ -31,7 +31,7 @@ module.exports = {
 				updated_at: new Date(),
 			},
 			{
-				id: uuidv4(),
+				id: "2b57822d-827a-4e02-8d18-47dd36b0da02",
 				desc: "expense 2",
 				amount: 400,
 				type: CashflowoutEnum.VARIABLE,
