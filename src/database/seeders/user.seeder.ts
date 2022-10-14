@@ -1,8 +1,6 @@
 // import { Model, QueryInterface } from "sequelize/types";
 
-// class User extends UserEntity {
-// 	id: string;
-// }
+
 
 // export = {
 // 	up: async (queryInterface: QueryInterface): Promise<void> => {
