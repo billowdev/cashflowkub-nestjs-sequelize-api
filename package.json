@@ -20,10 +20,11 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed:all": "npx sequelize-cli@6.3.0 db:seed:all",
+    "seed:undo:all": "npx sequelize-cli@6.3.0 db:seed:undo:all",
     "seed:create": "npx sequelize-cli@6.3.0 seed:create --name -- seedname --seeders-path ./src/database/seeders/",
     "migrate:up": "npx sequelize-cli@6.3.0 db:migrate",
     "migrate:down": "npx sequelize-cli@6.3.0 db:migrate:undo",
-    "seed:change": "npm run migrate:down && npm run migrate:up && npm run seed:all"
+    "seed:change": "npm run seed:undo:all && npm run seed:all"
   },
   "dependencies": {
     "@fastify/static": "^6.5.0",

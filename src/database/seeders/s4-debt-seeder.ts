@@ -16,7 +16,7 @@ type DebtType = {
 }
 module.exports = {
 	up: async (queryInterface: QueryInterface) => {
-		const assetData: Array<DebtType> = [
+		const debtData: Array<DebtType> = [
 			{
 				id: uuidv4(),
 				type: DebtEnum.SHORT,
@@ -40,7 +40,7 @@ module.exports = {
 				updated_at: new Date(),
 			}
 		]
-		return queryInterface.bulkInsert('debt', assetData, {})
+		return queryInterface.bulkInsert('debt', debtData, {})
 	},
 
 	down: async (queryInterface: QueryInterface) => {
