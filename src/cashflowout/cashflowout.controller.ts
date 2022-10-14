@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { requestAuthUserDto } from 'src/auth/dto';
 import { JwtAuthGuard } from 'src/auth/guards';
@@ -6,6 +7,7 @@ import { CashflowoutService } from './cashflowout.service';
 import { CreateCashflowoutDto } from './dto/create-cashflowout.dto';
 import { UpdateCashflowoutDto } from './dto/update-cashflowout.dto';
 
+@ApiTags('cashflowouts')
 @UseGuards(JwtAuthGuard)
 @Controller('cashflowouts')
 export class CashflowoutController {

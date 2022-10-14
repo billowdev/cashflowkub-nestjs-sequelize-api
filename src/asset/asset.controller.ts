@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { requestAuthUserDto } from '../auth/dto';
 import { JwtAuthGuard } from '../auth/guards';
@@ -6,6 +7,7 @@ import { AssetService } from './asset.service';
 import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';
 
+@ApiTags('assets')
 @UseGuards(JwtAuthGuard)
 @Controller('assets')
 export class AssetController {

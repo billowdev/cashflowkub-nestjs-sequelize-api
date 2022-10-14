@@ -24,6 +24,7 @@ type CategoryAttributes = {
 }
 type CategoryCreationAttributes = Optional<CategoryAttributes, 'id' | 'desc'>;
 
+
 @Table({
 	tableName: 'category'
 })
