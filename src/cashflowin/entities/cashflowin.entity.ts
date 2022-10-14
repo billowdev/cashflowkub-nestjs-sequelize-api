@@ -5,7 +5,7 @@ import { UserEntity } from "src/user/entities/user.entity";
 import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { CategoryEntity } from "src/category/entities/category.entity";
 
-type CashflowinAttributes = {
+export type CashflowinAttributes = {
 	id: string,
 	desc: string,
 	amount: number,
@@ -15,7 +15,7 @@ type CashflowinAttributes = {
 	createdAt: Date,
 	updatedAt: Date
 }
-type CashflowinCreationAttributes = Optional<CashflowinAttributes, 'id'>;
+export type CashflowinCreationAttributes = Optional<CashflowinAttributes, 'id'>;
 
 @Table({
 	tableName: "cashflowin"

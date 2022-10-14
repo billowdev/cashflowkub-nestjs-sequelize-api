@@ -1,16 +1,31 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { requestAuthUserDto } from '../auth/dto';
 import { CashflowinService } from './cashflowin.service';
-import { CreateCashflowinDto } from './dto/create-cashflowin.dto';
+import { BulkCreateCashflowinDto, CreateCashflowinDto } from './dto/create-cashflowin.dto';
 import { UpdateCashflowinDto } from './dto/update-cashflowin.dto';
 import { CashflowinEntity } from './entities/cashflowin.entity';
 
+@ApiTags('cashflowins')
 @UseGuards(JwtAuthGuard)
 @Controller('cashflowins')
 export class CashflowinController {
   constructor(private readonly cashflowinService: CashflowinService) { }
+
+  @Post('bulk')
+  async bulkCreate(
+    @Body() createCashflowinDto: BulkCreateCashflowinDto,
+    @Res() res: FastifyReply
+  ) {
+    const data = await this.cashflowinService.bulkCreate(createCashflowinDto);
+    res.send({
+      statusCode: res.statusCode,
+      message: "create bulk cashflow in successfuly",
+      data
+    })
+  }
 
   @Post()
   async create(
