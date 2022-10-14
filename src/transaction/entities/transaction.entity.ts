@@ -39,9 +39,16 @@ export class TransactionEntity extends Model<TransactionAttributes, TransactionC
 
 	@ApiProperty()
 	@Column({
-		type: DataType.DECIMAL(10, 2),
+		type: DataType.ENUM({
+			values: [
+				TransactionEnum.CASHFLOWIN,
+				TransactionEnum.CASHFLOWOUT,
+				TransactionEnum.TRANSFER
+			]
+		}),
+		allowNull: false
 	})
-	declare amount: number;
+	declare type: TransactionEnum;
 
 
 	@BelongsTo(() => CashflowinEntity, { onDelete: 'casCade' })
