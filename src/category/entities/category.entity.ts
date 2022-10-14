@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Column, DataType, Table, Model, BelongsTo, ForeignKey, HasMany } from "sequelize-typescript";
-import { UUIDV4 } from "sequelize";
+import { Optional, UUIDV4 } from "sequelize";
 import { CashflowinEntity } from "src/cashflowin/entities/cashflowin.entity";
 import { CashflowoutEntity } from "src/cashflowout/entities/cashflowout.entity";
 import { UserEntity } from "src/user/entities/user.entity";
@@ -12,23 +12,33 @@ export enum CategoryEnum {
 	SAVING = 'saving'
 }
 
+type CategoryAttributes = {
+	id: string,
+	name: string,
+	desc: string,
+	type: CategoryEnum,
+	isCustom: boolean,
+	userId: string,
+}
+type CategoryCreationAttributes = Optional<CategoryAttributes, 'id' | 'desc'>;
+
 @Table({
 	tableName: 'category'
 })
-export class CategoryEntity extends Model<CategoryEntity> {
+export class CategoryEntity extends Model<CategoryAttributes, CategoryCreationAttributes> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
 		defaultValue: UUIDV4,
 		primaryKey: true,
 	})
-	id: string
+	declare id: string;
 
 	@ApiProperty()
 	@Column({
 		type: DataType.STRING(100),
 	})
-	name: string;
+	declare name: string;
 
 	@ApiProperty()
 	@Column({
@@ -36,7 +46,7 @@ export class CategoryEntity extends Model<CategoryEntity> {
 		allowNull: true
 
 	})
-	desc: string;
+	declare desc: string;
 
 	@ApiProperty()
 	@Column({
@@ -51,14 +61,14 @@ export class CategoryEntity extends Model<CategoryEntity> {
 		defaultValue: CategoryEnum.EXPENSE,
 		allowNull: false
 	})
-	type: CategoryEnum;
+	declare type: CategoryEnum;
 
 	@ApiProperty()
 	@Column({
 		type: DataType.BOOLEAN,
 		defaultValue: true
 	})
-	isCustom: boolean;
+	declare isCustom: boolean;
 
 	@BelongsTo(() => UserEntity, { onDelete: 'NO ACTION' })
 	user: UserEntity
@@ -68,7 +78,7 @@ export class CategoryEntity extends Model<CategoryEntity> {
 		field: "user_id",
 		allowNull: false
 	})
-	userId: string;
+	declare userId: string;
 
 	@HasMany(() => CashflowinEntity)
 	cashflowins: CashflowinEntity[]
