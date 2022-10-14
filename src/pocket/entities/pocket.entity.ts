@@ -11,6 +11,8 @@ type PocketAttributes = {
 	name: string,
 	balance: number,
 	userId: string,
+	createdAt: Date,
+	updatedAt: Date
 }
 type PocketCreationAttributes = Optional<PocketAttributes, 'id'>;
 
@@ -38,6 +40,22 @@ export class PocketEntity extends Model<PocketCreationAttributes, PocketCreation
 		type: DataType.DECIMAL(10, 2),
 	})
 	declare balance: number;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "created_at",
+		defaultValue: new Date()
+	})
+	declare createdAt: Date;
+
+	@ApiProperty()
+	@Column({
+		type: DataType.DATE,
+		field: "updated_at",
+		defaultValue: new Date()
+	})
+	declare updatedAt: Date;
 
 	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity
