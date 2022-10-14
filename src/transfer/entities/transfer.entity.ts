@@ -1,13 +1,22 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { UUIDV4 } from "sequelize";
+import { Optional, UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model, ForeignKey, BelongsTo } from "sequelize-typescript";
 import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { UserEntity } from "src/user/entities/user.entity";
 
+type TransferAttributes = {
+	id: string,
+	amount: number,
+	fromPocketId: string,
+	toPocketId: string,
+	userId: string,
+}
+type TransferCreationAttributes = Optional<TransferAttributes, 'id'>;
+
 @Table({
 	tableName: 'transfer'
 })
-export class TransferEntity extends Model<TransferEntity> {
+export class TransferEntity extends Model<TransferAttributes, TransferCreationAttributes> {
 	@ApiProperty()
 	@Column({
 		type: DataType.UUID,
@@ -15,13 +24,13 @@ export class TransferEntity extends Model<TransferEntity> {
 		allowNull: false,
 		primaryKey: true,
 	})
-	id: string
+	declare id: string
 
 	@ApiProperty()
 	@Column({
 		type: DataType.DECIMAL(10, 2),
 	})
-	amount: string;
+	declare amount: number;
 
 	@BelongsTo(() => PocketEntity, { as: "fromPockets", foreignKey: "from_pocket_id" })
 	fromPockets: PocketEntity
@@ -32,7 +41,7 @@ export class TransferEntity extends Model<TransferEntity> {
 		allowNull: false,
 		unique: false
 	})
-	fromPocketId: string;
+	declare fromPocketId: string;
 
 	@BelongsTo(() => PocketEntity, { as: "toPockets", foreignKey: "to_pocket_id" })
 	toPockets: PocketEntity
@@ -43,8 +52,7 @@ export class TransferEntity extends Model<TransferEntity> {
 		allowNull: false,
 		unique: false
 	})
-	toPocketId: string;
-
+	declare toPocketId: string;
 
 	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity
@@ -54,5 +62,5 @@ export class TransferEntity extends Model<TransferEntity> {
 		field: "user_id",
 		allowNull: false
 	})
-	userId: string;
+	declare userId: string;
 }
