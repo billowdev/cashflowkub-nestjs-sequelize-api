@@ -10,7 +10,6 @@ import { CashflowoutModule } from './cashflowout/cashflowout.module';
 import { AssetModule } from './asset/asset.module';
 import { DebtModule } from './debt/debt.module';
 import { CategoryModule } from './category/category.module';
-import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
   imports: [
@@ -24,8 +23,7 @@ import { TransactionModule } from './transaction/transaction.module';
     CashflowoutModule,
     AssetModule,
     DebtModule,
-    CategoryModule,
-    TransactionModule
+    CategoryModule
   ],
 })
 export class AppModule { }
