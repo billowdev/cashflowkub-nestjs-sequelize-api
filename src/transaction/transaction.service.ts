@@ -36,8 +36,14 @@ export class TransactionService {
 
   }
 
-  findAll(userId) {
-    return `This action returns all transaction`;
+  async findAll(userId: string): Promise<TransactionEntity[]> {
+    try {
+      return await this.transactionRepo.findAll<TransactionEntity>({
+        where: { userId }
+      })
+    } catch (error) {
+      throw new BadRequestException()
+    }
   }
 
   findOne(id: string, userId: string) {
