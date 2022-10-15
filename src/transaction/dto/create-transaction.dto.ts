@@ -9,18 +9,18 @@ export class CreateTransactionDto {
 	type: TransactionEnum
 
 	@ApiProperty()
-	@IsOptional()
 	@IsString()
+	@IsOptional()
 	cashflowinId: string
 
 	@ApiProperty()
-	@IsOptional()
 	@IsString()
+	@IsOptional()
 	cashflowoutId: string
 
 	@ApiProperty()
-	@IsOptional()
 	@IsString()
+	@IsOptional()
 	transferId: string
 
 	@ApiProperty()
