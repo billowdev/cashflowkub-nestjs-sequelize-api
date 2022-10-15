@@ -1,10 +1,7 @@
-import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CashflowinService } from 'src/cashflowin/cashflowin.service';
-import { CashflowinEntity } from 'src/cashflowin/entities/cashflowin.entity';
 import { CashflowoutService } from 'src/cashflowout/cashflowout.service';
-import { CashflowoutEntity } from 'src/cashflowout/entities/cashflowout.entity';
-import { CASHFLOWIN_REPOSITORY, CASHFLOWOUT_REPOSITORY, TRANSACTION_REPOSITORY, TRANSFER_REPOSITORY } from 'src/core/constants';
-import { TransferEntity } from 'src/transfer/entities/transfer.entity';
+import { TRANSACTION_REPOSITORY } from 'src/core/constants';
 import { TransferService } from 'src/transfer/transfer.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { TransactionEntity, TransactionEnum } from './entities/transaction.entity';
@@ -53,7 +50,7 @@ export class TransactionService {
         where: { userId }
       })
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('get all transaction failed')
     }
   }
 
@@ -63,7 +60,7 @@ export class TransactionService {
         where: { id, userId }
       })
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('get transaction failed')
     }
   }
 
@@ -81,7 +78,7 @@ export class TransactionService {
         where: { id, userId }
       })
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('delete transaction failed')
     }
   }
 }

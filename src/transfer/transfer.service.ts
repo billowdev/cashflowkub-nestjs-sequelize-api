@@ -1,7 +1,6 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { TRANSFER_REPOSITORY } from 'src/core/constants';
 import { CreateTransferDto } from './dto/create-transfer.dto';
-import { UpdateTransferDto } from './dto/update-transfer.dto';
 import { TransferEntity } from './entities/transfer.entity';
 
 @Injectable()
@@ -10,23 +9,41 @@ export class TransferService {
     @Inject(TRANSFER_REPOSITORY) private readonly transferRepo: typeof TransferEntity
   ) { }
 
-  create(createTransferDto: CreateTransferDto) {
-    return 'This action adds a new transfer';
+  async create(createTransferDto: CreateTransferDto): Promise<TransferEntity> {
+    try {
+      return await this.transferRepo.create<TransferEntity>(createTransferDto)
+    } catch (error) {
+      throw new BadRequestException('Create transfer failed')
+    }
   }
 
-  findAll() {
-    return `This action returns all transfer`;
+  async findAll(userId: string): Promise<TransferEntity[]> {
+    try {
+      return await this.transferRepo.findAll<TransferEntity>({
+        where: { userId }
+      })
+    } catch (error) {
+      throw new BadRequestException('get all transfer failed')
+    }
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} transfer`;
+  async findOne(id: string, userId: string): Promise<TransferEntity> {
+    try {
+      return await this.transferRepo.findOne<TransferEntity>({
+        where: { id, userId }
+      })
+    } catch (error) {
+      throw new BadRequestException('get transfer failed')
+    }
   }
 
-  update(id: string, updateTransferDto: UpdateTransferDto) {
-    return `This action updates a #${id} transfer`;
-  }
-
-  remove(id: string) {
-    return `This action removes a #${id} transfer`;
+  async remove(id: string, userId: string): Promise<number> {
+    try {
+      return await this.transferRepo.destroy<TransferEntity>({
+        where: { id, userId }
+      })
+    } catch (error) {
+      throw new BadRequestException('destroy transfer failed')
+    }
   }
 }
