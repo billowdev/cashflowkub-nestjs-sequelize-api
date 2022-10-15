@@ -22,7 +22,8 @@ type TransactionAttributes = {
 	createdAt: Date,
 	updatedAt: Date
 }
-type TransactionCreationAttributes = Optional<TransactionAttributes, 'id'>;
+type TransactionCreationAttributes = Optional<TransactionAttributes,
+	'id' | 'createdAt' | 'updatedAt'>;
 
 @Table({
 	tableName: 'transaction'
