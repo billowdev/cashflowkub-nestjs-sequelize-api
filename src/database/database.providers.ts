@@ -45,7 +45,7 @@ export const databaseProviders = [{
          TransactionEntity
       ]);
       // { force: true } should be fasle in production
-      await sequelize.sync({ force: false });
+      await sequelize.sync({ force: true });
       return sequelize;
    },
 }];

@@ -1,14 +1,25 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import e from 'express';
-import { TRANSACTION_REPOSITORY } from 'src/core/constants';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
+import { CashflowinService } from 'src/cashflowin/cashflowin.service';
+import { CashflowinEntity } from 'src/cashflowin/entities/cashflowin.entity';
+import { CashflowoutService } from 'src/cashflowout/cashflowout.service';
+import { CashflowoutEntity } from 'src/cashflowout/entities/cashflowout.entity';
+import { CASHFLOWIN_REPOSITORY, CASHFLOWOUT_REPOSITORY, TRANSACTION_REPOSITORY, TRANSFER_REPOSITORY } from 'src/core/constants';
+import { TransferEntity } from 'src/transfer/entities/transfer.entity';
+import { TransferService } from 'src/transfer/transfer.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { TransactionEntity, TransactionEnum } from './entities/transaction.entity';
 
 @Injectable()
 export class TransactionService {
   constructor(
-    @Inject(TRANSACTION_REPOSITORY) private readonly transactionRepo: typeof TransactionEntity
+    @Inject(TRANSACTION_REPOSITORY) private readonly transactionRepo: typeof TransactionEntity,
+    @Inject(TransferService)
+    private readonly transferService: TransferService,
+    @Inject(CashflowinService)
+    private readonly cashflowinService: CashflowinService,
+    @Inject(CashflowoutService)
+    private readonly cashflowoutService: CashflowoutService,
+
   ) { }
 
   async create(createTransactionDto: CreateTransactionDto): Promise<TransactionEntity> {
@@ -46,15 +57,31 @@ export class TransactionService {
     }
   }
 
-  findOne(id: string, userId: string) {
-    return `This action returns a #${id} transaction`;
+  async findOne(id: string, userId: string): Promise<TransactionEntity> {
+    try {
+      return await this.transactionRepo.findOne<TransactionEntity>({
+        where: { id, userId }
+      })
+    } catch (error) {
+      throw new BadRequestException()
+    }
   }
 
-  update(id: string, userId: string, updateTransactionDto: UpdateTransactionDto) {
-    return `This action updates a #${id} transaction`;
-  }
-
-  remove(id: string, userId: string) {
-    return `This action removes a #${id} transaction`;
+  async remove(id: string, userId: string): Promise<number> {
+    try {
+      const transactionData = await this.transactionRepo.findByPk(id)
+      if (transactionData.type === TransactionEnum.CASHFLOWIN) {
+        await this.cashflowinService.remove(transactionData.cashflowinId, userId)
+      } else if (transactionData.type === TransactionEnum.CASHFLOWOUT) {
+        await this.cashflowoutService.remove(transactionData.cashflowoutId, userId)
+      } else {
+        await this.transferService.remove(transactionData.transferId)
+      }
+      return await this.transactionRepo.destroy<TransactionEntity>({
+        where: { id, userId }
+      })
+    } catch (error) {
+      throw new BadRequestException()
+    }
   }
 }
