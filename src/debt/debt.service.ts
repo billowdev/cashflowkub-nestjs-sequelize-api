@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { DEBT_REPOSITORY } from 'src/core/constants';
 import { CreateDebtDto } from './dto/create-debt.dto';
 import { UpdateDebtDto } from './dto/update-debt.dto';
@@ -9,23 +9,54 @@ export class DebtService {
   constructor(
     @Inject(DEBT_REPOSITORY) private readonly debtRepo: typeof DebtEntity
   ) { }
-  create(createDebtDto: CreateDebtDto) {
-    return 'This action adds a new debt';
+
+  async create(createDebtDto: CreateDebtDto): Promise<DebtEntity> {
+    try {
+      return await this.debtRepo.create<DebtEntity>(createDebtDto)
+    } catch (error) {
+      throw new BadRequestException()
+    }
   }
 
-  findAll() {
-    return `This action returns all debt`;
+  async findAll(userId: string) {
+    try {
+      return await this.debtRepo.findAll({
+        where: { userId }
+      })
+    } catch (error) {
+      throw new BadRequestException()
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} debt`;
+  async findOne(id: string, userId: string) {
+    try {
+      return await this.debtRepo.findOne({
+        where: { id, userId }
+      })
+    } catch (error) {
+      throw new BadRequestException()
+    }
   }
 
-  update(id: number, updateDebtDto: UpdateDebtDto) {
-    return `This action updates a #${id} debt`;
+  async update(id: string, updateDebtDto: UpdateDebtDto, userId: string) {
+    try {
+      return await this.debtRepo.update({
+        ...updateDebtDto
+      }, {
+        where: { id, userId }
+      })
+    } catch (error) {
+      throw new BadRequestException()
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} debt`;
+  async remove(id: string, userId: string) {
+    try {
+      return await this.debtRepo.destroy({
+        where: { id, userId }
+      })
+    } catch (error) {
+      throw new BadRequestException()
+    }
   }
 }
