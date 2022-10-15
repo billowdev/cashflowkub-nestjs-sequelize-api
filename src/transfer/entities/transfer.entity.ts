@@ -2,7 +2,6 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Optional, UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model, ForeignKey, BelongsTo, HasMany } from "sequelize-typescript";
 import { PocketEntity } from "src/pocket/entities/pocket.entity";
-import { TransactionEntity } from "src/transaction/entities/transaction.entity";
 import { UserEntity } from "src/user/entities/user.entity";
 
 type TransferAttributes = {
@@ -14,7 +13,7 @@ type TransferAttributes = {
 	createdAt: Date,
 	updatedAt: Date
 }
-type TransferCreationAttributes = Optional<TransferAttributes, 'id'>;
+type TransferCreationAttributes = Optional<TransferAttributes, 'createdAt' | 'updatedAt' | 'id'>;
 
 @Table({
 	tableName: 'transfer'
@@ -35,7 +34,7 @@ export class TransferEntity extends Model<TransferAttributes, TransferCreationAt
 	})
 	declare amount: number;
 
-	@BelongsTo(() => PocketEntity, { as: "fromPockets", foreignKey: "from_pocket_id" })
+	@BelongsTo(() => PocketEntity, { as: "fromPockets", foreignKey: "from_pocket_id", onDelete: "cascade" })
 	fromPockets: PocketEntity
 	@ForeignKey(() => PocketEntity)
 	@Column({
@@ -46,7 +45,7 @@ export class TransferEntity extends Model<TransferAttributes, TransferCreationAt
 	})
 	declare fromPocketId: string;
 
-	@BelongsTo(() => PocketEntity, { as: "toPockets", foreignKey: "to_pocket_id" })
+	@BelongsTo(() => PocketEntity, { as: "toPockets", foreignKey: "to_pocket_id", onDelete: "cascade" })
 	toPockets: PocketEntity
 	@ForeignKey(() => PocketEntity)
 	@Column({
@@ -83,6 +82,4 @@ export class TransferEntity extends Model<TransferAttributes, TransferCreationAt
 	})
 	declare updatedAt: Date;
 
-	@HasMany(() => TransactionEntity, { onDelete: "casCade" })
-	transactions: TransactionEntity[]
 }

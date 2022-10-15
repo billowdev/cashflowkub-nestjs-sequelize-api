@@ -10,11 +10,10 @@ import { CashflowoutModule } from './cashflowout/cashflowout.module';
 import { AssetModule } from './asset/asset.module';
 import { DebtModule } from './debt/debt.module';
 import { CategoryModule } from './category/category.module';
-import { TransactionModule } from './transaction/transaction.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }), 
+    ConfigModule.forRoot({ isGlobal: true }),
     DatabaseModule,
     AuthModule,
     UserModule,
@@ -24,8 +23,7 @@ import { TransactionModule } from './transaction/transaction.module';
     CashflowoutModule,
     AssetModule,
     DebtModule,
-    CategoryModule,
-    TransactionModule
+    CategoryModule
   ],
 })
 export class AppModule { }
