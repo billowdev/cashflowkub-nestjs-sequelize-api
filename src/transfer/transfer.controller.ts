@@ -21,16 +21,16 @@ export class TransferController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.transferService.findOne(+id);
+    return this.transferService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTransferDto: UpdateTransferDto) {
-    return this.transferService.update(+id, updateTransferDto);
+    return this.transferService.update(id, updateTransferDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.transferService.remove(+id);
+    return this.transferService.remove(id);
   }
 }

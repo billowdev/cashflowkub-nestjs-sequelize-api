@@ -5,6 +5,7 @@ import { transferProviders } from './entities/transfer.providers';
 
 @Module({
   controllers: [TransferController],
-  providers: [TransferService, ...transferProviders]
+  providers: [TransferService, ...transferProviders],
+  exports : [TransferService]
 })
 export class TransferModule {}
