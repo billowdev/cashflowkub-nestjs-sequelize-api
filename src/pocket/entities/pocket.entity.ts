@@ -14,7 +14,7 @@ type PocketAttributes = {
 	createdAt: Date,
 	updatedAt: Date
 }
-type PocketCreationAttributes = Optional<PocketAttributes, 'id'>;
+type PocketCreationAttributes = Optional<PocketAttributes, 'id' | 'createdAt' | 'updatedAt'>;
 
 @Table({
 	tableName: 'pocket'
