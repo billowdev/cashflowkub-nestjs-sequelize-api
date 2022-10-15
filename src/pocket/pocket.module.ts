@@ -5,6 +5,7 @@ import { pocketProviders } from './entities/pocket.providers';
 
 @Module({
   controllers: [PocketController],
-  providers: [PocketService, ...pocketProviders]
+  providers: [PocketService, ...pocketProviders],
+  exports: [PocketService]
 })
-export class PocketModule {}
+export class PocketModule { }

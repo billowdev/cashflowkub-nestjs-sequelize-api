@@ -1,16 +1,34 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { TRANSFER_REPOSITORY } from 'src/core/constants';
+import { PocketService } from 'src/pocket/pocket.service';
 import { CreateTransferDto } from './dto/create-transfer.dto';
 import { TransferEntity } from './entities/transfer.entity';
 
 @Injectable()
 export class TransferService {
   constructor(
-    @Inject(TRANSFER_REPOSITORY) private readonly transferRepo: typeof TransferEntity
-  ) { }
+    @Inject(TRANSFER_REPOSITORY) private readonly transferRepo: typeof TransferEntity,
+    @Inject(PocketService) private readonly pocketService: PocketService) { }
 
   async create(createTransferDto: CreateTransferDto): Promise<TransferEntity> {
     try {
+      const userId = createTransferDto.userId
+      const amountTransfer = createTransferDto.amount
+      const fromPocketId = createTransferDto.fromPocketId
+      const toPocketId = createTransferDto.toPocketId
+      // update minus value "from pocket"
+      const fromPocket = await this.pocketService.findOne(createTransferDto.fromPocketId, userId)
+      const toPocket = await this.pocketService.findOne(createTransferDto.toPocketId, userId)
+      const balanceFromPocket = fromPocket.balance - amountTransfer
+      const balanceToPocket = toPocket.balance + amountTransfer
+      // if transfer over "from pocket" balance less than 0 then return failed
+      if (balanceFromPocket < 0) {
+        throw new BadRequestException('create transfer failed')
+      }
+      // update balance between two pocket
+      await this.pocketService.update(fromPocketId, { balance: balanceFromPocket }, userId)
+      await this.pocketService.update(toPocketId, { balance: balanceToPocket }, userId)
+
       return await this.transferRepo.create<TransferEntity>(createTransferDto)
     } catch (error) {
       throw new BadRequestException('Create transfer failed')

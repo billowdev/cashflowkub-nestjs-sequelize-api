@@ -11,7 +11,9 @@ import { TransferEntity } from './entities/transfer.entity';
 @ApiTags('transfers')
 @Controller('transfers')
 export class TransferController {
-  constructor(private readonly transferService: TransferService) { }
+  constructor(
+    private readonly transferService: TransferService,
+  ) { }
 
   @Post()
   async create(@Body() createTransferDto: CreateTransferDto,
