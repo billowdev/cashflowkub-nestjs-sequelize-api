@@ -72,7 +72,7 @@ export class TransactionService {
       } else if (transactionData.type === TransactionEnum.CASHFLOWOUT) {
         await this.cashflowoutService.remove(transactionData.cashflowoutId, userId)
       } else {
-        await this.transferService.remove(transactionData.transferId)
+        await this.transferService.remove(transactionData.transferId, userId)
       }
       return await this.transactionRepo.destroy<TransactionEntity>({
         where: { id, userId }
