@@ -22,7 +22,8 @@ type TransactionAttributes = {
 	createdAt: Date,
 	updatedAt: Date
 }
-type TransactionCreationAttributes = Optional<TransactionAttributes, 'id'>;
+type TransactionCreationAttributes = Optional<TransactionAttributes,
+	'id' | 'createdAt' | 'updatedAt'>;
 
 @Table({
 	tableName: 'transaction'
@@ -58,7 +59,7 @@ export class TransactionEntity extends Model<TransactionAttributes, TransactionC
 		type: DataType.UUID,
 		field: "cashflowin_id",
 		allowNull: true,
-		unique: false,
+		unique: true,
 	})
 	declare cashflowinId: string;
 
@@ -69,7 +70,7 @@ export class TransactionEntity extends Model<TransactionAttributes, TransactionC
 		type: DataType.UUID,
 		field: "cashflowout_id",
 		allowNull: true,
-		unique: false,
+		unique: true,
 	})
 	declare cashflowoutId: string;
 
@@ -80,7 +81,7 @@ export class TransactionEntity extends Model<TransactionAttributes, TransactionC
 		type: DataType.UUID,
 		field: "transfer_id",
 		allowNull: true,
-		unique: false,
+		unique: true,
 	})
 	declare transferId: string;
 
@@ -90,7 +91,8 @@ export class TransactionEntity extends Model<TransactionAttributes, TransactionC
 	@Column({
 		type: DataType.UUID,
 		field: "user_id",
-		allowNull: false
+		allowNull: false,
+		unique: false,
 	})
 	declare userId: string;
 

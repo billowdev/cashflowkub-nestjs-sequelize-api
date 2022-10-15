@@ -18,7 +18,7 @@ module.exports = {
 	up: async (queryInterface: QueryInterface) => {
 		const transactionData: Array<TransactionType> = [
 			{
-				id: uuidv4(),
+				id: "db5d7045-0981-4d89-9db1-a10e64bd99e1",
 				type: TransactionEnum.CASHFLOWIN,
 				cashflowin_id: "d483eacd-9255-4561-a450-9751ad5d0ca1",
 				cashflowout_id: null,
@@ -28,7 +28,7 @@ module.exports = {
 				updated_at: new Date(),
 			},
 			{
-				id: uuidv4(),
+				id: "db5d7045-0981-4d89-9db1-a10e64bd99e2",
 				type: TransactionEnum.CASHFLOWIN,
 				cashflowin_id: "d483eacd-9255-4561-a450-9751ad5d0ca2",
 				cashflowout_id: null,
@@ -38,7 +38,7 @@ module.exports = {
 				updated_at: new Date(),
 			},
 			{
-				id: uuidv4(),
+				id: "db5d7045-0981-4d89-9db1-a10e64bd99e3",
 				type: TransactionEnum.CASHFLOWOUT,
 				cashflowin_id: null,
 				cashflowout_id: "2b57822d-827a-4e02-8d18-47dd36b0da01",
@@ -48,7 +48,7 @@ module.exports = {
 				updated_at: new Date(),
 			},
 			{
-				id: uuidv4(),
+				id: "db5d7045-0981-4d89-9db1-a10e64bd99e4",
 				type: TransactionEnum.CASHFLOWOUT,
 				cashflowin_id: null,
 				cashflowout_id: "2b57822d-827a-4e02-8d18-47dd36b0da02",
@@ -58,7 +58,7 @@ module.exports = {
 				updated_at: new Date(),
 			},
 			{
-				id: uuidv4(),
+				id: "db5d7045-0981-4d89-9db1-a10e64bd99e5",
 				type: TransactionEnum.TRANSFER,
 				cashflowin_id: null,
 				cashflowout_id: null,
@@ -68,7 +68,7 @@ module.exports = {
 				updated_at: new Date(),
 			},
 			{
-				id: uuidv4(),
+				id: "db5d7045-0981-4d89-9db1-a10e64bd99e6",
 				type: TransactionEnum.TRANSFER,
 				cashflowin_id: null,
 				cashflowout_id: null,

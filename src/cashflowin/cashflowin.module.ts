@@ -5,6 +5,7 @@ import { cashflowinProviders } from './entities/cashflowin.providers';
 
 @Module({
   controllers: [CashflowinController],
-  providers: [CashflowinService, ...cashflowinProviders]
+  providers: [CashflowinService, ...cashflowinProviders],
+  exports : [CashflowinService]
 })
 export class CashflowinModule {}

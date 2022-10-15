@@ -5,6 +5,7 @@ import { cashflowoutProviders } from './entities/cashflowout.providers';
 
 @Module({
   controllers: [CashflowoutController],
-  providers: [CashflowoutService, ...cashflowoutProviders]
+  providers: [CashflowoutService, ...cashflowoutProviders],
+  exports : [CashflowoutService]
 })
 export class CashflowoutModule { }

@@ -1,7 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Optional, UUIDV4 } from "sequelize";
-import { Column, DataType, Table, Model, ForeignKey, BelongsTo } from "sequelize-typescript";
+import { Column, DataType, Table, Model, ForeignKey, BelongsTo, HasMany } from "sequelize-typescript";
 import { PocketEntity } from "src/pocket/entities/pocket.entity";
+import { TransactionEntity } from "src/transaction/entities/transaction.entity";
 import { UserEntity } from "src/user/entities/user.entity";
 
 type TransferAttributes = {
@@ -81,4 +82,7 @@ export class TransferEntity extends Model<TransferAttributes, TransferCreationAt
 		defaultValue: new Date()
 	})
 	declare updatedAt: Date;
+
+	@HasMany(() => TransactionEntity, { onDelete: "casCade" })
+	transactions: TransactionEntity[]
 }
