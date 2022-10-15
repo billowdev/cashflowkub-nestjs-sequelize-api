@@ -9,6 +9,7 @@ import { DebtEntity } from '../debt/entities/debt.entity';
 import { PocketEntity } from '../pocket/entities/pocket.entity';
 import { TransferEntity } from '../transfer/entities/transfer.entity';
 import { UserEntity } from '../user/entities/user.entity';
+import { TransactionEntity } from 'src/transaction/entities/transaction.entity';
 
 export const databaseProviders = [{
    provide: SEQUELIZE,
@@ -40,10 +41,11 @@ export const databaseProviders = [{
          CashflowoutEntity,
          TransferEntity,
          AssetEntity,
-         DebtEntity
+         DebtEntity,
+         TransactionEntity
       ]);
       // { force: true } should be fasle in production
-      await sequelize.sync({ force: false });
+      await sequelize.sync({ force: true });
       return sequelize;
    },
 }];

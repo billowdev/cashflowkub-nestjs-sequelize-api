@@ -1,9 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
-import {  BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import {  HasMany, BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { Optional, UUIDV4 } from "sequelize";
 import { UserEntity } from "src/user/entities/user.entity";
 import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { CategoryEntity } from "src/category/entities/category.entity";
+import { TransactionEntity } from "src/transaction/entities/transaction.entity";
 
 export enum CashflowoutEnum {
 	FIXED = 'fixed',
@@ -114,4 +115,6 @@ export class CashflowoutEntity extends Model<CashflowoutAttributes, CashflowoutC
 	})
 	declare categoryId: string;
 
+	@HasMany(() => TransactionEntity, { onDelete: "casCade" })
+	transactions: TransactionEntity[]
 }
