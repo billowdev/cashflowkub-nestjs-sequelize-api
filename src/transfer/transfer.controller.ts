@@ -46,11 +46,19 @@ export class TransferController {
   ) {
     const userId: string = req.user.sub
     const data: TransferEntity = await this.transferService.findOne(id, userId);
-    res.status(200).send({
-      statusCode: res.statusCode,
-      message: 'get transfer successfuly',
-      data
-    })
+    if (data) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: 'get transfer successfuly',
+        data
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: 'get transfer failed',
+        data: {}
+      })
+    }
   }
 
   @Delete(':id')
