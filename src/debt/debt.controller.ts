@@ -1,36 +1,117 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { FastifyReply } from 'fastify';
+import { requestAuthUserDto } from 'src/auth/dto';
+import { JwtAuthGuard } from 'src/auth/guards';
 import { DebtService } from './debt.service';
 import { CreateDebtDto } from './dto/create-debt.dto';
 import { UpdateDebtDto } from './dto/update-debt.dto';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('debts')
 @Controller('debts')
 export class DebtController {
-  constructor(private readonly debtService: DebtService) {}
+  constructor(private readonly debtService: DebtService) { }
 
   @Post()
-  create(@Body() createDebtDto: CreateDebtDto) {
-    return this.debtService.create(createDebtDto);
+  async create(@Body() createDebtDto: CreateDebtDto,
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply) {
+    const data = await this.debtService.create(createDebtDto);
+    if (data) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "create debt successfuly",
+        data
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "create debt failed",
+        data: {}
+      })
+    }
   }
 
   @Get()
-  findAll() {
-    return this.debtService.findAll();
+  async findAll(
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply
+  ) {
+    const userId: string = req.user.sub
+    const data = await this.debtService.findAll(userId);
+    if (data) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "get all debt successfuly",
+        data
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "get all debt failed",
+        data: {}
+      })
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.debtService.findOne(+id);
+  async findOne(@Param('id') id: string, @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply) {
+    const userId: string = req.user.sub
+    const data = await this.debtService.findOne(id, userId);
+    if (data) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "get debt by id successfuly",
+        data
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "get debt by id failed",
+        data: {}
+      })
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDebtDto: UpdateDebtDto) {
-    return this.debtService.update(+id, updateDebtDto);
+  async update(@Param('id') id: string, @Body() updateDebtDto: UpdateDebtDto, @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply) {
+    const userId: string = req.user.sub
+    const data = await this.debtService.update(id, updateDebtDto, userId);
+    if (data[0]) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "update debt by id successfuly",
+        data: {}
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "update debt by id failed",
+        data: {}
+      })
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.debtService.remove(+id);
+  async remove(@Param('id') id: string, @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply) {
+    const userId: string = req.user.sub
+    const data = await this.debtService.remove(id, userId);
+    if (data) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "delete debt by id successfuly",
+        data: {}
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "delete debt by id failed",
+        data: {}
+      })
+    }
   }
 }

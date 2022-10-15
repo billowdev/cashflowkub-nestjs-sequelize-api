@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Optional, UUIDV4 } from "sequelize";
-import { Column, DataType, Table, HasOne, Model, ForeignKey, BelongsTo, BelongsToMany, HasMany } from "sequelize-typescript";
+import { Column, DataType, Table, Model, ForeignKey, BelongsTo } from "sequelize-typescript";
 import { UserEntity } from "src/user/entities/user.entity";
 
 export enum DebtEnum {
@@ -19,7 +19,7 @@ type DebtAttributes = {
 	createdAt: Date,
 	updatedAt: Date
 }
-type DebtCreationAttributes = Optional<DebtAttributes, 'id'>;
+type DebtCreationAttributes = Optional<DebtAttributes, 'id' | 'createdAt' | 'updatedAt'>;
 
 @Table({
 	tableName: 'debt'
