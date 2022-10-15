@@ -43,7 +43,7 @@ export const databaseProviders = [{
          DebtEntity
       ]);
       // { force: true } should be fasle in production
-      await sequelize.sync({ force: true });
+      await sequelize.sync({ force: false });
       return sequelize;
    },
 }];

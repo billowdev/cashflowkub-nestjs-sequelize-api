@@ -17,10 +17,12 @@ export class TransferService {
       const fromPocketId = createTransferDto.fromPocketId
       const toPocketId = createTransferDto.toPocketId
       // update minus value "from pocket"
-      const fromPocket = await this.pocketService.findOne(createTransferDto.fromPocketId, userId)
-      const toPocket = await this.pocketService.findOne(createTransferDto.toPocketId, userId)
-      const balanceFromPocket = fromPocket.balance - amountTransfer
-      const balanceToPocket = toPocket.balance + amountTransfer
+      const fromPocket = await this.pocketService.findOne(fromPocketId, userId)
+      const toPocket = await this.pocketService.findOne(toPocketId, userId)
+      const fromPocketBalance = fromPocket.balance
+      const toPocketBalance = toPocket.balance
+      const balanceFromPocket = Number(fromPocketBalance) - amountTransfer
+      const balanceToPocket = Number(toPocketBalance) + amountTransfer
       // if transfer over "from pocket" balance less than 0 then return failed
       if (balanceFromPocket < 0) {
         throw new BadRequestException('create transfer failed')
@@ -31,6 +33,9 @@ export class TransferService {
 
       return await this.transferRepo.create<TransferEntity>(createTransferDto)
     } catch (error) {
+      console.log('====================================');
+      console.log(error);
+      console.log('====================================');
       throw new BadRequestException('Create transfer failed')
     }
   }
