@@ -1,36 +1,124 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
 import { PocketService } from './pocket.service';
 import { CreatePocketDto } from './dto/create-pocket.dto';
 import { UpdatePocketDto } from './dto/update-pocket.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { requestAuthUserDto } from 'src/auth/dto';
+import { FastifyReply } from 'fastify';
+import { JwtAuthGuard } from 'src/auth/guards';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('pockets')
 @Controller('pockets')
 export class PocketController {
-  constructor(private readonly pocketService: PocketService) {}
+  constructor(private readonly pocketService: PocketService) { }
 
   @Post()
-  create(@Body() createPocketDto: CreatePocketDto) {
-    return this.pocketService.create(createPocketDto);
+  async create(@Body() createPocketDto: CreatePocketDto,
+    @Res() res: FastifyReply
+  ) {
+    const data = await this.pocketService.create(createPocketDto);
+    if (data) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "create pocket successfuly",
+        data
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "create pocket failed",
+        data: {}
+      })
+    }
   }
 
   @Get()
-  findAll() {
-    return this.pocketService.findAll();
+  async findAll(
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply
+  ) {
+    const userId: string = req.user.sub
+    const data = await this.pocketService.findAll(userId);
+    if (data) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "get all pocket successfuly",
+        data
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "get all pocket failed",
+        data: {}
+      })
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.pocketService.findOne(+id);
+  async findOne(@Param('id') id: string,
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply) {
+    const userId: string = req.user.sub
+    const data = await this.pocketService.findOne(id, userId);
+    if (data) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "get pocket by id successfuly",
+        data
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "get pocket by id failed",
+        data: {}
+      })
+    }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePocketDto: UpdatePocketDto) {
-    return this.pocketService.update(+id, updatePocketDto);
+  async update(
+    @Param('id') id: string, @Body() updatePocketDto: UpdatePocketDto,
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply
+  ) {
+    const userId: string = req.user.sub
+    const data = await this.pocketService.update(id, updatePocketDto, userId);
+    if (data[0]) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "update pocket by id successfuly",
+        data: {}
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "update pocket by id failed",
+        data: {}
+      })
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.pocketService.remove(+id);
+  async remove(
+    @Param('id') id: string,
+    @Req() req: requestAuthUserDto,
+    @Res() res: FastifyReply
+  ) {
+    const userId: string = req.user.sub
+    const data = await this.pocketService.remove(id, userId);
+    if (data) {
+      res.status(200).send({
+        statusCode: res.statusCode,
+        message: "delete pocket by id successfuly",
+        data: {}
+      })
+    } else {
+      res.status(400).send({
+        statusCode: res.statusCode,
+        message: "delete pocket by id failed",
+        data: {}
+      })
+    }
   }
 }
