@@ -16,7 +16,7 @@ export type CashflowinAttributes = {
 	createdAt: Date,
 	updatedAt: Date
 }
-export type CashflowinCreationAttributes = Optional<CashflowinAttributes, 'id'>;
+export type CashflowinCreationAttributes = Optional<CashflowinAttributes, 'id' | 'createdAt' | 'updatedAt'>;
 
 @Table({
 	tableName: "cashflowin"

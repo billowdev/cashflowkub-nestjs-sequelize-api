@@ -2,21 +2,15 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CASHFLOWIN_REPOSITORY } from 'src/core/constants';
 import { BulkCreateCashflowinDto, CreateCashflowinDto } from './dto/create-cashflowin.dto';
 import { UpdateCashflowinDto } from './dto/update-cashflowin.dto';
-import { CashflowinCreationAttributes, CashflowinEntity } from './entities/cashflowin.entity';
+import { CashflowinEntity } from './entities/cashflowin.entity';
 
 @Injectable()
 export class CashflowinService {
   constructor(@Inject(CASHFLOWIN_REPOSITORY) private readonly cashflowinRepo: typeof CashflowinEntity) { }
 
-  async create(createCashflowinDto: CreateCashflowinDto, userId: string): Promise<CashflowinEntity> {
+  async create(createCashflowinDto: CreateCashflowinDto): Promise<CashflowinEntity> {
     try {
-      const cashflowin = new CashflowinEntity()
-      cashflowin.amount = createCashflowinDto.amount
-      cashflowin.userId = userId
-      cashflowin.pocketId = createCashflowinDto.pocketId
-      cashflowin.desc = createCashflowinDto.desc
-      cashflowin.categoryId = createCashflowinDto.categoryId
-      return await this.cashflowinRepo.create<CashflowinEntity>(cashflowin['dataValues'])
+      return await this.cashflowinRepo.create<CashflowinEntity>(createCashflowinDto)
     } catch (error) {
       throw new BadRequestException()
     }
@@ -25,7 +19,7 @@ export class CashflowinService {
 
   async bulkCreate(createCashflowinDto: BulkCreateCashflowinDto): Promise<CashflowinEntity[]> {
     try {
-      return await this.cashflowinRepo.bulkCreate<CashflowinEntity | any>(
+      return await this.cashflowinRepo.bulkCreate<CashflowinEntity>(
         createCashflowinDto,
         {
           returning: true
@@ -62,7 +56,8 @@ export class CashflowinService {
     try {
       return await this.cashflowinRepo.update<CashflowinEntity>(
         { ...updateCashflowinDto },
-        { where: { id, userId } }
+        { where: { id, userId }, returning: true },
+
       )
     } catch (error) {
       throw new BadRequestException()
