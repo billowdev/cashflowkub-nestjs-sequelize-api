@@ -30,7 +30,8 @@ let PocketService = class PocketService {
     async findAll(userId) {
         try {
             return await this.pocketRepo.findAll({
-                where: { userId }
+                where: { userId },
+                raw: true
             });
         }
         catch (error) {
@@ -40,7 +41,8 @@ let PocketService = class PocketService {
     async findOne(id, userId) {
         try {
             return await this.pocketRepo.findOne({
-                where: { id, userId }
+                where: { id, userId },
+                raw: true
             });
         }
         catch (error) {

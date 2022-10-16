@@ -108,6 +108,12 @@ let CashflowinService = class CashflowinService {
     }
     async remove(id, userId) {
         try {
+            const cashflowin = await this.cashflowinRepo.findByPk(id);
+            const pocketId = cashflowin.pocketId;
+            const cashflowinAmout = cashflowin.amount;
+            const pocket = await this.pocketService.findOne(pocketId, userId);
+            const newBalance = Number(pocket.balance) - Number(cashflowinAmout);
+            await this.pocketService.update(pocketId, { balance: newBalance }, userId);
             const isTransactionRemove = await this.transactionService.removeByTypeActionId('cashflowin', id, userId);
             if (!isTransactionRemove) {
                 throw new common_1.BadRequestException('remove cashflowin transaction failed');
