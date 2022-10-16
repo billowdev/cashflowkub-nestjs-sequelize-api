@@ -66,7 +66,7 @@ export class AssetController {
     @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply,
   ) {
-    const data = await this.assetService.update(id, req.user.sub, updateAssetDto);
+    const data: [number, AssetEntity[]] = await this.assetService.update(id, req.user.sub, updateAssetDto);
 
     if (data[0]) {
       res.status(200).send({

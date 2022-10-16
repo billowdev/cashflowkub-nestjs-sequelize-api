@@ -37,7 +37,7 @@ export class AssetService {
     }
   }
 
-  async update(id: string, userId: string, updateAssetDto: UpdateAssetDto): Promise<number[] | unknown> {
+  async update(id: string, userId: string, updateAssetDto: UpdateAssetDto): Promise<[number, AssetEntity[]]> {
     try {
       return await this.assetRepo.update<AssetEntity>(
         { ...updateAssetDto },
