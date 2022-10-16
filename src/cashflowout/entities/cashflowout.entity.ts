@@ -6,6 +6,7 @@ import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { CategoryEntity } from "src/category/entities/category.entity";
 import { TransactionEntity } from "src/transaction/entities/transaction.entity";
 
+
 export enum CashflowoutEnum {
 	FIXED = 'fixed',
 	VARIABLE = 'variable',

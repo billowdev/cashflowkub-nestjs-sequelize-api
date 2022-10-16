@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import {  HasMany, BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { HasMany, BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { Optional, UUIDV4 } from "sequelize";
 import { UserEntity } from "src/user/entities/user.entity";
 import { PocketEntity } from "src/pocket/entities/pocket.entity";
@@ -93,6 +93,6 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 
 	@HasMany(() => TransactionEntity, { onDelete: "casCade" })
 	transactions: TransactionEntity[]
-
-
 }
+
+

@@ -1,7 +1,10 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CashflowinService } from 'src/cashflowin/cashflowin.service';
+import { CashflowinEntity } from 'src/cashflowin/entities/cashflowin.entity';
 import { CashflowoutService } from 'src/cashflowout/cashflowout.service';
+import { CashflowoutEntity } from 'src/cashflowout/entities/cashflowout.entity';
 import { TRANSACTION_REPOSITORY } from 'src/core/constants';
+import { TransferEntity } from 'src/transfer/entities/transfer.entity';
 import { TransferService } from 'src/transfer/transfer.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { TransactionEntity, TransactionEnum } from './entities/transaction.entity';
@@ -16,7 +19,6 @@ export class TransactionService {
     private readonly cashflowinService: CashflowinService,
     @Inject(forwardRef(() => CashflowoutService))
     private readonly cashflowoutService: CashflowoutService,
-
   ) { }
 
   async create(createTransactionDto: CreateTransactionDto): Promise<TransactionEntity> {
@@ -47,7 +49,31 @@ export class TransactionService {
   async findAll(userId: string): Promise<TransactionEntity[]> {
     try {
       return await this.transactionRepo.findAll<TransactionEntity>({
-        where: { userId }
+        where: { userId },
+        include: [
+          {
+            model: CashflowinEntity as null,
+            attributes: {
+              exclude: ['userId']
+            }
+          },
+          {
+            model: CashflowoutEntity as null,
+            attributes: {
+              exclude: ['userId']
+            }
+
+          },
+          {
+            model: TransferEntity as null,
+            attributes: {
+              exclude: ['userId']
+            }
+          }
+        ],
+        attributes: {
+          exclude: ['transferId', 'cashflowinId', 'cashflowoutId']
+        }
       })
     } catch (error) {
       throw new BadRequestException('get all transaction failed')
@@ -57,7 +83,31 @@ export class TransactionService {
   async findOne(id: string, userId: string): Promise<TransactionEntity> {
     try {
       return await this.transactionRepo.findOne<TransactionEntity>({
-        where: { id, userId }
+        where: { id, userId },
+        include: [
+          {
+            model: CashflowinEntity as null,
+            attributes: {
+              exclude: ['userId']
+            }
+          },
+          {
+            model: CashflowoutEntity as null,
+            attributes: {
+              exclude: ['userId']
+            }
+
+          },
+          {
+            model: TransferEntity as null,
+            attributes: {
+              exclude: ['userId']
+            }
+          }
+        ],
+        attributes: {
+          exclude: ['transferId', 'cashflowinId', 'cashflowoutId']
+        }
       })
     } catch (error) {
       throw new BadRequestException('get transaction failed')
