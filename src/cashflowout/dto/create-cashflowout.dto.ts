@@ -35,3 +35,5 @@ export class CreateCashflowoutDto {
 	categoryId: string;
 
 }
+
+export type BulkCreateCashflowoutDto = CreateCashflowoutDto[]

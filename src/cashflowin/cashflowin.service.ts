@@ -65,7 +65,6 @@ export class CashflowinService {
     } catch (error) {
       throw new BadRequestException('create cashflowin failed')
     }
-
   }
 
   async findAll(userId: string): Promise<CashflowinEntity[]> {

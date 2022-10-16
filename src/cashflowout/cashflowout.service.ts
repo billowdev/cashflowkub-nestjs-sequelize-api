@@ -3,7 +3,7 @@ import { CASHFLOWOUT_REPOSITORY } from 'src/core/constants';
 import { CreateTransactionDto } from 'src/transaction/dto/create-transaction.dto';
 import { TransactionEnum } from 'src/transaction/entities/transaction.entity';
 import { TransactionService } from 'src/transaction/transaction.service';
-import { CreateCashflowoutDto } from './dto/create-cashflowout.dto';
+import { BulkCreateCashflowoutDto, CreateCashflowoutDto } from './dto/create-cashflowout.dto';
 import { UpdateCashflowoutDto } from './dto/update-cashflowout.dto';
 import { CashflowoutEntity } from './entities/cashflowout.entity';
 
@@ -33,6 +33,39 @@ export class CashflowoutService {
       }
     } catch (error) {
       throw new BadRequestException('create cashflowout failed')
+    }
+  }
+
+  async bulkCreate(createCashflowoutDto: BulkCreateCashflowoutDto): Promise<CashflowoutEntity[]> {
+    try {
+      const bulkCashflowout = await this.cashflowoutRepo.bulkCreate<CashflowoutEntity>(
+        createCashflowoutDto,
+        {
+          returning: true
+        })
+
+      new Promise((resolve) =>
+        resolve(
+          bulkCashflowout.forEach(cashout => {
+            const cashflowoutId = cashout['dataValues'].id;
+            const userId = cashout['dataValues'].userId;
+            const transactionData: CreateTransactionDto = {
+              type: TransactionEnum.CASHFLOWOUT,
+              cashflowinId: null,
+              cashflowoutId: cashflowoutId,
+              transferId: null,
+              userId
+            }
+            new Promise((resolve) =>
+              resolve(this.transactionService.create(transactionData))
+            )
+          })
+        )
+      );
+
+      return bulkCashflowout
+    } catch (error) {
+      throw new BadRequestException('create cashflowin failed')
     }
   }
 
