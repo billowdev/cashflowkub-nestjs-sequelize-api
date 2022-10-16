@@ -1,6 +1,5 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CASHFLOWIN_REPOSITORY } from 'src/core/constants';
-import { PocketEntity } from 'src/pocket/entities/pocket.entity';
 import { PocketService } from 'src/pocket/pocket.service';
 import { CreateTransactionDto } from 'src/transaction/dto/create-transaction.dto';
 import { TransactionEnum } from 'src/transaction/entities/transaction.entity';
@@ -55,7 +54,7 @@ export class CashflowinService {
         })
       // create transasction and update pocket 
       for (const cashflowin of bulkCashflowin) {
-        const {id, userId, pocketId, amount} = await cashflowin['dataValues']
+        const { id, userId, pocketId, amount } = await cashflowin['dataValues']
         const pocket = await this.pocketService.findOne(pocketId, userId)
         const presentPocketBalance = await pocket.balance
         const newBalance = await (Number(presentPocketBalance) + Number(amount))
@@ -123,10 +122,8 @@ export class CashflowinService {
       // decrease balance pocket after delete cashflowin
       await this.pocketService.update(pocketId, { balance: newBalance }, userId)
       // remove transaction
-      const isTransactionRemove = await this.transactionService.removeByTypeActionId('cashflowin', id, userId)
-      if (!isTransactionRemove) {
-        throw new BadRequestException('remove cashflowin transaction failed')
-      }
+      await this.transactionService.removeByTypeActionId('cashflowin', id, userId)
+
       // remove cashflowin
       return await this.cashflowinRepo.destroy<CashflowinEntity>({
         where: { id, userId }

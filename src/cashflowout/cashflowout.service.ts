@@ -136,10 +136,8 @@ export class CashflowoutService {
     try {
 
       // remove transaction 
-      const isTransactionRemove = await this.transactionService.removeByTypeActionId('cashflowout', id, userId)
-      if (!isTransactionRemove) {
-        throw new BadRequestException('remove cashflowout transaction failed')
-      }
+      await this.transactionService.removeByTypeActionId('cashflowout', id, userId)
+
       // remove cashflowin
       return await this.cashflowoutRepo.destroy<CashflowoutEntity>({
         where: { id, userId }
