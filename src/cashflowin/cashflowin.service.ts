@@ -63,7 +63,7 @@ export class CashflowinService {
 
       return bulkCashflowin
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('create cashflowin failed')
     }
 
   }
@@ -104,6 +104,12 @@ export class CashflowinService {
 
   async remove(id: string, userId: string): Promise<number> {
     try {
+      // remove transaction 
+      const isTransactionRemove = await this.transactionService.removeByTypeActionId('cashflowin', id, userId)
+      if (!isTransactionRemove) {
+        throw new BadRequestException('remove cashflowin failed')
+      }
+      // remove cashflowin
       return await this.cashflowinRepo.destroy<CashflowinEntity>({
         where: { id, userId }
       })

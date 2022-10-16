@@ -81,4 +81,36 @@ export class TransactionService {
       throw new BadRequestException('delete transaction failed')
     }
   }
+
+  async removeByTypeActionId(type: string, actionId: string, userId: string): Promise<number> {
+    try {
+      if (type === TransactionEnum.CASHFLOWIN) {
+        return await this.transactionRepo.destroy({
+          where: {
+            cashflowinId: actionId,
+            type,
+            userId
+          }
+        })
+      } else if (type === TransactionEnum.CASHFLOWOUT) {
+        return await this.transactionRepo.destroy({
+          where: {
+            cashflowoutId: actionId,
+            type,
+            userId
+          }
+        })
+      } else {
+        return await this.transactionRepo.destroy({
+          where: {
+            transferId: actionId,
+            type,
+            userId
+          }
+        })
+      }
+    } catch (error) {
+      throw new BadRequestException('delete transaction failed')
+    }
+  }
 }
