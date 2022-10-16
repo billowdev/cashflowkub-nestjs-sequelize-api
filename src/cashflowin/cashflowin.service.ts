@@ -1,33 +1,70 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CASHFLOWIN_REPOSITORY } from 'src/core/constants';
+import { CreateTransactionDto } from 'src/transaction/dto/create-transaction.dto';
+import { TransactionEnum } from 'src/transaction/entities/transaction.entity';
+import { TransactionService } from 'src/transaction/transaction.service';
 import { BulkCreateCashflowinDto, CreateCashflowinDto } from './dto/create-cashflowin.dto';
 import { UpdateCashflowinDto } from './dto/update-cashflowin.dto';
 import { CashflowinEntity } from './entities/cashflowin.entity';
 
 @Injectable()
 export class CashflowinService {
-  constructor(@Inject(CASHFLOWIN_REPOSITORY) private readonly cashflowinRepo: typeof CashflowinEntity) { }
+  constructor(
+    @Inject(CASHFLOWIN_REPOSITORY) private readonly cashflowinRepo: typeof CashflowinEntity,
+    @Inject(forwardRef(() => TransactionService)) private readonly transactionService: TransactionService
+  ) { }
 
   async create(createCashflowinDto: CreateCashflowinDto): Promise<CashflowinEntity> {
     try {
-      return await this.cashflowinRepo.create<CashflowinEntity>(createCashflowinDto)
+      const cashin = await this.cashflowinRepo.create<CashflowinEntity>(createCashflowinDto)
+      const cashflowinId = cashin['dataValues'].id
+      const userId = cashin['dataValues'].userId
+      const transactionData: CreateTransactionDto = {
+        type: TransactionEnum.CASHFLOWIN,
+        cashflowinId,
+        cashflowoutId: null,
+        transferId: null,
+        userId
+      }
+      const transactionCreate = await this.transactionService.create(transactionData)
+      if (!transactionCreate) throw new BadRequestException('create cashflowin failed');
+      return cashin
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('create cashflowin failed')
     }
-
   }
 
   async bulkCreate(createCashflowinDto: BulkCreateCashflowinDto): Promise<CashflowinEntity[]> {
     try {
-      return await this.cashflowinRepo.bulkCreate<CashflowinEntity>(
+      const bulkCashflowin = await this.cashflowinRepo.bulkCreate<CashflowinEntity>(
         createCashflowinDto,
         {
           returning: true
         })
-    } catch (error) {
-      throw new BadRequestException()
-    }
 
+      new Promise((resolve) =>
+        resolve(
+          bulkCashflowin.forEach(cashin => {
+            const cashflowinId = cashin['dataValues'].id;
+            const userId = cashin['dataValues'].userId;
+            const transactionData: CreateTransactionDto = {
+              type: TransactionEnum.CASHFLOWIN,
+              cashflowinId,
+              cashflowoutId: null,
+              transferId: null,
+              userId
+            }
+            new Promise((resolve) =>
+              resolve(this.transactionService.create(transactionData))
+            )
+          })
+        )
+      );
+
+      return bulkCashflowin
+    } catch (error) {
+      throw new BadRequestException('create cashflowin failed')
+    }
   }
 
   async findAll(userId: string): Promise<CashflowinEntity[]> {
@@ -60,17 +97,23 @@ export class CashflowinService {
 
       )
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('update cashflowin failed')
     }
   }
 
   async remove(id: string, userId: string): Promise<number> {
     try {
+      // remove transaction 
+      const isTransactionRemove = await this.transactionService.removeByTypeActionId('cashflowin', id, userId)
+      if (!isTransactionRemove) {
+        throw new BadRequestException('remove cashflowin transaction failed')
+      }
+      // remove cashflowin
       return await this.cashflowinRepo.destroy<CashflowinEntity>({
         where: { id, userId }
       })
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('remove cashflowin failed')
     }
   }
 }

@@ -1,6 +1,9 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { TRANSFER_REPOSITORY } from 'src/core/constants';
 import { PocketService } from 'src/pocket/pocket.service';
+import { CreateTransactionDto } from 'src/transaction/dto/create-transaction.dto';
+import { TransactionEnum } from 'src/transaction/entities/transaction.entity';
+import { TransactionService } from 'src/transaction/transaction.service';
 import { CreateTransferDto } from './dto/create-transfer.dto';
 import { TransferEntity } from './entities/transfer.entity';
 
@@ -8,7 +11,9 @@ import { TransferEntity } from './entities/transfer.entity';
 export class TransferService {
   constructor(
     @Inject(TRANSFER_REPOSITORY) private readonly transferRepo: typeof TransferEntity,
-    @Inject(PocketService) private readonly pocketService: PocketService) { }
+    @Inject(PocketService) private readonly pocketService: PocketService,
+    @Inject(forwardRef(() => TransactionService)) private readonly transactionService: TransactionService
+  ) { }
 
   async create(createTransferDto: CreateTransferDto): Promise<TransferEntity> {
     try {
@@ -30,12 +35,22 @@ export class TransferService {
       // update balance between two pocket
       await this.pocketService.update(fromPocketId, { balance: balanceFromPocket }, userId)
       await this.pocketService.update(toPocketId, { balance: balanceToPocket }, userId)
-
-      return await this.transferRepo.create<TransferEntity>(createTransferDto)
+      const transferData = await this.transferRepo.create<TransferEntity>(createTransferDto)
+      // create transaction
+      const transactionCreate: CreateTransactionDto = {
+        type: TransactionEnum.TRANSFER,
+        cashflowinId: null,
+        cashflowoutId: null,
+        transferId: transferData.id,
+        userId
+      }
+      const transactionData = await this.transactionService.create(transactionCreate)
+      if (transactionData) {
+        return transferData
+      } else {
+        throw new BadRequestException('create cashflowout failed')
+      }
     } catch (error) {
-      console.log('====================================');
-      console.log(error);
-      console.log('====================================');
       throw new BadRequestException('Create transfer failed')
     }
   }

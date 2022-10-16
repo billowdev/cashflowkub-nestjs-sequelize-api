@@ -4,7 +4,7 @@ import { FastifyReply } from 'fastify';
 import { requestAuthUserDto } from 'src/auth/dto';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { CashflowoutService } from './cashflowout.service';
-import { CreateCashflowoutDto } from './dto/create-cashflowout.dto';
+import { BulkCreateCashflowoutDto, CreateCashflowoutDto } from './dto/create-cashflowout.dto';
 import { UpdateCashflowoutDto } from './dto/update-cashflowout.dto';
 import { CashflowoutEntity } from './entities/cashflowout.entity';
 
@@ -26,6 +26,20 @@ export class CashflowoutController {
       data
     })
   }
+
+  @Post('bulk')
+  async bulkCreate(
+    @Body() createCashflowinDto: BulkCreateCashflowoutDto,
+    @Res() res: FastifyReply
+  ) {
+    const data: CashflowoutEntity[] = await this.cashflowoutService.bulkCreate(createCashflowinDto);
+    res.send({
+      statusCode: res.statusCode,
+      message: "create bulk cashflowout successfuly",
+      data
+    })
+  }
+
 
   @Get()
   async findAll(
