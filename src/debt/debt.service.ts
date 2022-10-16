@@ -14,45 +14,45 @@ export class DebtService {
     try {
       return await this.debtRepo.create<DebtEntity>(createDebtDto)
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('create debt failed')
     }
   }
 
-  async findAll(userId: string) {
+  async findAll(userId: string): Promise<DebtEntity[]> {
     try {
-      return await this.debtRepo.findAll({
+      return await this.debtRepo.findAll<DebtEntity>({
         where: { userId }
       })
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('get all debt failed')
     }
   }
 
-  async findOne(id: string, userId: string) {
+  async findOne(id: string, userId: string):Promise<DebtEntity> {
     try {
-      return await this.debtRepo.findOne({
+      return await this.debtRepo.findOne<DebtEntity>({
         where: { id, userId }
       })
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('get debt failed')
     }
   }
 
-  async update(id: string, updateDebtDto: UpdateDebtDto, userId: string) {
+  async update(id: string, updateDebtDto: UpdateDebtDto, userId: string) : Promise<[number, DebtEntity[]]>{
     try {
-      return await this.debtRepo.update({
+      return await this.debtRepo.update<DebtEntity>({
         ...updateDebtDto
       }, {
         where: { id, userId }
       })
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('update debt failed')
     }
   }
 
-  async remove(id: string, userId: string) {
+  async remove(id: string, userId: string):Promise<number> {
     try {
-      return await this.debtRepo.destroy({
+      return await this.debtRepo.destroy<DebtEntity>({
         where: { id, userId }
       })
     } catch (error) {

@@ -18,9 +18,9 @@ export class PocketService {
     }
   }
 
-  async findAll(userId: string) {
+  async findAll(userId: string): Promise<PocketEntity[]> {
     try {
-      return await this.pocketRepo.findAll({
+      return await this.pocketRepo.findAll<PocketEntity>({
         where: { userId }
       })
     } catch (error) {
@@ -28,27 +28,27 @@ export class PocketService {
     }
   }
 
-  async findOne(id: string, userId: string) {
+  async findOne(id: string, userId: string): Promise<PocketEntity> {
     try {
-      return await this.pocketRepo.findOne({
+      return await this.pocketRepo.findOne<PocketEntity>({
         where: { id, userId }
       })
     } catch (error) {
-      throw new BadRequestException('get pocket by id failed')
+      throw new BadRequestException('get pocket failed')
     }
   }
 
-  async update(id: string, updatePocketDto: UpdatePocketDto, userId: string) {
+  async update(id: string, updatePocketDto: UpdatePocketDto, userId: string): Promise<[number, PocketEntity[]]> {
     try {
-      return await this.pocketRepo.update({ ...updatePocketDto }, { where: { id, userId } })
+      return await this.pocketRepo.update<PocketEntity>({ ...updatePocketDto }, { where: { id, userId } })
     } catch (error) {
       throw new BadRequestException('update pocket failed')
     }
   }
 
-  async remove(id: string, userId: string) {
+  async remove(id: string, userId: string):Promise<number> {
     try {
-      return await this.pocketRepo.destroy({
+      return await this.pocketRepo.destroy<PocketEntity>({
         where: { id, userId }
       })
     } catch (error) {

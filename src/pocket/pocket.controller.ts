@@ -6,6 +6,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { requestAuthUserDto } from 'src/auth/dto';
 import { FastifyReply } from 'fastify';
 import { JwtAuthGuard } from 'src/auth/guards';
+import { PocketEntity } from './entities/pocket.entity';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('pockets')
@@ -17,7 +18,7 @@ export class PocketController {
   async create(@Body() createPocketDto: CreatePocketDto,
     @Res() res: FastifyReply
   ) {
-    const data = await this.pocketService.create(createPocketDto);
+    const data: PocketEntity = await this.pocketService.create(createPocketDto);
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -39,7 +40,7 @@ export class PocketController {
     @Res() res: FastifyReply
   ) {
     const userId: string = req.user.sub
-    const data = await this.pocketService.findAll(userId);
+    const data: PocketEntity[] = await this.pocketService.findAll(userId);
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -60,7 +61,7 @@ export class PocketController {
     @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply) {
     const userId: string = req.user.sub
-    const data = await this.pocketService.findOne(id, userId);
+    const data: PocketEntity = await this.pocketService.findOne(id, userId);
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -83,7 +84,7 @@ export class PocketController {
     @Res() res: FastifyReply
   ) {
     const userId: string = req.user.sub
-    const data = await this.pocketService.update(id, updatePocketDto, userId);
+    const data: [number, PocketEntity[]] = await this.pocketService.update(id, updatePocketDto, userId);
     if (data[0]) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -106,7 +107,7 @@ export class PocketController {
     @Res() res: FastifyReply
   ) {
     const userId: string = req.user.sub
-    const data = await this.pocketService.remove(id, userId);
+    const data: number = await this.pocketService.remove(id, userId);
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,

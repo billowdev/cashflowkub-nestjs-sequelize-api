@@ -3,6 +3,7 @@ import { Optional, UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model, ForeignKey, BelongsTo, HasMany } from "sequelize-typescript";
 import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { UserEntity } from "src/user/entities/user.entity";
+import { TransactionEntity } from "src/transaction/entities/transaction.entity";
 
 type TransferAttributes = {
 	id: string,
@@ -82,4 +83,6 @@ export class TransferEntity extends Model<TransferAttributes, TransferCreationAt
 	})
 	declare updatedAt: Date;
 
+	@HasMany(() => TransactionEntity, { onDelete: "casCade" })
+	transactions: TransactionEntity[]
 }

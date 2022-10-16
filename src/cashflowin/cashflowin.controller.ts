@@ -19,7 +19,7 @@ export class CashflowinController {
     @Body() createCashflowinDto: BulkCreateCashflowinDto,
     @Res() res: FastifyReply
   ) {
-    const data = await this.cashflowinService.bulkCreate(createCashflowinDto);
+    const data: CashflowinEntity[] = await this.cashflowinService.bulkCreate(createCashflowinDto);
     res.send({
       statusCode: res.statusCode,
       message: "create bulk cashflow in successfuly",
@@ -30,11 +30,9 @@ export class CashflowinController {
   @Post()
   async create(
     @Body() createCashflowinDto: CreateCashflowinDto,
-    @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply
   ) {
-    const { sub } = req.user
-    const data: CashflowinEntity = await this.cashflowinService.create(createCashflowinDto, sub);
+    const data: CashflowinEntity = await this.cashflowinService.create(createCashflowinDto);
     res.send({
       statusCode: res.statusCode,
       message: "create cashflow in successfuly",
@@ -72,7 +70,10 @@ export class CashflowinController {
     @Body() updateCashflowinDto: UpdateCashflowinDto,
     @Res() res: FastifyReply,
     @Req() { user }: requestAuthUserDto,) {
-    const data = await this.cashflowinService.update(id, updateCashflowinDto, user.sub);
+    const data: [number, CashflowinEntity[]] = await this.cashflowinService.update(
+      id,
+      updateCashflowinDto,
+      user.sub);
     if (data[0]) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -91,7 +92,7 @@ export class CashflowinController {
 
   @Delete(':id')
   async remove(@Param('id') id: string, @Res() res: FastifyReply, @Req() { user }: requestAuthUserDto) {
-    const data = await this.cashflowinService.remove(id, user.sub);
+    const data: number = await this.cashflowinService.remove(id, user.sub);
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,

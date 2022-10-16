@@ -20,7 +20,7 @@ type AssetAttributes = {
 	createdAt: Date
 	updatedAt: Date,
 }
-type AssetCreationAttributes = Optional<AssetAttributes, 'id'>;
+type AssetCreationAttributes = Optional<AssetAttributes, 'id' | 'createdAt' | 'updatedAt'>;
 
 @Table({
 	tableName: 'asset'

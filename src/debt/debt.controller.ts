@@ -6,6 +6,7 @@ import { JwtAuthGuard } from 'src/auth/guards';
 import { DebtService } from './debt.service';
 import { CreateDebtDto } from './dto/create-debt.dto';
 import { UpdateDebtDto } from './dto/update-debt.dto';
+import { DebtEntity } from './entities/debt.entity';
 
 @UseGuards(JwtAuthGuard)
 @ApiTags('debts')
@@ -15,9 +16,8 @@ export class DebtController {
 
   @Post()
   async create(@Body() createDebtDto: CreateDebtDto,
-    @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply) {
-    const data = await this.debtService.create(createDebtDto);
+    const data: DebtEntity = await this.debtService.create(createDebtDto);
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -39,7 +39,7 @@ export class DebtController {
     @Res() res: FastifyReply
   ) {
     const userId: string = req.user.sub
-    const data = await this.debtService.findAll(userId);
+    const data: DebtEntity[] = await this.debtService.findAll(userId);
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -59,7 +59,7 @@ export class DebtController {
   async findOne(@Param('id') id: string, @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply) {
     const userId: string = req.user.sub
-    const data = await this.debtService.findOne(id, userId);
+    const data: DebtEntity = await this.debtService.findOne(id, userId);
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -79,7 +79,7 @@ export class DebtController {
   async update(@Param('id') id: string, @Body() updateDebtDto: UpdateDebtDto, @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply) {
     const userId: string = req.user.sub
-    const data = await this.debtService.update(id, updateDebtDto, userId);
+    const data: [number, DebtEntity[]] = await this.debtService.update(id, updateDebtDto, userId);
     if (data[0]) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -99,7 +99,7 @@ export class DebtController {
   async remove(@Param('id') id: string, @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply) {
     const userId: string = req.user.sub
-    const data = await this.debtService.remove(id, userId);
+    const data: number = await this.debtService.remove(id, userId);
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,

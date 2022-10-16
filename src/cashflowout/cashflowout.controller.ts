@@ -6,6 +6,7 @@ import { JwtAuthGuard } from 'src/auth/guards';
 import { CashflowoutService } from './cashflowout.service';
 import { CreateCashflowoutDto } from './dto/create-cashflowout.dto';
 import { UpdateCashflowoutDto } from './dto/update-cashflowout.dto';
+import { CashflowoutEntity } from './entities/cashflowout.entity';
 
 @ApiTags('cashflowouts')
 @UseGuards(JwtAuthGuard)
@@ -16,11 +17,9 @@ export class CashflowoutController {
   @Post()
   async create(
     @Body() createCashflowoutDto: CreateCashflowoutDto,
-    @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply
   ) {
-    const userId = req.user.sub
-    const data = await this.cashflowoutService.create(createCashflowoutDto, userId);
+    const data: CashflowoutEntity = await this.cashflowoutService.create(createCashflowoutDto);
     res.status(200).send({
       statusCode: res.statusCode,
       message: "create cashflow out successfuly",
@@ -33,7 +32,7 @@ export class CashflowoutController {
     @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply
   ) {
-    const data = await this.cashflowoutService.findAll(req.user.sub);
+    const data: CashflowoutEntity[] = await this.cashflowoutService.findAll(req.user.sub);
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -55,7 +54,7 @@ export class CashflowoutController {
     @Param('id') id: string,
     @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply) {
-    const data = await this.cashflowoutService.findOne(id, req.user.sub);
+    const data: CashflowoutEntity = await this.cashflowoutService.findOne(id, req.user.sub);
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -76,7 +75,7 @@ export class CashflowoutController {
     @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply
   ) {
-    const data = await this.cashflowoutService.update(id, updateCashflowoutDto, req.user.sub);
+    const data: [number, CashflowoutEntity[]] = await this.cashflowoutService.update(id, updateCashflowoutDto, req.user.sub);
     if (data[0]) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -99,7 +98,7 @@ export class CashflowoutController {
     @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply
   ) {
-    const data = await this.cashflowoutService.remove(id, req.user.sub);
+    const data: number = await this.cashflowoutService.remove(id, req.user.sub);
 
     if (data) {
       res.status(200).send({
