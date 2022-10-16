@@ -1,14 +1,17 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 import { requestAuthUserDto } from 'src/auth/dto';
-import { JwtAuthGuard } from 'src/auth/guards';
+import { JwtAuthGuard, RolesGuard } from 'src/auth/guards';
+import { Role } from 'src/user/entities/role.enum';
 import { DebtService } from './debt.service';
 import { CreateDebtDto } from './dto/create-debt.dto';
 import { UpdateDebtDto } from './dto/update-debt.dto';
 import { DebtEntity } from './entities/debt.entity';
 
-@UseGuards(JwtAuthGuard)
+@Roles(Role.ADMIN, Role.PREMIUM)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('debts')
 @Controller('debts')
 export class DebtController {

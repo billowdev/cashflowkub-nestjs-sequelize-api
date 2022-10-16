@@ -1,13 +1,17 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/user/entities/role.enum';
 import { requestAuthUserDto } from '../auth/dto';
-import { JwtAuthGuard } from '../auth/guards';
+import { JwtAuthGuard, RolesGuard } from '../auth/guards';
 import { AssetService } from './asset.service';
 import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';
 import { AssetEntity } from './entities/asset.entity';
 
+@Roles(Role.ADMIN, Role.PREMIUM)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('assets')
 @UseGuards(JwtAuthGuard)
 @Controller('assets')
