@@ -58,18 +58,25 @@ let CashflowinService = class CashflowinService {
             const bulkCashflowin = await this.cashflowinRepo.bulkCreate(createCashflowinDto, {
                 returning: true
             });
-            new Promise((resolve) => resolve(bulkCashflowin.forEach(cashin => {
-                const cashflowinId = cashin['dataValues'].id;
-                const userId = cashin['dataValues'].userId;
-                const transactionData = {
+            for (const cashflowin of bulkCashflowin) {
+                const cashin = await cashflowin['dataValues'];
+                const cashflowinId = await cashin.id;
+                const userId = await cashin.userId;
+                const pocketId = await cashin.pocketId;
+                const amount = await cashin.amount;
+                const pocket = await this.pocketService.findOne(pocketId, userId);
+                const presentPocketBalance = await pocket.balance;
+                const newBalance = await (Number(presentPocketBalance) + Number(amount));
+                await this.pocketService.update(pocketId, { balance: newBalance }, userId);
+                const transactionData = await {
                     type: transaction_entity_1.TransactionEnum.CASHFLOWIN,
                     cashflowinId,
                     cashflowoutId: null,
                     transferId: null,
                     userId
                 };
-                new Promise((resolve) => resolve(this.transactionService.create(transactionData)));
-            })));
+                await this.transactionService.create(transactionData);
+            }
             return bulkCashflowin;
         }
         catch (error) {
