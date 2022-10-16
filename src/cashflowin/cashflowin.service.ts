@@ -98,7 +98,7 @@ export class CashflowinService {
 
       )
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('update cashflowin failed')
     }
   }
 
@@ -107,14 +107,14 @@ export class CashflowinService {
       // remove transaction 
       const isTransactionRemove = await this.transactionService.removeByTypeActionId('cashflowin', id, userId)
       if (!isTransactionRemove) {
-        throw new BadRequestException('remove cashflowin failed')
+        throw new BadRequestException('remove cashflowin transaction failed')
       }
       // remove cashflowin
       return await this.cashflowinRepo.destroy<CashflowinEntity>({
         where: { id, userId }
       })
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('remove cashflowin failed')
     }
   }
 }
