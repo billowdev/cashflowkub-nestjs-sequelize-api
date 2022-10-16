@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { AssetEnum } from '../entities/asset.entity';
 
 export class CreateAssetDto {
@@ -8,8 +8,8 @@ export class CreateAssetDto {
 	// userId it's not provide for request body from the client
 	@ApiProperty()
 	@IsString()
-	@IsOptional()
-	userId?: string;
+	@IsNotEmpty()
+	userId: string;
 
 	@ApiProperty()
 	@IsString()
