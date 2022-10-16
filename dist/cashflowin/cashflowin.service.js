@@ -59,18 +59,14 @@ let CashflowinService = class CashflowinService {
                 returning: true
             });
             for (const cashflowin of bulkCashflowin) {
-                const cashin = await cashflowin['dataValues'];
-                const cashflowinId = await cashin.id;
-                const userId = await cashin.userId;
-                const pocketId = await cashin.pocketId;
-                const amount = await cashin.amount;
+                const { id, userId, pocketId, amount } = await cashflowin['dataValues'];
                 const pocket = await this.pocketService.findOne(pocketId, userId);
                 const presentPocketBalance = await pocket.balance;
                 const newBalance = await (Number(presentPocketBalance) + Number(amount));
                 await this.pocketService.update(pocketId, { balance: newBalance }, userId);
                 const transactionData = await {
                     type: transaction_entity_1.TransactionEnum.CASHFLOWIN,
-                    cashflowinId,
+                    cashflowinId: id,
                     cashflowoutId: null,
                     transferId: null,
                     userId
