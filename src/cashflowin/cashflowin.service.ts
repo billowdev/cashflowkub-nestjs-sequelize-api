@@ -1,39 +1,80 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CASHFLOWIN_REPOSITORY } from 'src/core/constants';
+import { PocketService } from 'src/pocket/pocket.service';
+import { CreateTransactionDto } from 'src/transaction/dto/create-transaction.dto';
+import { TransactionEnum } from 'src/transaction/entities/transaction.entity';
+import { TransactionService } from 'src/transaction/transaction.service';
 import { BulkCreateCashflowinDto, CreateCashflowinDto } from './dto/create-cashflowin.dto';
 import { UpdateCashflowinDto } from './dto/update-cashflowin.dto';
-import { CashflowinCreationAttributes, CashflowinEntity } from './entities/cashflowin.entity';
+import { CashflowinEntity } from './entities/cashflowin.entity';
 
 @Injectable()
 export class CashflowinService {
-  constructor(@Inject(CASHFLOWIN_REPOSITORY) private readonly cashflowinRepo: typeof CashflowinEntity) { }
+  constructor(
+    @Inject(CASHFLOWIN_REPOSITORY) private readonly cashflowinRepo: typeof CashflowinEntity,
+    @Inject(forwardRef(() => TransactionService)) private readonly transactionService: TransactionService,
+    @Inject(PocketService) private readonly pocketService: PocketService
+  ) { }
 
-  async create(createCashflowinDto: CreateCashflowinDto, userId: string): Promise<CashflowinEntity> {
+  async create(createCashflowinDto: CreateCashflowinDto): Promise<CashflowinEntity> {
     try {
-      const cashflowin = new CashflowinEntity()
-      cashflowin.amount = createCashflowinDto.amount
-      cashflowin.userId = userId
-      cashflowin.pocketId = createCashflowinDto.pocketId
-      cashflowin.desc = createCashflowinDto.desc
-      cashflowin.categoryId = createCashflowinDto.categoryId
-      return await this.cashflowinRepo.create<CashflowinEntity>(cashflowin['dataValues'])
+      const cashin = await this.cashflowinRepo.create<CashflowinEntity>(createCashflowinDto)
+      const pocketId = createCashflowinDto.pocketId
+      const userId = createCashflowinDto.userId
+      const amount = createCashflowinDto.amount
+      // update balance pocket 
+      const { id, balance } = await this.pocketService.findOne(pocketId, userId)
+      const newBalance = Number(balance) + Number(amount);
+      const updateBalancePocket = await this.pocketService.update(id, { balance: newBalance }, userId)
+      if (!updateBalancePocket[0]) {
+        throw new BadRequestException('create cashflowin failed')
+      }
+      const cashflowinId = cashin['dataValues'].id
+      const transactionData: CreateTransactionDto = {
+        type: TransactionEnum.CASHFLOWIN,
+        cashflowinId,
+        cashflowoutId: null,
+        transferId: null,
+        userId
+      }
+      const transactionCreate = await this.transactionService.create(transactionData)
+      if (!transactionCreate) throw new BadRequestException('create cashflowin failed');
+      return cashin
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('create cashflowin failed')
     }
-
   }
 
   async bulkCreate(createCashflowinDto: BulkCreateCashflowinDto): Promise<CashflowinEntity[]> {
     try {
-      return await this.cashflowinRepo.bulkCreate<CashflowinEntity | any>(
+      const bulkCashflowin = await this.cashflowinRepo.bulkCreate<CashflowinEntity>(
         createCashflowinDto,
         {
           returning: true
         })
-    } catch (error) {
-      throw new BadRequestException()
-    }
+      // create transasction and update pocket 
+      for (const cashflowin of bulkCashflowin) {
+        const { id, userId, pocketId, amount } = await cashflowin['dataValues']
+        const pocket = await this.pocketService.findOne(pocketId, userId)
+        const presentPocketBalance = await pocket.balance
+        const newBalance = await (Number(presentPocketBalance) + Number(amount))
+        // update pocket balance
+        await this.pocketService.update(pocketId, { balance: newBalance }, userId)
+        // transaction create 
+        const transactionData: CreateTransactionDto = await {
+          type: TransactionEnum.CASHFLOWIN,
+          cashflowinId: id,
+          cashflowoutId: null,
+          transferId: null,
+          userId
+        }
+        await this.transactionService.create(transactionData)
+      }
 
+      return bulkCashflowin
+    } catch (error) {
+      throw new BadRequestException('create cashflowin failed')
+    }
   }
 
   async findAll(userId: string): Promise<CashflowinEntity[]> {
@@ -62,20 +103,33 @@ export class CashflowinService {
     try {
       return await this.cashflowinRepo.update<CashflowinEntity>(
         { ...updateCashflowinDto },
-        { where: { id, userId } }
+        { where: { id, userId }, returning: true },
+
       )
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('update cashflowin failed')
     }
   }
 
   async remove(id: string, userId: string): Promise<number> {
     try {
+
+      const cashflowin = await this.cashflowinRepo.findByPk(id)
+      const pocketId = cashflowin.pocketId
+      const cashflowinAmout = cashflowin.amount
+      const pocket = await this.pocketService.findOne(pocketId, userId)
+      const newBalance = Number(pocket.balance) - Number(cashflowinAmout)
+      // decrease balance pocket after delete cashflowin
+      await this.pocketService.update(pocketId, { balance: newBalance }, userId)
+      // remove transaction
+      await this.transactionService.removeByTypeActionId('cashflowin', id, userId)
+
+      // remove cashflowin
       return await this.cashflowinRepo.destroy<CashflowinEntity>({
         where: { id, userId }
       })
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('remove cashflowin failed')
     }
   }
 }

@@ -11,7 +11,7 @@ export class AssetService {
   ) { }
   async create(createAssetDto: CreateAssetDto): Promise<AssetEntity> {
     try {
-      return await this.assetRepo.create<AssetEntity | any>(createAssetDto);
+      return await this.assetRepo.create<AssetEntity>(createAssetDto);
     } catch (error) {
       throw new BadRequestException()
     }
@@ -37,12 +37,13 @@ export class AssetService {
     }
   }
 
-  async update(id: string, userId: string, updateAssetDto: UpdateAssetDto): Promise<AssetEntity | number[] | unknown> {
+  async update(id: string, userId: string, updateAssetDto: UpdateAssetDto): Promise<[number, AssetEntity[]]> {
     try {
       return await this.assetRepo.update<AssetEntity>(
         { ...updateAssetDto },
         {
-          where: { id, userId }
+          where: { id, userId },
+          returning: true,
         })
     } catch (error) {
       throw new BadRequestException()
@@ -51,7 +52,7 @@ export class AssetService {
 
   async remove(id: string, userId: string): Promise<number> {
     try {
-      return await this.assetRepo.destroy({
+      return await this.assetRepo.destroy<AssetEntity>({
         where: { id, userId }
       })
     } catch (error) {

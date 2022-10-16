@@ -1,10 +1,14 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { CashflowinService } from './cashflowin.service';
 import { CashflowinController } from './cashflowin.controller';
 import { cashflowinProviders } from './entities/cashflowin.providers';
+import { TransactionModule } from 'src/transaction/transaction.module';
+import { PocketModule } from 'src/pocket/pocket.module';
 
 @Module({
+  imports: [forwardRef(() => TransactionModule), PocketModule],
   controllers: [CashflowinController],
-  providers: [CashflowinService, ...cashflowinProviders]
+  providers: [CashflowinService, ...cashflowinProviders],
+  exports: [CashflowinService]
 })
-export class CashflowinModule {}
+export class CashflowinModule { }

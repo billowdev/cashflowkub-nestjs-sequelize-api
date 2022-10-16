@@ -1,12 +1,17 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/user/entities/role.enum';
 import { requestAuthUserDto } from '../auth/dto';
-import { JwtAuthGuard } from '../auth/guards';
+import { JwtAuthGuard, RolesGuard } from '../auth/guards';
 import { AssetService } from './asset.service';
 import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';
+import { AssetEntity } from './entities/asset.entity';
 
+@Roles(Role.ADMIN, Role.PREMIUM)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('assets')
 @UseGuards(JwtAuthGuard)
 @Controller('assets')
@@ -16,11 +21,9 @@ export class AssetController {
   @Post()
   async create(
     @Body() createAssetDto: CreateAssetDto,
-    @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply,
   ) {
-    const userId = req.user.sub
-    const data = await this.assetService.create({ ...createAssetDto, userId });
+    const data: AssetEntity = await this.assetService.create(createAssetDto);
     res.status(200).send({
       statusCode: res.statusCode,
       message: "create assets successfuly",
@@ -32,7 +35,7 @@ export class AssetController {
   async findAll(
     @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply) {
-    const data = await this.assetService.findAll(req.user.sub);
+    const data: AssetEntity[] = await this.assetService.findAll(req.user.sub);
     res.status(200).send({
       statusCode: res.statusCode,
       message: "get all assets successfuly",
@@ -45,7 +48,7 @@ export class AssetController {
     @Param('id') id: string,
     @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply) {
-    const data = await this.assetService.findOne(id, req.user.sub)
+    const data: AssetEntity = await this.assetService.findOne(id, req.user.sub)
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -67,7 +70,7 @@ export class AssetController {
     @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply,
   ) {
-    const data = await this.assetService.update(id, req.user.sub, updateAssetDto);
+    const data: [number, AssetEntity[]] = await this.assetService.update(id, req.user.sub, updateAssetDto);
 
     if (data[0]) {
       res.status(200).send({

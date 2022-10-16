@@ -1,6 +1,6 @@
-import { ApiProperty, PartialType } from "@nestjs/swagger";
-import { IsNotEmpty, IsNumber, IsNumberString, IsOptional, IsString } from "class-validator";
-import { CashflowoutEntity, CashflowoutEnum } from "../entities/cashflowout.entity";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { CashflowoutEnum } from "../entities/cashflowout.entity";
 
 export class CreateCashflowoutDto {
 
@@ -26,8 +26,8 @@ export class CreateCashflowoutDto {
 
 	@ApiProperty()
 	@IsString()
-	@IsOptional()
-	userId?: string;
+	@IsNotEmpty()
+	userId: string;
 
 	@ApiProperty()
 	@IsString()
@@ -35,3 +35,5 @@ export class CreateCashflowoutDto {
 	categoryId: string;
 
 }
+
+export type BulkCreateCashflowoutDto = CreateCashflowoutDto[]

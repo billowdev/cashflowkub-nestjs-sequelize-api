@@ -22,6 +22,14 @@ module.exports = {
 			},
 			{
 				id: "1755fae2-ebf9-480c-849d-6ad23db0fdd1",
+				name: "my wallet 1",
+				balance: 0,
+				user_id: "8731c5ce-2dcb-47da-8efd-ff0e07a6b050",
+				created_at: new Date(),
+				updated_at: new Date(),
+			},
+			{
+				id: "1755fae2-ebf9-480c-849d-6ad23db0fdd2",
 				name: "my wallet 2",
 				balance: 0,
 				user_id: "8731c5ce-2dcb-47da-8efd-ff0e07a6b051",

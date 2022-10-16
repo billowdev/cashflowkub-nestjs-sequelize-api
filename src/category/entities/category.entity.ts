@@ -22,7 +22,7 @@ type CategoryAttributes = {
 	createdAt: Date,
 	updatedAt: Date
 }
-type CategoryCreationAttributes = Optional<CategoryAttributes, 'id' | 'desc'>;
+type CategoryCreationAttributes = Optional<CategoryAttributes, 'id' | 'desc' | 'createdAt' | 'updatedAt'>;
 
 
 @Table({
