@@ -3,9 +3,10 @@ import { CashflowinService } from './cashflowin.service';
 import { CashflowinController } from './cashflowin.controller';
 import { cashflowinProviders } from './entities/cashflowin.providers';
 import { TransactionModule } from 'src/transaction/transaction.module';
+import { PocketModule } from 'src/pocket/pocket.module';
 
 @Module({
-  imports: [forwardRef(() => TransactionModule),],
+  imports: [forwardRef(() => TransactionModule), PocketModule],
   controllers: [CashflowinController],
   providers: [CashflowinService, ...cashflowinProviders],
   exports: [CashflowinService]
