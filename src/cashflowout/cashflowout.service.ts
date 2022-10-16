@@ -8,19 +8,9 @@ import { CashflowoutEntity } from './entities/cashflowout.entity';
 export class CashflowoutService {
   constructor(@Inject(CASHFLOWOUT_REPOSITORY) private readonly cashflowoutRepo: typeof CashflowoutEntity) { }
 
-  async create(
-    createCashflowoutDto: CreateCashflowoutDto,
-    userId: string
-  ) {
+  async create(createCashflowoutDto: CreateCashflowoutDto): Promise<CashflowoutEntity> {
     try {
-      const cashflowoutDto = new CashflowoutEntity()
-      cashflowoutDto.desc = createCashflowoutDto.desc
-      cashflowoutDto.amount = createCashflowoutDto.amount
-      cashflowoutDto.pocketId = createCashflowoutDto.pocketId
-      cashflowoutDto.categoryId = createCashflowoutDto.categoryId
-      cashflowoutDto.type = createCashflowoutDto.type
-      cashflowoutDto.userId = userId
-      return await this.cashflowoutRepo.create<CashflowoutEntity>(cashflowoutDto['dataValues'])
+      return await this.cashflowoutRepo.create<CashflowoutEntity>(createCashflowoutDto)
     } catch (error) {
       throw new BadRequestException()
     }
@@ -32,7 +22,7 @@ export class CashflowoutService {
         where: { userId }
       })
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('get all cashflowout failed')
     }
   }
 
@@ -44,7 +34,7 @@ export class CashflowoutService {
         }
       })
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('get cashflowout failed')
     }
   }
 
@@ -57,7 +47,7 @@ export class CashflowoutService {
           where: { id, userId }
         })
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('update cashflowout failed')
     }
   }
 
@@ -67,7 +57,7 @@ export class CashflowoutService {
         where: { id, userId }
       })
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('delete cashflowout failed')
     }
   }
 }

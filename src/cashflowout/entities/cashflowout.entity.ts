@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import {  HasMany, BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { HasMany, BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
 import { Optional, UUIDV4 } from "sequelize";
 import { UserEntity } from "src/user/entities/user.entity";
 import { PocketEntity } from "src/pocket/entities/pocket.entity";
@@ -24,7 +24,7 @@ type CashflowoutAttributes = {
 	createdAt: Date,
 	updatedAt: Date
 }
-type CashflowoutCreationAttributes = Optional<CashflowoutAttributes, 'id'>;
+type CashflowoutCreationAttributes = Optional<CashflowoutAttributes, 'id' | 'createdAt' | 'updatedAt'>;
 
 @Table({
 	tableName: "cashflowout"
