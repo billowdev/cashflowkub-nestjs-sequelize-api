@@ -33,9 +33,6 @@ export class TransferService {
 
       return await this.transferRepo.create<TransferEntity>(createTransferDto)
     } catch (error) {
-      console.log('====================================');
-      console.log(error);
-      console.log('====================================');
       throw new BadRequestException('Create transfer failed')
     }
   }

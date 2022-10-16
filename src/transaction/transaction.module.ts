@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { TransactionController } from './transaction.controller';
 import { transactionProviders } from './entities/transaction.providers';
@@ -8,11 +8,13 @@ import { CashflowoutModule } from 'src/cashflowout/cashflowout.module';
 
 @Module({
   imports: [
-    TransferModule,
-    CashflowinModule,
-    CashflowoutModule,
+    forwardRef(() => TransferModule),
+    forwardRef(() => CashflowinModule),
+    forwardRef(() => CashflowoutModule)
+
   ],
   controllers: [TransactionController],
-  providers: [TransactionService, ...transactionProviders]
+  providers: [TransactionService, ...transactionProviders],
+  exports: [TransactionService]
 })
 export class TransactionModule { }

@@ -1,18 +1,36 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CASHFLOWIN_REPOSITORY } from 'src/core/constants';
+import { CreateTransactionDto } from 'src/transaction/dto/create-transaction.dto';
+import { TransactionEnum } from 'src/transaction/entities/transaction.entity';
+import { TransactionService } from 'src/transaction/transaction.service';
 import { BulkCreateCashflowinDto, CreateCashflowinDto } from './dto/create-cashflowin.dto';
 import { UpdateCashflowinDto } from './dto/update-cashflowin.dto';
 import { CashflowinEntity } from './entities/cashflowin.entity';
 
 @Injectable()
 export class CashflowinService {
-  constructor(@Inject(CASHFLOWIN_REPOSITORY) private readonly cashflowinRepo: typeof CashflowinEntity) { }
+  constructor(
+    @Inject(CASHFLOWIN_REPOSITORY) private readonly cashflowinRepo: typeof CashflowinEntity,
+    @Inject(forwardRef(() => TransactionService)) private readonly transactionService: TransactionService
+  ) { }
 
   async create(createCashflowinDto: CreateCashflowinDto): Promise<CashflowinEntity> {
     try {
-      return await this.cashflowinRepo.create<CashflowinEntity>(createCashflowinDto)
+      const cashin = await this.cashflowinRepo.create<CashflowinEntity>(createCashflowinDto)
+      const cashflowinId = cashin['dataValues'].id
+      const userId = cashin['dataValues'].userId
+      const transactionData: CreateTransactionDto = {
+        type: TransactionEnum.CASHFLOWIN,
+        cashflowinId,
+        cashflowoutId: null,
+        transferId: null,
+        userId
+      }
+      const transactionCreate = await this.transactionService.create(transactionData)
+      if (!transactionCreate) throw new BadRequestException('create cashflowin failed');
+      return cashin
     } catch (error) {
-      throw new BadRequestException()
+      throw new BadRequestException('create cashflowin failed')
     }
 
   }

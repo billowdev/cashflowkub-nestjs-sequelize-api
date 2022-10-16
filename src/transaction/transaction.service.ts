@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CashflowinService } from 'src/cashflowin/cashflowin.service';
 import { CashflowoutService } from 'src/cashflowout/cashflowout.service';
 import { TRANSACTION_REPOSITORY } from 'src/core/constants';
@@ -10,11 +10,11 @@ import { TransactionEntity, TransactionEnum } from './entities/transaction.entit
 export class TransactionService {
   constructor(
     @Inject(TRANSACTION_REPOSITORY) private readonly transactionRepo: typeof TransactionEntity,
-    @Inject(TransferService)
+    @Inject(forwardRef(() => TransferService),)
     private readonly transferService: TransferService,
-    @Inject(CashflowinService)
+    @Inject(forwardRef(() => CashflowinService))
     private readonly cashflowinService: CashflowinService,
-    @Inject(CashflowoutService)
+    @Inject(forwardRef(() => CashflowoutService))
     private readonly cashflowoutService: CashflowoutService,
 
   ) { }

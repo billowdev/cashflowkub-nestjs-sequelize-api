@@ -19,9 +19,6 @@ export class TransferController {
   async create(@Body() createTransferDto: CreateTransferDto,
     @Res() res: FastifyReply) {
     const data: TransferEntity = await this.transferService.create(createTransferDto);
-    console.log('====================================');
-    console.log(data);
-    console.log('====================================');
     res.status(200).send({
       statusCode: res.statusCode,
       message: 'create transfer successfuly',
