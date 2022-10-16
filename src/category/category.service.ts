@@ -4,6 +4,7 @@ import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryEntity } from './entities/category.entity';
 import { Role } from 'src/user/entities/role.enum';
+import { CategoryFindAllDto } from './dto/find-all-category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -35,7 +36,7 @@ export class CategoryService {
     }
   }
 
-  async findAll(userId: string): Promise<any> {
+  async findAll(userId: string): Promise<CategoryFindAllDto> {
     try {
       const systemCategories = await this.categoryRepo.findAll<CategoryEntity>({
         attributes: {
@@ -74,9 +75,9 @@ export class CategoryService {
     }
   }
 
-  async update(id: string, updateCategoryDto: UpdateCategoryDto, userId: string) {
+  async update(id: string, updateCategoryDto: UpdateCategoryDto, userId: string): Promise<[number, CategoryEntity[]]> {
     try {
-      return await this.categoryRepo.update(
+      return await this.categoryRepo.update<CategoryEntity>(
         { ...updateCategoryDto },
         {
           where: { id, userId }

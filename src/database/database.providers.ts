@@ -15,19 +15,19 @@ export const databaseProviders = [{
    provide: SEQUELIZE,
    useFactory: async () => {
       let config;
-      // let isForce: boolean;
+      let isForce: boolean;
       switch (process.env.NODE_ENV) {
          case DEVELOPMENT:
             config = dbConfig.development;
-            // isForce = false
+            isForce = false
             break;
          case TEST:
             config = dbConfig.test;
-            // isForce = true
+            isForce = true
             break;
          case PRODUCTION:
             config = dbConfig.production;
-            // isForce = false
+            isForce = false
             break;
          default:
             config = dbConfig.development;
@@ -45,7 +45,7 @@ export const databaseProviders = [{
          TransactionEntity
       ]);
       // { force: true } should be fasle in production
-      await sequelize.sync({ force: true });
+      await sequelize.sync({ force: isForce });
       return sequelize;
    },
 }];

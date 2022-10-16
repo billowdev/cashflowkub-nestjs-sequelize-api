@@ -6,7 +6,9 @@ import { JwtAuthGuard } from 'src/auth/guards';
 
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
+import { CategoryFindAllDto } from './dto/find-all-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CategoryEntity } from './entities/category.entity';
 
 
 @ApiTags('categories')
@@ -23,7 +25,7 @@ export class CategoryController {
   ) {
     const userId = req.user.sub
     const role = req.user.role
-    const data = await this.categoryService.create(createCategoryDto, userId, role);
+    const data: CategoryEntity = await this.categoryService.create(createCategoryDto, userId, role);
     res.status(200).send({
       statusCode: res.statusCode,
       message: "create category successfuly",
@@ -37,7 +39,7 @@ export class CategoryController {
     @Res() res: FastifyReply
   ) {
     const userId = req.user.sub
-    const data = await this.categoryService.findAll(userId);
+    const data: CategoryFindAllDto = await this.categoryService.findAll(userId);
     res.status(200).send({
       statusCode: res.statusCode,
       message: "get all category successfuly",
@@ -53,7 +55,7 @@ export class CategoryController {
   ) {
     const userId = req.user.sub
     const role = req.user.role
-    const data = await this.categoryService.findOne(id, userId, role);
+    const data: CategoryEntity = await this.categoryService.findOne(id, userId, role);
     res.status(200).send({
       statusCode: res.statusCode,
       message: "get category by id successfuly",
@@ -68,7 +70,7 @@ export class CategoryController {
     @Res() res: FastifyReply
   ) {
     const userId = req.user.sub
-    const data = await this.categoryService.update(id, updateCategoryDto, userId);
+    const data: [number, CategoryEntity[]] = await this.categoryService.update(id, updateCategoryDto, userId);
     if (data[0]) {
       res.status(200).send({
         statusCode: res.statusCode,
@@ -91,7 +93,7 @@ export class CategoryController {
     @Res() res: FastifyReply) {
     const userId = req.user.sub
     const role = req.user.role
-    const data = await this.categoryService.remove(id, userId, role);
+    const data: number = await this.categoryService.remove(id, userId, role);
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
