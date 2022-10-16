@@ -20,6 +20,7 @@ export class CashflowinController {
     @Res() res: FastifyReply
   ) {
     const data: CashflowinEntity[] = await this.cashflowinService.bulkCreate(createCashflowinDto);
+
     res.send({
       statusCode: res.statusCode,
       message: "create bulk cashflow in successfuly",

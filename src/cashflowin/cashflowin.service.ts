@@ -32,16 +32,36 @@ export class CashflowinService {
     } catch (error) {
       throw new BadRequestException('create cashflowin failed')
     }
-
   }
 
   async bulkCreate(createCashflowinDto: BulkCreateCashflowinDto): Promise<CashflowinEntity[]> {
     try {
-      return await this.cashflowinRepo.bulkCreate<CashflowinEntity>(
+      const bulkCashflowin = await this.cashflowinRepo.bulkCreate<CashflowinEntity>(
         createCashflowinDto,
         {
           returning: true
         })
+
+      new Promise((resolve) =>
+        resolve(
+          bulkCashflowin.forEach(cashin => {
+            const cashflowinId = cashin['dataValues'].id;
+            const userId = cashin['dataValues'].userId;
+            const transactionData: CreateTransactionDto = {
+              type: TransactionEnum.CASHFLOWIN,
+              cashflowinId,
+              cashflowoutId: null,
+              transferId: null,
+              userId
+            }
+            new Promise((resolve) =>
+              resolve(this.transactionService.create(transactionData))
+            )
+          })
+        )
+      );
+
+      return bulkCashflowin
     } catch (error) {
       throw new BadRequestException()
     }
