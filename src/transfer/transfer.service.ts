@@ -77,6 +77,19 @@ export class TransferService {
 
   async remove(id: string, userId: string): Promise<number> {
     try {
+      const { fromPocketId, toPocketId, amount } = await this.transferRepo.findByPk(id)
+      // update pocket 
+      // increse source pocket
+      const fromPocket = await this.pocketService.findOne(fromPocketId, userId)
+      await this.pocketService.update(fromPocketId, { balance: (Number(fromPocket.balance) + Number(amount)) }, userId)
+
+      // decrese destination pocket
+      const toPocket = await this.pocketService.findOne(toPocketId, userId)
+      await this.pocketService.update(toPocketId, { balance: (Number(toPocket.balance) - Number(amount)) }, userId)
+
+      // remove transaction
+      await this.transactionService.removeByTypeActionId('transfer', id, userId)
+
       return await this.transferRepo.destroy<TransferEntity>({
         where: { id, userId }
       })
