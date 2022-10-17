@@ -31,7 +31,7 @@ async function bootstrap() {
       logger: envToLogger[process.env.NODE_ENV] ?? true
     })
   );
-  const prefix = '/api/v1'
+  const prefix = '/v1'
   app.setGlobalPrefix(prefix);
 
   const document = SwaggerModule.createDocument(app, swaggerConfig);
