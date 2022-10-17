@@ -1,10 +1,11 @@
 import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards, Res, Req } from '@nestjs/common';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { AuthDto, requestAuthUserDto, SessionDto, SignDto } from './dto';
 import { JwtAuthGuard, LocalGuard, UserIsExist } from './guards';
 import { FastifyReply } from 'fastify';
 
+@ApiBearerAuth()
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {

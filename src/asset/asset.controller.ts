@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/user/entities/role.enum';
@@ -10,6 +10,7 @@ import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';
 import { AssetEntity } from './entities/asset.entity';
 
+@ApiBearerAuth()
 @Roles(Role.ADMIN, Role.PREMIUM)
 @UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('assets')

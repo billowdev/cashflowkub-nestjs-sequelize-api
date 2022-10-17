@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { requestAuthUserDto } from '../auth/dto';
@@ -8,6 +8,7 @@ import { BulkCreateCashflowinDto, CreateCashflowinDto } from './dto/create-cashf
 import { UpdateCashflowinDto } from './dto/update-cashflowin.dto';
 import { CashflowinEntity } from './entities/cashflowin.entity';
 
+@ApiBearerAuth()
 @ApiTags('cashflowins')
 @UseGuards(JwtAuthGuard)
 @Controller('cashflowins')

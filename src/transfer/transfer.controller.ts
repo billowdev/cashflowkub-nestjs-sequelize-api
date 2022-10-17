@@ -1,12 +1,13 @@
 import { Controller, Get, Post, Body, Param, Delete, UseGuards, Req, Res } from '@nestjs/common';
 import { TransferService } from './transfer.service';
 import { CreateTransferDto } from './dto/create-transfer.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { requestAuthUserDto } from 'src/auth/dto';
 import { FastifyReply } from 'fastify';
 import { TransferEntity } from './entities/transfer.entity';
 
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @ApiTags('transfers')
 @Controller('transfers')

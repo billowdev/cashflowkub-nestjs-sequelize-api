@@ -2,12 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards 
 import { PocketService } from './pocket.service';
 import { CreatePocketDto } from './dto/create-pocket.dto';
 import { UpdatePocketDto } from './dto/update-pocket.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { requestAuthUserDto } from 'src/auth/dto';
 import { FastifyReply } from 'fastify';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { PocketEntity } from './entities/pocket.entity';
 
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 @ApiTags('pockets')
 @Controller('pockets')
