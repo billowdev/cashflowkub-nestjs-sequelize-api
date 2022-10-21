@@ -8,7 +8,7 @@ import { AppModule } from './app.module';
 import { swaggerConfig } from "./core/config"
 import { ValidationPipe } from '@nestjs/common';
 import { SERVEPORT } from './core/constants';
-
+import helmet, { fastifyHelmet } from '@fastify/helmet'
 
 const envToLogger = {
   development: {
@@ -38,6 +38,29 @@ async function bootstrap() {
 
   SwaggerModule.setup(prefix, app, document);
 
+  await app.register(helmet)
+  await app.register(fastifyHelmet, {
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: [`'self'`],
+        styleSrc: [
+          `'self'`,
+          `'unsafe-inline'`,
+          'cdn.jsdelivr.net',
+          'fonts.googleapis.com',
+        ],
+        fontSrc: [`'self'`, 'fonts.gstatic.com'],
+        imgSrc: [`'self'`, 'data:', 'cdn.jsdelivr.net'],
+        scriptSrc: [`'self'`, `https: 'unsafe-inline'`, `cdn.jsdelivr.net`],
+      },
+    },
+  });
+  
+  // If you are not going to use CSP at all, you can use this:
+  await app.register(fastifyHelmet, {
+    contentSecurityPolicy: false,
+  });
+  
   // app.enableCors({
   //   origin: CLIENT_URL
   // });
