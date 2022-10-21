@@ -25,8 +25,6 @@ export class SignDto {
   @IsString()
   @IsNotEmpty()
   message: string;
-
-
  
   @ApiProperty()
   @IsObject()
