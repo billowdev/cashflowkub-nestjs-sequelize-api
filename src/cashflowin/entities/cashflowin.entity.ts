@@ -61,7 +61,7 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 	user: UserEntity
 	@ForeignKey(() => UserEntity)
 	@ApiProperty({
-		description: 'Foreign key as userId',
+		description: 'Foreign key as user id',
 		example: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a',
 	})
 	@Column({
@@ -75,7 +75,7 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 	pocket: PocketEntity
 	@ForeignKey(() => PocketEntity)
 	@ApiProperty({
-		description: 'Foreign key as pocketId',
+		description: 'Foreign key as pocket id',
 		example: '8407abe9-cbdf-4745-b634-681f42693ee9',
 	})
 	@Column({

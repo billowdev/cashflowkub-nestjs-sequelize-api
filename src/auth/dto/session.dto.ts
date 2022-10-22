@@ -3,7 +3,7 @@ import { IsNotEmpty, IsNumber, IsObject, IsString } from 'class-validator';
 import { Role } from 'src/user/entities/role.enum';
 import { v4 as uuidv4 } from 'uuid';
 
-export class sessionDataDto {
+export class SessionDataDto {
 	@ApiProperty({
 		description: 'The user id from session',
 		example: uuidv4()
@@ -51,6 +51,6 @@ export class SessionDto {
 		description: 'The session data',
 	})
 	@IsObject()
-	data: sessionDataDto;
+	data: SessionDataDto;
 }
 

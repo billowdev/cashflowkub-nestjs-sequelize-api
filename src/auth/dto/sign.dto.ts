@@ -3,7 +3,7 @@ import { IsNotEmpty, IsObject, IsString } from 'class-validator';
 import { Role } from 'src/user/entities/role.enum';
 import { UserEntity } from 'src/user/entities/user.entity';
 
-export class authDataDto {
+export class AuthDataDto {
   @ApiProperty({
     description: 'User data',
   })
@@ -20,8 +20,9 @@ export class authDataDto {
   token: string;
 
   @ApiProperty({
-    description: 'The user id from session',
-    example: Role.USER
+    description: 'The role of user',
+    example: Role.USER,
+    enum: Role
   })
   @IsString()
   @IsNotEmpty()
@@ -41,5 +42,5 @@ export class SignDto {
     description: 'Data after signin',
   })
   @IsObject()
-  data: authDataDto;
+  data: AuthDataDto;
 }

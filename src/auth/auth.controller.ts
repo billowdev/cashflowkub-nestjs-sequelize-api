@@ -1,7 +1,7 @@
 import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards, Res, Req } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { AuthDto, requestAuthUserDto, SessionDto, SignDto } from './dto';
+import { AuthDto, RequestAuthUserDto, SessionDto, SignDto } from './dto';
 import { JwtAuthGuard, LocalGuard, UserIsExist } from './guards';
 import { FastifyReply } from 'fastify';
 import { UserEntity } from 'src/user/entities/user.entity';
@@ -40,7 +40,7 @@ export class AuthController {
 	@ApiBadRequestResponse({ description: 'get session was failed' })
 	@Get('session')
 	session(
-		@Req() req: requestAuthUserDto,
+		@Req() req: RequestAuthUserDto,
 		@Res() res: FastifyReply
 	) {
 		try {

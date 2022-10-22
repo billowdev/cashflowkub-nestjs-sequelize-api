@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
-import { requestAuthUserDto } from 'src/auth/dto';
+import { RequestAuthUserDto } from 'src/auth/dto';
 import { JwtAuthGuard } from 'src/auth/guards';
 
 import { CategoryService } from './category.service';
@@ -20,7 +20,7 @@ export class CategoryController {
   @Post()
   async create(
     @Body() createCategoryDto: CreateCategoryDto,
-    @Req() req: requestAuthUserDto,
+    @Req() req: RequestAuthUserDto,
     @Res() res: FastifyReply
   ) {
     const userId = req.user.sub
@@ -35,7 +35,7 @@ export class CategoryController {
 
   @Get()
   async findAll(
-    @Req() req: requestAuthUserDto,
+    @Req() req: RequestAuthUserDto,
     @Res() res: FastifyReply
   ) {
     const userId = req.user.sub
@@ -50,7 +50,7 @@ export class CategoryController {
   @Get(':id')
   async findOne(
     @Param('id') id: string,
-    @Req() req: requestAuthUserDto,
+    @Req() req: RequestAuthUserDto,
     @Res() res: FastifyReply
   ) {
     const userId = req.user.sub
@@ -66,7 +66,7 @@ export class CategoryController {
   @Patch(':id')
   async update(
     @Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto,
-    @Req() req: requestAuthUserDto,
+    @Req() req: RequestAuthUserDto,
     @Res() res: FastifyReply
   ) {
     const userId = req.user.sub
@@ -89,7 +89,7 @@ export class CategoryController {
   @Delete(':id')
   async remove(
     @Param('id') id: string,
-    @Req() req: requestAuthUserDto,
+    @Req() req: RequestAuthUserDto,
     @Res() res: FastifyReply) {
     const userId = req.user.sub
     const role = req.user.role

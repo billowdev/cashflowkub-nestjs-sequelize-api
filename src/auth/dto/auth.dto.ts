@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { sessionDataDto } from "./session.dto";
+import { SessionDataDto } from "./session.dto";
 import { FastifyRequest } from 'fastify';
 
 
@@ -50,6 +50,6 @@ export class AuthDto {
 
 }
 
-export interface requestAuthUserDto extends FastifyRequest {
-  user: sessionDataDto
+export interface RequestAuthUserDto extends FastifyRequest {
+  user: SessionDataDto
 }

@@ -3,7 +3,7 @@ import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenR
 import { FastifyReply } from 'fastify';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/user/entities/role.enum';
-import { requestAuthUserDto } from '../auth/dto';
+import { RequestAuthUserDto } from '../auth/dto';
 import { JwtAuthGuard, RolesGuard } from '../auth/guards';
 import { AssetService } from './asset.service';
 import { CreateAssetDto } from './dto/create-asset.dto';
@@ -81,7 +81,7 @@ export class AssetController {
     }
   })
   async findAll(
-    @Req() req: requestAuthUserDto,
+    @Req() req: RequestAuthUserDto,
     @Res() res: FastifyReply) {
     const data: AssetEntity[] = await this.assetService.findAll(req.user.sub);
     res.status(200).send({
@@ -122,7 +122,7 @@ export class AssetController {
   })
   async findOne(
     @Param('id') id: string,
-    @Req() req: requestAuthUserDto,
+    @Req() req: RequestAuthUserDto,
     @Res() res: FastifyReply) {
     const data: AssetEntity = await this.assetService.findOne(id, req.user.sub)
     if (data) {
@@ -189,7 +189,7 @@ export class AssetController {
   })
   async update(@Param('id') id: string,
     @Body() updateAssetDto: UpdateAssetDto,
-    @Req() req: requestAuthUserDto,
+    @Req() req: RequestAuthUserDto,
     @Res() res: FastifyReply,
   ) {
     const data: [number, AssetEntity[]] = await this.assetService.update(id, req.user.sub, updateAssetDto);
@@ -246,7 +246,7 @@ export class AssetController {
   })
   async remove(
     @Param('id') id: string,
-    @Req() req: requestAuthUserDto,
+    @Req() req: RequestAuthUserDto,
     @Res() res: FastifyReply,) {
     const data: number = await this.assetService.remove(id, req.user.sub);
     if (data) {

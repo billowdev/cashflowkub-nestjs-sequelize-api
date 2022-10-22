@@ -3,7 +3,7 @@ import { TransferService } from './transfer.service';
 import { CreateTransferDto } from './dto/create-transfer.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards';
-import { requestAuthUserDto } from 'src/auth/dto';
+import { RequestAuthUserDto } from 'src/auth/dto';
 import { FastifyReply } from 'fastify';
 import { TransferEntity } from './entities/transfer.entity';
 
@@ -29,7 +29,7 @@ export class TransferController {
 
   @Get()
   async findAll(
-    @Req() req: requestAuthUserDto,
+    @Req() req: RequestAuthUserDto,
     @Res() res: FastifyReply
   ) {
     const userId: string = req.user.sub
@@ -44,7 +44,7 @@ export class TransferController {
   @Get(':id')
   async findOne(
     @Param('id') id: string,
-    @Req() req: requestAuthUserDto,
+    @Req() req: RequestAuthUserDto,
     @Res() res: FastifyReply
   ) {
     const userId: string = req.user.sub
@@ -67,7 +67,7 @@ export class TransferController {
   @Delete(':id')
   async remove(
     @Param('id') id: string,
-    @Req() req: requestAuthUserDto,
+    @Req() req: RequestAuthUserDto,
     @Res() res: FastifyReply
   ) {
     const userId: string = req.user.sub
