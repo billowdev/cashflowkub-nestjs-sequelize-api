@@ -1,5 +1,5 @@
 import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Post, UseGuards, Res, Req } from '@nestjs/common';
-import { ApiBadGatewayResponse, ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { AuthDto, requestAuthUserDto, SessionDto, SignDto } from './dto';
 import { JwtAuthGuard, LocalGuard, UserIsExist } from './guards';
@@ -27,7 +27,7 @@ export class AuthController {
 		description: 'Created user successfuly',
 		type: UserEntity
 	})
-	@ApiBadGatewayResponse({ description: 'User cannot register. please try again' })
+	@ApiBadRequestResponse({ description: 'User cannot register. please try again' })
 	@Post('signup')
 	async signup(@Body() dto: AuthDto, @Res() res: FastifyReply) {
 		res.send(await this.authService.signup(dto))

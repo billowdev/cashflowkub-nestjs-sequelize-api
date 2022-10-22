@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/user/entities/role.enum';
@@ -8,31 +8,78 @@ import { JwtAuthGuard, RolesGuard } from '../auth/guards';
 import { AssetService } from './asset.service';
 import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';
-import { AssetEntity } from './entities/asset.entity';
+import { AssetEntity, AssetEnum } from './entities/asset.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @ApiBearerAuth()
 @Roles(Role.ADMIN, Role.PREMIUM)
 @UseGuards(JwtAuthGuard, RolesGuard)
-@ApiTags('assets')
+@ApiTags('Assets')
 @UseGuards(JwtAuthGuard)
 @Controller('assets')
 export class AssetController {
   constructor(private readonly assetService: AssetService) { }
 
   @Post()
+  @ApiCreatedResponse({
+    description: 'Create assets successfuly',
+    type: AssetEntity
+  })
+  @ApiBadRequestResponse({
+    description: 'Asset cannot create. please try again',
+    schema: {
+      example: {
+        statusCode: 400,
+        message: "update asset failed",
+        error: "Bad Request"
+      }
+    }
+  })
+  @ApiForbiddenResponse({
+    description: "if user is not premiumn will be forbidden error",
+    schema: {
+      example: {
+        statusCode: 403,
+        message: "Forbidden resource",
+        error: "Forbidden"
+      }
+    }
+  })
   async create(
     @Body() createAssetDto: CreateAssetDto,
     @Res() res: FastifyReply,
   ) {
     const data: AssetEntity = await this.assetService.create(createAssetDto);
-    res.status(200).send({
+    res.status(201).send({
       statusCode: res.statusCode,
-      message: "create assets successfuly",
+      message: "Create assets successfuly",
       data
     })
   }
 
   @Get()
+  @ApiOkResponse({
+    description: 'get all assets successfuly',
+    type: AssetEntity
+  })
+  @ApiBadRequestResponse({
+    description: 'get all assets failed', schema: {
+      example: {
+        statusCode: 400,
+        message: "Unauthorized"
+      }
+    }
+  })
+  @ApiForbiddenResponse({
+    description: "if user is not premiumn will be forbidden error",
+    schema: {
+      example: {
+        statusCode: 403,
+        message: "Forbidden resource",
+        error: "Forbidden"
+      }
+    }
+  })
   async findAll(
     @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply) {
@@ -45,6 +92,29 @@ export class AssetController {
   }
 
   @Get(':id')
+  @ApiOkResponse({
+    description: 'get asset successfuly',
+    type: AssetEntity
+  })
+  @ApiBadRequestResponse({
+    description: 'get asset failed', schema: {
+      example: {
+        statusCode: 400,
+        message: "get asset failed",
+        data: {}
+      }
+    }
+  })
+  @ApiForbiddenResponse({
+    description: "if user is not premiumn will be forbidden error",
+    schema: {
+      example: {
+        statusCode: 403,
+        message: "Forbidden resource",
+        error: "Forbidden"
+      }
+    }
+  })
   async findOne(
     @Param('id') id: string,
     @Req() req: requestAuthUserDto,
@@ -53,19 +123,60 @@ export class AssetController {
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
-        message: "get asset by id successfuly",
+        message: "get asset successfuly",
         data
       })
     } else {
       res.status(400).send({
         statusCode: res.statusCode,
-        message: "get asset by id failed",
+        message: "get asset failed",
         data: {}
       })
     }
   }
 
   @Patch(':id')
+  @ApiOkResponse({
+    description: 'update asset successfuly',
+    schema: {
+      example: {
+        statusCode: 200,
+        message: "update asset successfuly",
+        data: [
+          1,
+          [{
+            id: uuidv4(),
+            desc: "asset 1",
+            value: "1000.00",
+            type: AssetEnum.PRIVATE,
+            cashflowPerYear: "500.00",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            userId: uuidv4()
+          }]
+        ]
+      }
+    }
+  })
+  @ApiBadRequestResponse({
+    description: 'update asset failed', schema: {
+      example: {
+        statusCode: 400,
+        message: "update asset failed",
+        error: "Bad Request"
+      }
+    }
+  })
+  @ApiForbiddenResponse({
+    description: "if user is not premiumn will be forbidden error",
+    schema: {
+      example: {
+        statusCode: 403,
+        message: "Forbidden resource",
+        error: "Forbidden"
+      }
+    }
+  })
   async update(@Param('id') id: string,
     @Body() updateAssetDto: UpdateAssetDto,
     @Req() req: requestAuthUserDto,
@@ -76,7 +187,7 @@ export class AssetController {
     if (data[0]) {
       res.status(200).send({
         statusCode: res.statusCode,
-        message: "update asset successfully",
+        message: "update asset successfuly",
         data
       })
     } else {
@@ -89,15 +200,44 @@ export class AssetController {
   }
 
   @Delete(':id')
+  @ApiOkResponse({
+    description: 'delete asset successfuly',
+    schema: {
+      example: {
+        statusCode: 200,
+        message: "delete cashflow in by id successfuly",
+        data: 1
+      }
+    }
+  })
+  @ApiBadRequestResponse({
+    description: 'delete asset failed', schema: {
+      example: {
+        statusCode: 400,
+        message: "remove cashflowin failed",
+        error: "Bad Request"
+      }
+    }
+  })
+  @ApiForbiddenResponse({
+    description: "if user is not premiumn will be forbidden error",
+    schema: {
+      example: {
+        statusCode: 403,
+        message: "Forbidden resource",
+        error: "Forbidden"
+      }
+    }
+  })
   async remove(
     @Param('id') id: string,
     @Req() req: requestAuthUserDto,
     @Res() res: FastifyReply,) {
-    const data = await this.assetService.remove(id, req.user.sub);
+    const data: number = await this.assetService.remove(id, req.user.sub);
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
-        message: "delete asset successfully",
+        message: "delete asset successfuly",
         data
       })
     } else {

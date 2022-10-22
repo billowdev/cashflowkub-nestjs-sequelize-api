@@ -5,7 +5,6 @@ import { AssetEnum } from '../entities/asset.entity';
 export class CreateAssetDto {
 
 	// userId it's provide for controller after get userId from the request
-	// userId it's not provide for request body from the client
 	@ApiProperty()
 	@IsString()
 	@IsNotEmpty()

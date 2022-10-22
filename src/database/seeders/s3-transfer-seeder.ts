@@ -1,6 +1,5 @@
 'use strict';
 import { QueryInterface } from "sequelize";
-import { v4 as uuidv4 } from 'uuid';
 
 type TransferType = {
 	id: string,
