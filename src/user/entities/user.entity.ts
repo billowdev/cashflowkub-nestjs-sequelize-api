@@ -52,6 +52,7 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 		description: 'The username of user',
 		example: 'billowdev',
 		uniqueItems: true,
+		maxLength: 100,
 		nullable: false
 	})
 	@Column({
@@ -62,6 +63,7 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 
 	@ApiProperty({
 		description: 'The hashed password of user',
+		maxLength: 100,
 		nullable: false
 	})
 	@Column({
@@ -73,6 +75,7 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	@ApiProperty({
 		description: 'The first name of user',
 		example: 'Billow',
+		maxLength: 150,
 		nullable: true
 	})
 	@Column({
@@ -85,6 +88,7 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	@ApiProperty({
 		description: 'The last name of user',
 		example: 'dev',
+		maxLength: 150,
 		nullable: true,
 	})
 	@Column({
@@ -97,6 +101,7 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 		description: 'The email of user',
 		example: 'billowdev@gmail.com',
 		nullable: true,
+		maxLength: 200,
 		uniqueItems: true
 	})
 	@Column({
@@ -109,6 +114,7 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	@ApiProperty({
 		description: 'Phone number of user',
 		example: '0987654321',
+		maxLength: 10,
 		nullable: true
 	})
 	@Column({
@@ -131,6 +137,7 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	@ApiProperty({
 		description: 'Role of user',
 		nullable: false,
+		enum: Role,
 		default: Role.USER
 	})
 	@Column({
