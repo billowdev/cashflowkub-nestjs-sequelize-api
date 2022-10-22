@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards 
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { Roles } from 'src/auth/decorators/roles.decorator';
-import { RequestAuthUserDto } from 'src/auth/dto';
+import { RequestWithAuthDto } from 'src/auth/dto';
 import { JwtAuthGuard, RolesGuard } from 'src/auth/guards';
 import { Role } from 'src/user/entities/role.enum';
 import { DebtService } from './debt.service';
@@ -39,7 +39,7 @@ export class DebtController {
 
   @Get()
   async findAll(
-    @Req() req: RequestAuthUserDto,
+    @Req() req: RequestWithAuthDto,
     @Res() res: FastifyReply
   ) {
     const userId: string = req.user.sub
@@ -60,7 +60,7 @@ export class DebtController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string, @Req() req: RequestAuthUserDto,
+  async findOne(@Param('id') id: string, @Req() req: RequestWithAuthDto,
     @Res() res: FastifyReply) {
     const userId: string = req.user.sub
     const data: DebtEntity = await this.debtService.findOne(id, userId);
@@ -80,7 +80,7 @@ export class DebtController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateDebtDto: UpdateDebtDto, @Req() req: RequestAuthUserDto,
+  async update(@Param('id') id: string, @Body() updateDebtDto: UpdateDebtDto, @Req() req: RequestWithAuthDto,
     @Res() res: FastifyReply) {
     const userId: string = req.user.sub
     const data: [number, DebtEntity[]] = await this.debtService.update(id, updateDebtDto, userId);
@@ -100,7 +100,7 @@ export class DebtController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string, @Req() req: RequestAuthUserDto,
+  async remove(@Param('id') id: string, @Req() req: RequestWithAuthDto,
     @Res() res: FastifyReply) {
     const userId: string = req.user.sub
     const data: number = await this.debtService.remove(id, userId);
