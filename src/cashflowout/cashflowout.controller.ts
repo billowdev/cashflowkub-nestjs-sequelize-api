@@ -29,6 +29,7 @@ export class CashflowoutController {
           id: 'e11ee770-79ec-40b5-8726-cfd6aff1e80b',
           desc: "expense 1",
           amount: 100.00,
+          type: CashflowoutEnum.VARIABLE,
           pocketId: '8407abe9-cbdf-4745-b634-681f42693ee9',
           categoryId: 'd810173c-f848-4e87-b9f0-d9f172856551',
           userId: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a'
@@ -73,6 +74,7 @@ export class CashflowoutController {
               id: 'e11ee770-79ec-40b5-8726-cfd6aff1e81b',
               desc: "expense 1",
               amount: 120.00,
+              type: CashflowoutEnum.VARIABLE,
               pocketId: '8407abe9-cbdf-4745-b634-681f42693ee9',
               categoryId: 'd810173c-f848-4e87-b9f0-d9f172856551',
               userId: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a'
@@ -110,6 +112,36 @@ export class CashflowoutController {
 
 
   @Get()
+  @ApiOkResponse({
+    description: 'get all cashflowout successfuly',
+    schema: {
+      example: {
+        statusCode: 200,
+        message: "get all cashflowout successfuly",
+        data:
+          [{
+            id: "e11ee770-79ec-40b5-8726-cfd6aff1e81b",
+            desc: "my cashflowout 1",
+            amount: 100,
+            type: CashflowoutEnum.VARIABLE,
+            userId: "41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a",
+            pocketId: "8407abe9-cbdf-4745-b634-681f42693ee9",
+            categoryId: "d810173c-f848-4e87-b9f0-d9f172856551",
+            createdAt: "2022-10-22T10:24:47.400Z",
+            updatedAt: "2022-10-22T10:24:47.401Z"
+          }]
+
+      }
+    }
+  })
+  @ApiBadRequestResponse({
+    description: 'get all cashflowout failed', schema: {
+      example: {
+        statusCode: 400,
+        message: "Unauthorized"
+      }
+    }
+  })
   async findAll(
     @Req() req: RequestAuthUserDto,
     @Res() res: FastifyReply
@@ -118,13 +150,13 @@ export class CashflowoutController {
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
-        message: "get all cashflow out successfuly",
+        message: "get all cashflowout successfuly",
         data
       })
     } else {
       res.status(400).send({
         statusCode: res.statusCode,
-        message: "get all cashflow out failed",
+        message: "get all cashflowout failed",
         data: {}
       })
     }
@@ -138,16 +170,17 @@ export class CashflowoutController {
     example: 'e11ee770-79ec-40b5-8726-cfd6aff1e81b'
   })
   @ApiOkResponse({
-    description: 'get cashflowout successfuly',
+    description: 'get cashflowout was successfuly',
     schema: {
       example: {
         statusCode: 200,
-        message: "get all cashflowout successfuly",
+        message: "get cashflowout was successfuly",
         data:
         {
           id: "e11ee770-79ec-40b5-8726-cfd6aff1e81b",
           desc: "my cashflowout 1",
           amount: 100,
+          type: CashflowoutEnum.VARIABLE,
           userId: "41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a",
           pocketId: "8407abe9-cbdf-4745-b634-681f42693ee9",
           categoryId: "d810173c-f848-4e87-b9f0-d9f172856551",
@@ -159,7 +192,7 @@ export class CashflowoutController {
     }
   })
   @ApiBadRequestResponse({
-    description: 'get cashflowout failed', schema: {
+    description: 'get cashflowout was failed', schema: {
       example: {
         statusCode: 400,
         message: "Unauthorized"
@@ -174,13 +207,13 @@ export class CashflowoutController {
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
-        message: "get cashflow out by id successfuly",
+        message: "get cashflowout was successfuly",
         data
       })
     } else {
       res.status(400).send({
         statusCode: res.statusCode,
-        message: "get cashflow out by id failed",
+        message: "get cashflowout was failed",
         data: {}
       })
     }
@@ -217,7 +250,7 @@ export class CashflowoutController {
     description: 'The body of cashflowout for update',
     schema: {
       example: {
-        desc:"ค่ารถ",
+        desc: "ค่ารถ",
         amount: 100,
         type: CashflowoutEnum.FIXED
       }
