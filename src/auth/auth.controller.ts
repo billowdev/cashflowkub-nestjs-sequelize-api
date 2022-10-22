@@ -7,7 +7,7 @@ import { FastifyReply } from 'fastify';
 import { UserEntity } from 'src/user/entities/user.entity';
 
 @ApiBearerAuth()
-@ApiTags('auth')
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
 	constructor(

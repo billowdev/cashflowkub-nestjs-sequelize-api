@@ -78,7 +78,7 @@ export class CategoryController {
 
 
   @Get()
-  @ApiCreatedResponse({
+  @ApiOkResponse({
     description: 'get all category was successfuly',
     schema: {
       example: {
@@ -139,7 +139,7 @@ export class CategoryController {
     description: 'Enter your category id that you want to request data',
     example: 'd810173c-f848-4e87-b9f0-d9f172856555'
   })
-  @ApiCreatedResponse({
+  @ApiOkResponse({
     description: 'get category was successfuly',
     schema: {
       example: {

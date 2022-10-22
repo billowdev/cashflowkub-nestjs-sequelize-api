@@ -38,6 +38,10 @@ export class TransferEntity extends Model<TransferAttributes, TransferCreationAt
 	@BelongsTo(() => PocketEntity, { as: "fromPockets", foreignKey: "from_pocket_id", onDelete: "cascade" })
 	fromPockets: PocketEntity
 	@ForeignKey(() => PocketEntity)
+	@ApiProperty({
+		description: 'Foreign key as from_pocket_id',
+		example: '8407abe9-cbdf-4745-b634-681f42693ee9',
+	})
 	@Column({
 		type: DataType.UUID,
 		field: "from_pocket_id",
@@ -49,6 +53,10 @@ export class TransferEntity extends Model<TransferAttributes, TransferCreationAt
 	@BelongsTo(() => PocketEntity, { as: "toPockets", foreignKey: "to_pocket_id", onDelete: "cascade" })
 	toPockets: PocketEntity
 	@ForeignKey(() => PocketEntity)
+	@ApiProperty({
+		description: 'Foreign key as to_pocket_id',
+		example: '416c355b-e095-4007-9713-218e050dbae7',
+	})
 	@Column({
 		type: DataType.UUID,
 		field: "to_pocket_id",

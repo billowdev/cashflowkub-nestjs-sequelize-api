@@ -20,7 +20,12 @@ type PocketCreationAttributes = Optional<PocketAttributes, 'id' | 'createdAt' | 
 	tableName: 'pocket'
 })
 export class PocketEntity extends Model<PocketCreationAttributes, PocketCreationAttributes> {
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Primary key as pocket id',
+		example: '8407abe9-cbdf-4745-b634-681f42693ee9',
+		uniqueItems: true,
+		nullable: false
+	})
 	@Column({
 		type: DataType.UUID,
 		defaultValue: UUIDV4,
@@ -29,19 +34,32 @@ export class PocketEntity extends Model<PocketCreationAttributes, PocketCreation
 	})
 	declare id: string
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'name of pocket',
+		example: 'my wallet 1',
+		nullable: true
+	})
 	@Column({
 		type: DataType.STRING(100),
 	})
 	declare name: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The balance of pocket',
+		default: 0,
+		nullable: false
+	})
 	@Column({
 		type: DataType.DECIMAL(10, 2),
 	})
 	declare balance: number;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'When pocket was created',
+		nullable: false,
+		format: Date(),
+		example: new Date()
+	})
 	@Column({
 		type: DataType.DATE,
 		field: "created_at",
@@ -49,7 +67,12 @@ export class PocketEntity extends Model<PocketCreationAttributes, PocketCreation
 	})
 	declare createdAt: Date;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'When debt was updated',
+		nullable: false,
+		format: Date(),
+		example: new Date()
+	})
 	@Column({
 		type: DataType.DATE,
 		field: "updated_at",
@@ -60,6 +83,10 @@ export class PocketEntity extends Model<PocketCreationAttributes, PocketCreation
 	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity
 	@ForeignKey(() => UserEntity)
+	@ApiProperty({
+		description: 'Foreign key as user id',
+		example: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a',
+	})
 	@Column({
 		type: DataType.UUID,
 		field: "user_id",
@@ -73,6 +100,7 @@ export class PocketEntity extends Model<PocketCreationAttributes, PocketCreation
 	@HasMany(() => CashflowoutEntity)
 	cashflowouts: CashflowoutEntity[]
 
+	
 	@HasMany(() => TransferEntity, {
 		as: 'fromPockets',
 		foreignKey: "from_pocket_id"

@@ -13,7 +13,7 @@ import { DebtEntity, DebtEnum } from './entities/debt.entity';
 @ApiBearerAuth()
 @Roles(Role.ADMIN, Role.PREMIUM)
 @UseGuards(JwtAuthGuard, RolesGuard)
-@ApiTags('debts')
+@ApiTags('Debts')
 @Controller('debts')
 export class DebtController {
   constructor(private readonly debtService: DebtService) { }
@@ -150,7 +150,7 @@ export class DebtController {
     description: 'Enter your debt id that you want to request data',
     example: 'f05c0ecb-3aa2-4335-9987-553fcb4f365e'
   })
-  @ApiCreatedResponse({
+  @ApiOkResponse({
     description: 'get debt was successfuly',
     schema: {
       example: {
