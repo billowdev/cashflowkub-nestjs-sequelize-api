@@ -129,7 +129,7 @@ export class CashflowinService {
         where: { id, userId }
       })
     } catch (error) {
-      throw new BadRequestException('remove cashflowin failed')
+      throw new BadRequestException('delete cashflowin failed')
     }
   }
 }

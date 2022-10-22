@@ -2,7 +2,6 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Optional, UUIDV4 } from "sequelize";
 import { Column, DataType, Table, Model, ForeignKey, BelongsTo } from "sequelize-typescript";
 import { UserEntity } from "src/user/entities/user.entity";
-import { v4 as uuidv4 } from 'uuid';
 
 export enum AssetEnum {
 	LIQUID = 'liquid',

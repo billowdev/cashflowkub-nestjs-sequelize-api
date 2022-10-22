@@ -5,7 +5,6 @@ import { UserEntity } from "src/user/entities/user.entity";
 import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { CategoryEntity } from "src/category/entities/category.entity";
 import { TransactionEntity } from "src/transaction/entities/transaction.entity";
-import { v4 as uuidv4 } from 'uuid';
 
 export type CashflowinAttributes = {
 	id: string,
@@ -26,7 +25,7 @@ export type CashflowinCreationAttributes = Optional<CashflowinAttributes, 'id' |
 export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCreationAttributes> {
 	@ApiProperty({
 		description: 'Primary key as Cashflowin ID',
-		// example: uuidv4(),
+		example: '0184cccf-26fd-47db-a636-d0ebda81fe09',
 		uniqueItems: true,
 		nullable: false
 	})
@@ -41,7 +40,8 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 	@ApiProperty({
 		description: 'The description of cashflowin',
 		example: "my cashflowin 1",
-		nullable: true
+		nullable: true,
+		maxLength: 150
 	})
 	@Column({
 		type: DataType.STRING(150),
@@ -62,7 +62,7 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 	@ForeignKey(() => UserEntity)
 	@ApiProperty({
 		description: 'Foreign key as userId',
-		example: uuidv4(),
+		example: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a',
 	})
 	@Column({
 		type: DataType.UUID,
@@ -76,7 +76,7 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 	@ForeignKey(() => PocketEntity)
 	@ApiProperty({
 		description: 'Foreign key as pocketId',
-		example: uuidv4(),
+		example: '8407abe9-cbdf-4745-b634-681f42693ee9',
 	})
 	@Column({
 		type: DataType.UUID,
@@ -91,7 +91,7 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 	@ForeignKey(() => CategoryEntity)
 	@ApiProperty({
 		description: 'Foreign key as categoryId',
-		example: uuidv4(),
+		example: 'd810173c-f848-4e87-b9f0-d9f172856555',
 	})
 	@Column({
 		type: DataType.UUID,
@@ -104,6 +104,7 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 	@ApiProperty({
 		description: 'When cashflowin was created',
 		nullable: false,
+		format: Date(),
 		example: new Date()
 	})
 	@Column({
@@ -116,6 +117,7 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 	@ApiProperty({
 		description: 'When cashflowin was updated',
 		nullable: false,
+		format: Date(),
 		example: new Date()
 	})
 	@Column({
