@@ -115,7 +115,7 @@ export class CategoryController {
     schema: {
       example: {
         statusCode: 400,
-        message: 'get category was failed',
+        message: 'get all category was failed',
         error: 'Bad Request'
       }
     }
