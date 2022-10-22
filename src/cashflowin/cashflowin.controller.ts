@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { JwtAuthGuard } from 'src/auth/guards';
 import { RequestAuthUserDto } from '../auth/dto';
@@ -7,7 +7,6 @@ import { CashflowinService } from './cashflowin.service';
 import { BulkCreateCashflowinDto, CreateCashflowinDto } from './dto/create-cashflowin.dto';
 import { UpdateCashflowinDto } from './dto/update-cashflowin.dto';
 import { CashflowinEntity } from './entities/cashflowin.entity';
-import { v4 as uuidv4 } from 'uuid';
 
 @ApiBearerAuth()
 @ApiTags('Cashflowins')
@@ -16,93 +15,6 @@ import { v4 as uuidv4 } from 'uuid';
 export class CashflowinController {
   constructor(private readonly cashflowinService: CashflowinService) { }
 
-
-  @Post('bulk')
-  @ApiCreatedResponse({
-    description: 'create cashflowins successfuly',
-    schema: {
-      example: {
-        statusCode: 201,
-        message: "create bulk cashflow in successfuly",
-        data: [
-          {
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            id: '0184cccf-26fd-47db-a636-d0ebda81fe08',
-            desc: "income 1",
-            amount: 100.00,
-            pocketId: '8407abe9-cbdf-4745-b634-681f42693ee9',
-            categoryId: 'd810173c-f848-4e87-b9f0-d9f172856555',
-            userId: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a'
-          }]
-      }
-    }
-  })
-  @ApiBadRequestResponse({
-    description: 'cashflowin cannot create. please try again',
-    schema: {
-      example: {
-        statusCode: 400,
-        message: "create cashflowin failed",
-        error: "Bad Request"
-      }
-    }
-  })
-  async bulkCreate(
-    @Body() createCashflowinDto: BulkCreateCashflowinDto,
-    @Res() res: FastifyReply
-  ) {
-    const data: CashflowinEntity[] = await this.cashflowinService.bulkCreate(createCashflowinDto);
-
-    res.send({
-      statusCode: res.statusCode,
-      message: "create bulk cashflow in successfuly",
-      data
-    })
-  }
-
-  @Post()
-  @ApiCreatedResponse({
-    description: 'create cashflowin successfuly',
-    schema: {
-      example: {
-        statusCode: 201,
-        message: "create cashflow in successfuly",
-        data:
-        {
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          id: '0184cccf-26fd-47db-a636-d0ebda81fe07',
-          desc: "income 2",
-          amount: 100.00,
-          pocketId: '8407abe9-cbdf-4745-b634-681f42693ee9',
-          categoryId: 'd810173c-f848-4e87-b9f0-d9f172856555',
-          userId: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a'
-        }
-      }
-    }
-  })
-  @ApiBadRequestResponse({
-    description: 'cashflowin cannot create. please try again',
-    schema: {
-      example: {
-        statusCode: 400,
-        message: "create cashflowin failed",
-        error: "Bad Request"
-      }
-    }
-  })
-  async create(
-    @Body() createCashflowinDto: CreateCashflowinDto,
-    @Res() res: FastifyReply
-  ) {
-    const data: CashflowinEntity = await this.cashflowinService.create(createCashflowinDto);
-    res.send({
-      statusCode: res.statusCode,
-      message: "create cashflow in successfuly",
-      data
-    })
-  }
 
   @Get()
   @ApiOkResponse({
@@ -192,11 +104,112 @@ export class CashflowinController {
     })
   }
 
+  @Post('bulk')
+  @ApiCreatedResponse({
+    description: 'create cashflowins successfuly',
+    schema: {
+      example: {
+        statusCode: 201,
+        message: "create bulk cashflow in successfuly",
+        data: [
+          {
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            id: '0184cccf-26fd-47db-a636-d0ebda81fe08',
+            desc: "income 1",
+            amount: 100.00,
+            pocketId: '8407abe9-cbdf-4745-b634-681f42693ee9',
+            categoryId: 'd810173c-f848-4e87-b9f0-d9f172856555',
+            userId: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a'
+          }]
+      }
+    }
+  })
+  @ApiBadRequestResponse({
+    description: 'cashflowin cannot create. please try again',
+    schema: {
+      example: {
+        statusCode: 400,
+        message: "create cashflowin failed",
+        error: "Bad Request"
+      }
+    }
+  })
+  @ApiBody({
+    description: 'Array body of cashflowin for bulk create',
+    type: CashflowinEntity,
+    isArray: true
+  })
+  async bulkCreate(
+    @Body() createCashflowinDto: BulkCreateCashflowinDto,
+    @Res() res: FastifyReply
+  ) {
+    const data: CashflowinEntity[] = await this.cashflowinService.bulkCreate(createCashflowinDto);
+
+    res.send({
+      statusCode: res.statusCode,
+      message: "create bulk cashflow in successfuly",
+      data
+    })
+  }
+
+  @Post()
+  @ApiCreatedResponse({
+    description: 'create cashflowin successfuly',
+    schema: {
+      example: {
+        statusCode: 201,
+        message: "create cashflow in successfuly",
+        data:
+        {
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          id: '0184cccf-26fd-47db-a636-d0ebda81fe07',
+          desc: "income 2",
+          amount: 100.00,
+          pocketId: '8407abe9-cbdf-4745-b634-681f42693ee9',
+          categoryId: 'd810173c-f848-4e87-b9f0-d9f172856555',
+          userId: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a'
+        }
+      }
+    }
+  })
+  @ApiBadRequestResponse({
+    description: 'cashflowin cannot create. please try again',
+    schema: {
+      example: {
+        statusCode: 400,
+        message: "create cashflowin failed",
+        error: "Bad Request"
+      }
+    }
+  })
+  async create(
+    @Body() createCashflowinDto: CreateCashflowinDto,
+    @Res() res: FastifyReply
+  ) {
+    const data: CashflowinEntity = await this.cashflowinService.create(createCashflowinDto);
+    res.send({
+      statusCode: res.statusCode,
+      message: "create cashflow in successfuly",
+      data
+    })
+  }
+
   @Patch(':id')
   @ApiParam({
     name: 'id',
     description: 'Enter your cashflowin id that you want to update data',
     example: '0184cccf-26fd-47db-a636-d0ebda81fe09'
+  })
+  @ApiBody({
+    description: 'The body of cashflowin for update',
+    schema: {
+      example: {
+        desc: "ค่ารถ",
+        amount: 100
+      }
+    }
   })
   @ApiOkResponse({
     description: 'update cashflowin successfuly',
