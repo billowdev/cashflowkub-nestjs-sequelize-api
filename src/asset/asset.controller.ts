@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { Role } from 'src/user/entities/role.enum';
@@ -9,7 +9,6 @@ import { AssetService } from './asset.service';
 import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';
 import { AssetEntity, AssetEnum } from './entities/asset.entity';
-import { v4 as uuidv4 } from 'uuid';
 
 @ApiBearerAuth()
 @Roles(Role.ADMIN, Role.PREMIUM)
@@ -30,7 +29,7 @@ export class AssetController {
     schema: {
       example: {
         statusCode: 400,
-        message: "update asset failed",
+        message: "create asset failed",
         error: "Bad Request"
       }
     }
@@ -60,7 +59,8 @@ export class AssetController {
   @Get()
   @ApiOkResponse({
     description: 'get all assets successfuly',
-    type: AssetEntity
+    type: AssetEntity,
+    isArray: true
   })
   @ApiBadRequestResponse({
     description: 'get all assets failed', schema: {
@@ -92,6 +92,11 @@ export class AssetController {
   }
 
   @Get(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'Enter your asset id that you want to request data',
+    example: '44d4a72e-0bde-4697-8ebb-9c2ac1e96216'
+  })
   @ApiOkResponse({
     description: 'get asset successfuly',
     type: AssetEntity
@@ -136,6 +141,11 @@ export class AssetController {
   }
 
   @Patch(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'Enter your asset id that you want to update',
+    example: '44d4a72e-0bde-4697-8ebb-9c2ac1e96216'
+  })
   @ApiOkResponse({
     description: 'update asset successfuly',
     schema: {
@@ -145,14 +155,14 @@ export class AssetController {
         data: [
           1,
           [{
-            id: uuidv4(),
+            id: '44d4a72e-0bde-4697-8ebb-9c2ac1e96216',
             desc: "asset 1",
             value: "1000.00",
             type: AssetEnum.PRIVATE,
             cashflowPerYear: "500.00",
             createdAt: new Date(),
             updatedAt: new Date(),
-            userId: uuidv4()
+            userId: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a'
           }]
         ]
       }
@@ -200,6 +210,11 @@ export class AssetController {
   }
 
   @Delete(':id')
+  @ApiParam({
+    name: 'id',
+    description: 'Enter your asset id that you want to delete',
+    example: '44d4a72e-0bde-4697-8ebb-9c2ac1e96216'
+  })
   @ApiOkResponse({
     description: 'delete asset successfuly',
     schema: {
@@ -214,7 +229,7 @@ export class AssetController {
     description: 'delete asset failed', schema: {
       example: {
         statusCode: 400,
-        message: "remove cashflowin failed",
+        message: "remove asset failed",
         error: "Bad Request"
       }
     }

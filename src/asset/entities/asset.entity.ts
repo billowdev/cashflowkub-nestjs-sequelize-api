@@ -29,7 +29,7 @@ type AssetCreationAttributes = Optional<AssetAttributes, 'id' | 'createdAt' | 'u
 export class AssetEntity extends Model<AssetAttributes, AssetCreationAttributes> {
 	@ApiProperty({
 		description: 'Primary key as Asset ID',
-		example: uuidv4(),
+		example: '44d4a72e-0bde-4697-8ebb-9c2ac1e96216',
 		uniqueItems: true,
 		nullable: false
 	})
@@ -44,7 +44,8 @@ export class AssetEntity extends Model<AssetAttributes, AssetCreationAttributes>
 	@ApiProperty({
 		description: 'The description of asset',
 		example: "my asset 1",
-		nullable: true
+		nullable: true,
+		maxLength: 200
 	})
 	@Column({
 		type: DataType.STRING(200),
@@ -74,8 +75,8 @@ export class AssetEntity extends Model<AssetAttributes, AssetCreationAttributes>
 
 	@ApiProperty({
 		description: 'The type of asset',
-		example: AssetEnum.LIQUID,
 		default: AssetEnum.LIQUID,
+		enum: AssetEnum,
 		nullable: false
 	})
 	@Column({
@@ -120,6 +121,11 @@ export class AssetEntity extends Model<AssetAttributes, AssetCreationAttributes>
 	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity
 	@ForeignKey(() => UserEntity)
+	@ApiProperty({
+		description: 'user id',
+		nullable: false,
+		example: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a'
+	})
 	@Column({
 		type: DataType.UUID,
 		field: "user_id",
