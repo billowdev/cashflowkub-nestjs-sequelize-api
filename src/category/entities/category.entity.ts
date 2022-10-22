@@ -29,7 +29,12 @@ type CategoryCreationAttributes = Optional<CategoryAttributes, 'id' | 'desc' | '
 	tableName: 'category'
 })
 export class CategoryEntity extends Model<CategoryAttributes, CategoryCreationAttributes> {
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Primary key as category id',
+		example: 'd810173c-f848-4e87-b9f0-d9f172856555',
+		uniqueItems: true,
+		nullable: false
+	})
 	@Column({
 		type: DataType.UUID,
 		defaultValue: UUIDV4,
@@ -37,13 +42,22 @@ export class CategoryEntity extends Model<CategoryAttributes, CategoryCreationAt
 	})
 	declare id: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Name of category',
+		example: 'food',
+		maxLength: 100
+	})
 	@Column({
 		type: DataType.STRING(100),
 	})
 	declare name: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The description for category',
+		example: 'Food is expense category',
+		maxLength: 200,
+		nullable: true
+	})
 	@Column({
 		type: DataType.STRING(200),
 		allowNull: true
@@ -51,7 +65,11 @@ export class CategoryEntity extends Model<CategoryAttributes, CategoryCreationAt
 	})
 	declare desc: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Type of category',
+		default: CategoryEnum.EXPENSE,
+		enum: CategoryEnum
+	})
 	@Column({
 		type: DataType.ENUM({
 			values: [
@@ -66,7 +84,10 @@ export class CategoryEntity extends Model<CategoryAttributes, CategoryCreationAt
 	})
 	declare type: CategoryEnum;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'is_custom: true is category of user create and false for admin create',
+		default: true,
+	})
 	@Column({
 		type: DataType.BOOLEAN,
 		defaultValue: true,
@@ -77,6 +98,10 @@ export class CategoryEntity extends Model<CategoryAttributes, CategoryCreationAt
 	@BelongsTo(() => UserEntity, { onDelete: 'NO ACTION' })
 	user: UserEntity
 	@ForeignKey(() => UserEntity)
+	@ApiProperty({
+		description: 'Foreign key as user id',
+		example: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a',
+	})
 	@Column({
 		type: DataType.UUID,
 		field: "user_id",
@@ -84,7 +109,12 @@ export class CategoryEntity extends Model<CategoryAttributes, CategoryCreationAt
 	})
 	declare userId: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'When category was created',
+		nullable: false,
+		format: Date(),
+		example: new Date()
+	})
 	@Column({
 		type: DataType.DATE,
 		field: "created_at",
@@ -92,7 +122,12 @@ export class CategoryEntity extends Model<CategoryAttributes, CategoryCreationAt
 	})
 	declare createdAt: Date;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'When category was updated',
+		nullable: false,
+		format: Date(),
+		example: new Date()
+	})
 	@Column({
 		type: DataType.DATE,
 		field: "updated_at",
