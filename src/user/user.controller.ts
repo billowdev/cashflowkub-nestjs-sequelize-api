@@ -199,7 +199,7 @@ export class UserController {
     }
   })
   async findOne(@Param('id') id: string, @Res() res: FastifyReply) {
-    const data: UserEntity = await this.userService.findOne(id);
+    const data: UserEntity = await this.userService.findOne(id, true);
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
