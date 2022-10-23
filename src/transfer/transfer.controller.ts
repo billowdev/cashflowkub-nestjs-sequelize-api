@@ -74,20 +74,15 @@ export class TransferController {
         statusCode: 200,
         message: "get all transfer was successfuly",
         data:
-        {
-          statusCode: 200,
-          message: "get all transfer was successfuly",
-          data:
-            [{
-              createdAt: "2022-10-23T08:47:11.494Z",
-              updatedAt: "2022-10-23T08:47:11.494Z",
-              id: "e03cf523-e63c-47c8-8ab4-42806eb2745a",
-              userId: "41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a",
-              amount: "100.00",
-              fromPocketId: "8407abe9-cbdf-4745-b634-681f42693ee9",
-              toPocketId: "416c355b-e095-4007-9713-218e050dbae7"
-            }]
-        }
+          [{
+            createdAt: "2022-10-23T08:47:11.494Z",
+            updatedAt: "2022-10-23T08:47:11.494Z",
+            id: "e03cf523-e63c-47c8-8ab4-42806eb2745a",
+            userId: "41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a",
+            amount: "100.00",
+            fromPocketId: "8407abe9-cbdf-4745-b634-681f42693ee9",
+            toPocketId: "416c355b-e095-4007-9713-218e050dbae7"
+          }]
       }
     }
   })
@@ -128,19 +123,15 @@ export class TransferController {
         message: "get transfer was successfuly",
         data:
         {
-          statusCode: 200,
-          message: "get transfer was successfuly",
-          data:
-          {
-            createdAt: "2022-10-23T08:47:11.494Z",
-            updatedAt: "2022-10-23T08:47:11.494Z",
-            id: "e03cf523-e63c-47c8-8ab4-42806eb2745a",
-            userId: "41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a",
-            amount: "100.00",
-            fromPocketId: "8407abe9-cbdf-4745-b634-681f42693ee9",
-            toPocketId: "416c355b-e095-4007-9713-218e050dbae7"
-          }
+          createdAt: "2022-10-23T08:47:11.494Z",
+          updatedAt: "2022-10-23T08:47:11.494Z",
+          id: "e03cf523-e63c-47c8-8ab4-42806eb2745a",
+          userId: "41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a",
+          amount: "100.00",
+          fromPocketId: "8407abe9-cbdf-4745-b634-681f42693ee9",
+          toPocketId: "416c355b-e095-4007-9713-218e050dbae7"
         }
+
       }
     }
   })
