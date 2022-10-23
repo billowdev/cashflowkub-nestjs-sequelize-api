@@ -4,8 +4,8 @@ import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtAuthStrategy, LocalStrategy } from './strategies';
-import { RolesGuard } from './guards/roles.guard';
+import { JwtAuthStrategy, LocalStrategy } from '../common/strategies';
+import { RolesGuard } from '../common/guards/roles.guard';
 import * as dotenv from 'dotenv';
 dotenv.config();
 

@@ -34,6 +34,7 @@ $ npm run test:cov
 <pre>
 yarn add @nestjs/swagger dotenv pg pg-hstore sequelize sequelize-typescript @nestjs/config
 yarn add class-transformer class-validator 
+yarn add @fastify/helmet
 yarn add @nestjs/passport @nestjs/jwt passport passport-local passport-jwt
 yarn add argon2
 yarn add @nestjs/sequelize
