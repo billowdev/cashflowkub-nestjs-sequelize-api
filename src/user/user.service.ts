@@ -96,17 +96,18 @@ export class UserService {
       user.firstName = createUserDto.firstName;
       user.lastName = createUserDto.lastName;
       user.role = createUserDto.role;
-
-      return await this.userRepo.create<UserEntity>(user);
+      const userCreated = await this.userRepo.create<UserEntity>(user['dataValues']);
+      delete userCreated["dataValues"].hashPassword
+      return userCreated
     } catch (error) {
       throw new BadRequestException()
     }
   }
 
   // update : update account
-  async update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<[number, UserEntity[]]> {
     try {
-      return this.userRepo.update(
+      return this.userRepo.update<UserEntity>(
         {
           ...updateUserDto
         },
