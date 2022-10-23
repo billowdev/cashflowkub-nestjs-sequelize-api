@@ -4,31 +4,62 @@ import { Role } from "../entities/role.enum";
 
 
 export class CreateUserDto {
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The username of user',
+		example: 'billowdev',
+		uniqueItems: true,
+		maxLength: 100,
+		nullable: false
+	})
 	@IsString()
 	readonly username: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The password of user',
+		maxLength: 100,
+		nullable: false
+	})
 	@IsString()
 	readonly password: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The first name of user',
+		example: 'Billow',
+		maxLength: 150,
+		nullable: true
+	})
 	@IsString()
 	@IsOptional()
 	readonly firstName?: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The last name of user',
+		example: 'dev',
+		maxLength: 150,
+		nullable: true,
+	})
 	@IsString()
 	@IsOptional()
 	readonly lastName?: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The email of user',
+		example: 'billowdev@gmail.com',
+		nullable: true,
+		maxLength: 200,
+		uniqueItems: true
+	})
 	@IsEmail()
 	@IsOptional()
 	readonly email?: string;
 
-	@ApiProperty()
-	@IsEmail()
+	@ApiProperty({
+		description: 'Role of user',
+		nullable: false,
+		enum: Role,
+		default: Role.USER
+	})
+	@IsString()
 	@IsOptional()
 	readonly role?: Role;
 }
