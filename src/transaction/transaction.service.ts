@@ -3,7 +3,7 @@ import { CashflowinService } from 'src/cashflowin/cashflowin.service';
 import { CashflowinEntity } from 'src/cashflowin/entities/cashflowin.entity';
 import { CashflowoutService } from 'src/cashflowout/cashflowout.service';
 import { CashflowoutEntity } from 'src/cashflowout/entities/cashflowout.entity';
-import { TRANSACTION_REPOSITORY } from 'src/core/constants';
+import { TRANSACTION_REPOSITORY } from 'src/common/core/constants';
 import { TransferEntity } from 'src/transfer/entities/transfer.entity';
 import { TransferService } from 'src/transfer/transfer.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';

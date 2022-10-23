@@ -5,9 +5,9 @@ import {
 } from '@nestjs/platform-fastify';
 import { SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { swaggerConfig } from "./core/config"
+import { swaggerConfig } from "./common/core/config"
 import { ValidationPipe } from '@nestjs/common';
-import { SERVEPORT } from './core/constants';
+import { SERVEPORT } from './common/core/constants';
 import helmet, { fastifyHelmet } from '@fastify/helmet'
 
 const envToLogger = {

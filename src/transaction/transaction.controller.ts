@@ -8,7 +8,7 @@ import { JwtAuthGuard } from 'src/common/guards';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@ApiTags('transactions')
+@ApiTags('Transactions')
 @Controller('transactions')
 export class TransactionController {
   constructor(private readonly transactionService: TransactionService) { }

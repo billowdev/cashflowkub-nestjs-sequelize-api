@@ -1,5 +1,5 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { POCKET_REPOSITORY } from 'src/core/constants';
+import { POCKET_REPOSITORY } from 'src/common/core/constants';
 import { CreatePocketDto } from './dto/create-pocket.dto';
 import { UpdatePocketDto } from './dto/update-pocket.dto';
 import { PocketEntity } from './entities/pocket.entity';

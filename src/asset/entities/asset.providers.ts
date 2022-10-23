@@ -1,4 +1,4 @@
-import { ASSET_REPOSITORY } from '../../core/constants';
+import { ASSET_REPOSITORY } from '../../common/core/constants';
 import { AssetEntity } from './asset.entity';
 
 export const assetProviders = [

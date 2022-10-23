@@ -1,5 +1,5 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
-import { CASHFLOWOUT_REPOSITORY } from 'src/core/constants';
+import { CASHFLOWOUT_REPOSITORY } from 'src/common/core/constants';
 import { PocketService } from 'src/pocket/pocket.service';
 import { CreateTransactionDto } from 'src/transaction/dto/create-transaction.dto';
 import { TransactionEnum } from 'src/transaction/entities/transaction.entity';

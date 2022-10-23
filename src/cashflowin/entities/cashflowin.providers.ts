@@ -1,4 +1,4 @@
-import { CASHFLOWIN_REPOSITORY } from '../../core/constants';
+import { CASHFLOWIN_REPOSITORY } from '../../common/core/constants';
 import { CashflowinEntity } from './cashflowin.entity';
 
 export const cashflowinProviders = [

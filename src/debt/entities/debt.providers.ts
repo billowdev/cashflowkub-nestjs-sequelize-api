@@ -1,4 +1,4 @@
-import { DEBT_REPOSITORY } from '../../core/constants';
+import { DEBT_REPOSITORY } from '../../common/core/constants';
 import { DebtEntity } from './debt.entity';
 
 export const debtProviders = [

@@ -1,4 +1,4 @@
-import { USER_REPOSITORY } from '../../core/constants';
+import { USER_REPOSITORY } from '../../common/core/constants';
 import { UserEntity } from './user.entity';
 
 export const userProviders = [

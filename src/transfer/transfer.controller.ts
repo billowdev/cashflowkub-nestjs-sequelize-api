@@ -9,7 +9,7 @@ import { TransferEntity } from './entities/transfer.entity';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@ApiTags('transfers')
+@ApiTags('Transfers')
 @Controller('transfers')
 export class TransferController {
   constructor(
