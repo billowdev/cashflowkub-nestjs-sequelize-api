@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
-import { JwtAuthGuard } from 'src/auth/guards';
+import { JwtAuthGuard } from 'src/common/guards';
 import { RequestWithAuthDto } from '../auth/dto';
 import { CashflowinService } from './cashflowin.service';
 import { BulkCreateCashflowinDto, CreateCashflowinDto } from './dto/create-cashflowin.dto';

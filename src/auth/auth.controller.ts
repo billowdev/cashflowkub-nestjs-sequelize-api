@@ -2,7 +2,7 @@ import { BadRequestException, Body, Controller, Get, HttpCode, HttpStatus, Post,
 import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { AuthDto, RequestWithAuthDto, SessionDto, SignDto } from './dto';
-import { JwtAuthGuard, LocalGuard, UserIsExist } from './guards';
+import { JwtAuthGuard, LocalGuard, UserIsExist } from '../common/guards';
 import { FastifyReply } from 'fastify';
 import { UserEntity } from 'src/user/entities/user.entity';
 

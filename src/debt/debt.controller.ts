@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/common/decorators/roles.decorator';
 import { RequestWithAuthDto } from 'src/auth/dto';
-import { JwtAuthGuard, RolesGuard } from 'src/auth/guards';
+import { JwtAuthGuard, RolesGuard } from 'src/common/guards';
 import { Role } from 'src/user/entities/role.enum';
 import { DebtService } from './debt.service';
 import { CreateDebtDto } from './dto/create-debt.dto';

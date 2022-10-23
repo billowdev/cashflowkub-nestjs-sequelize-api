@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
-import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from 'src/user/entities/role.enum';
 import { RequestWithAuthDto } from '../auth/dto';
-import { JwtAuthGuard, RolesGuard } from '../auth/guards';
+import { JwtAuthGuard, RolesGuard } from '../common/guards';
 import { AssetService } from './asset.service';
 import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';

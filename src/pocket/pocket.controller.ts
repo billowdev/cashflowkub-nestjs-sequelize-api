@@ -5,7 +5,7 @@ import { UpdatePocketDto } from './dto/update-pocket.dto';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { RequestWithAuthDto } from 'src/auth/dto';
 import { FastifyReply } from 'fastify';
-import { JwtAuthGuard } from 'src/auth/guards';
+import { JwtAuthGuard } from 'src/common/guards';
 import { PocketEntity } from './entities/pocket.entity';
 
 @ApiBearerAuth()

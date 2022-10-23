@@ -5,7 +5,7 @@ import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { RequestWithAuthDto } from 'src/auth/dto';
 import { FastifyReply } from 'fastify';
 import { TransactionEntity } from './entities/transaction.entity';
-import { JwtAuthGuard } from 'src/auth/guards';
+import { JwtAuthGuard } from 'src/common/guards';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)

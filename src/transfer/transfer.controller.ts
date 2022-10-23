@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Param, Delete, UseGuards, Req, Res } from 
 import { TransferService } from './transfer.service';
 import { CreateTransferDto } from './dto/create-transfer.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/guards';
+import { JwtAuthGuard } from 'src/common/guards';
 import { RequestWithAuthDto } from 'src/auth/dto';
 import { FastifyReply } from 'fastify';
 import { TransferEntity } from './entities/transfer.entity';

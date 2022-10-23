@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards 
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { RequestWithAuthDto } from 'src/auth/dto';
-import { JwtAuthGuard } from 'src/auth/guards';
+import { JwtAuthGuard } from 'src/common/guards';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { CategoryFindAllDto } from './dto/find-all-category.dto';
