@@ -8,6 +8,7 @@ import { DebtEntity } from "src/debt/entities/debt.entity";
 import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { TransferEntity } from "src/transfer/entities/transfer.entity";
 import { Role } from "./role.enum";
+import { v4 as uuidv4 } from 'uuid';
 
 import {
 	Optional,
@@ -33,7 +34,12 @@ export type UserCreationAttributes = Optional<UserAttributes, 'id' | 'firstName'
 	tableName: 'user'
 })
 export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Primary key as User ID',
+		example: uuidv4(),
+		uniqueItems: true,
+		nullable: false
+	})
 	@Column({
 		type: DataType.UUID,
 		defaultValue: UUIDV4,
@@ -42,35 +48,62 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	})
 	declare id: string
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The username of user',
+		example: 'billowdev',
+		uniqueItems: true,
+		maxLength: 100,
+		nullable: false
+	})
 	@Column({
 		type: DataType.STRING(100),
-		unique: true
+		unique: true,
 	})
 	declare username: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The hashed password of user',
+		maxLength: 100,
+		nullable: false
+	})
 	@Column({
 		type: DataType.STRING(100),
 		field: 'hash_password',
 	})
 	declare hashPassword: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The first name of user',
+		example: 'Billow',
+		maxLength: 150,
+		nullable: true
+	})
 	@Column({
 		type: DataType.STRING(150),
 		field: 'first_name',
+
 	})
 	declare firstName: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The last name of user',
+		example: 'dev',
+		maxLength: 150,
+		nullable: true,
+	})
 	@Column({
 		type: DataType.STRING(150),
 		field: 'last_name',
 	})
 	declare lastName: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The email of user',
+		example: 'billowdev@gmail.com',
+		nullable: true,
+		maxLength: 200,
+		uniqueItems: true
+	})
 	@Column({
 		type: DataType.STRING(200),
 		unique: true
@@ -78,12 +111,22 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	declare email: string;
 
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Phone number of user',
+		example: '0987654321',
+		maxLength: 10,
+		nullable: true
+	})
 	@Column({
 		type: DataType.STRING(10),
 	})
 	declare phone: string;
 
+	@ApiProperty({
+		description: 'The status of user',
+		default: true,
+		example: true
+	})
 	@Column({
 		type: DataType.BOOLEAN,
 		field: 'is_active',
@@ -91,7 +134,12 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	})
 	declare isActive: boolean;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Role of user',
+		nullable: false,
+		enum: Role,
+		default: Role.USER
+	})
 	@Column({
 		type: DataType.ENUM({
 			values: [Role.USER, Role.ADMIN, Role.PREMIUM]
@@ -100,7 +148,11 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	})
 	declare role: Role;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'When user was created',
+		nullable: false,
+		example: new Date()
+	})
 	@Column({
 		type: DataType.DATE,
 		field: "created_at",
@@ -108,7 +160,11 @@ export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	})
 	declare createdAt: Date;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'When user was updated',
+		nullable: false,
+		example: new Date()
+	})
 	@Column({
 		type: DataType.DATE,
 		field: "updated_at",

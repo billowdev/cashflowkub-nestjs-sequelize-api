@@ -1,8 +1,6 @@
 'use strict';
 import { QueryInterface } from "sequelize";
-import { DebtEnum } from "src/debt/entities/debt.entity";
 import { TransactionEnum } from "src/transaction/entities/transaction.entity";
-import { v4 as uuidv4 } from 'uuid';
 
 type TransactionType = {
 	id: string,

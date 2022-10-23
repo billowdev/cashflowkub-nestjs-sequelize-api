@@ -4,17 +4,30 @@ import { CategoryEnum } from "../entities/category.entity"
 
 export class CreateCategoryDto {
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Name of category',
+		example: 'food',
+		maxLength: 100
+	})
 	@IsNotEmpty()
 	@IsString()
 	name: string
 	
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The description for category',
+		example: 'Food is expense category',
+		maxLength: 200,
+		nullable: true
+	})
 	@IsString()
 	@IsNotEmpty()
 	desc: string
 	
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Type of category',
+		default: CategoryEnum.EXPENSE,
+		enum: CategoryEnum
+	})
 	@IsString()
 	@IsNotEmpty()
 	type: CategoryEnum

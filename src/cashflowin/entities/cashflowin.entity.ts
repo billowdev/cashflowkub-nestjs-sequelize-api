@@ -18,11 +18,17 @@ export type CashflowinAttributes = {
 }
 export type CashflowinCreationAttributes = Optional<CashflowinAttributes, 'id' | 'createdAt' | 'updatedAt'>;
 
+
 @Table({
 	tableName: "cashflowin"
 })
 export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCreationAttributes> {
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Primary key as Cashflowin ID',
+		example: '0184cccf-26fd-47db-a636-d0ebda81fe09',
+		uniqueItems: true,
+		nullable: false
+	})
 	@Column({
 		type: DataType.UUID,
 		defaultValue: UUIDV4,
@@ -31,13 +37,21 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 	})
 	declare id: string
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The description of cashflowin',
+		example: "my cashflowin 1",
+		nullable: true,
+		maxLength: 150
+	})
 	@Column({
 		type: DataType.STRING(150),
 	})
 	declare desc: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Amount of cash flows',
+		example: 100.00,
+	})
 	@Column({
 		type: DataType.DECIMAL(10, 2),
 	})
@@ -46,6 +60,10 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity
 	@ForeignKey(() => UserEntity)
+	@ApiProperty({
+		description: 'Foreign key as user id',
+		example: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a',
+	})
 	@Column({
 		type: DataType.UUID,
 		field: "user_id",
@@ -56,6 +74,10 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 	@BelongsTo(() => PocketEntity, { onDelete: 'NO ACTION' })
 	pocket: PocketEntity
 	@ForeignKey(() => PocketEntity)
+	@ApiProperty({
+		description: 'Foreign key as pocket id',
+		example: '8407abe9-cbdf-4745-b634-681f42693ee9',
+	})
 	@Column({
 		type: DataType.UUID,
 		field: "pocket_id",
@@ -67,6 +89,10 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 	@BelongsTo(() => CategoryEntity, { onDelete: 'NO ACTION' })
 	category: CategoryEntity
 	@ForeignKey(() => CategoryEntity)
+	@ApiProperty({
+		description: 'Foreign key as categoryId',
+		example: 'd810173c-f848-4e87-b9f0-d9f172856555',
+	})
 	@Column({
 		type: DataType.UUID,
 		field: "category_id",
@@ -75,7 +101,12 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 	})
 	declare categoryId: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'When cashflowin was created',
+		nullable: false,
+		format: Date(),
+		example: new Date()
+	})
 	@Column({
 		type: DataType.DATE,
 		field: "created_at",
@@ -83,7 +114,12 @@ export class CashflowinEntity extends Model<CashflowinAttributes, CashflowinCrea
 	})
 	declare createdAt: Date;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'When cashflowin was updated',
+		nullable: false,
+		format: Date(),
+		example: new Date()
+	})
 	@Column({
 		type: DataType.DATE,
 		field: "updated_at",

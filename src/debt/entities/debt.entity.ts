@@ -25,7 +25,12 @@ type DebtCreationAttributes = Optional<DebtAttributes, 'id' | 'createdAt' | 'upd
 	tableName: 'debt'
 })
 export class DebtEntity extends Model<DebtAttributes, DebtCreationAttributes> {
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Primary key as debt id',
+		example: 'f05c0ecb-3aa2-4335-9987-553fcb4f365e',
+		uniqueItems: true,
+		nullable: false
+	})
 	@Column({
 		type: DataType.UUID,
 		defaultValue: UUIDV4,
@@ -34,33 +39,50 @@ export class DebtEntity extends Model<DebtAttributes, DebtCreationAttributes> {
 	})
 	declare id: string
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Amount of debt',
+		example: 2000.00
+	})
 	@Column({
 		type: DataType.DECIMAL(10, 2),
 	})
 	declare amount: number;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Interest of debt (percent)',
+		example: 3.0
+	})
 	@Column({
 		type: DataType.DECIMAL(10, 2),
 	})
 	declare interest: number;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Minimum pay for debt',
+		example: 100.00
+	})
 	@Column({
 		type: DataType.DECIMAL(10, 2),
 		field: "minimum_pay"
 	})
 	declare minimumPay: number;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'The number of priority of debt',
+		example: 1,
+		nullable: true
+	})
 	@Column({
 		type: DataType.INTEGER,
 		allowNull: true
 	})
 	declare priority: number;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Type of debt',
+		default: DebtEnum.SHORT,
+		enum: DebtEnum
+	})
 	@Column({
 		type: DataType.ENUM({
 			values: [
@@ -74,7 +96,12 @@ export class DebtEntity extends Model<DebtAttributes, DebtCreationAttributes> {
 	})
 	declare type: DebtEnum;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'When debt was created',
+		nullable: false,
+		format: Date(),
+		example: new Date()
+	})
 	@Column({
 		type: DataType.DATE,
 		field: "created_at",
@@ -82,7 +109,12 @@ export class DebtEntity extends Model<DebtAttributes, DebtCreationAttributes> {
 	})
 	declare createdAt: Date;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'When category was updated',
+		nullable: false,
+		format: Date(),
+		example: new Date()
+	})
 	@Column({
 		type: DataType.DATE,
 		field: "updated_at",
@@ -93,6 +125,10 @@ export class DebtEntity extends Model<DebtAttributes, DebtCreationAttributes> {
 	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity
 	@ForeignKey(() => UserEntity)
+	@ApiProperty({
+		description: 'Foreign key as user id',
+		example: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a',
+	})
 	@Column({
 		type: DataType.UUID,
 		field: "user_id",
