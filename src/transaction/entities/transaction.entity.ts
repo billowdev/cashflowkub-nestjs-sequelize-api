@@ -29,7 +29,12 @@ type TransactionCreationAttributes = Optional<TransactionAttributes,
 	tableName: 'transaction'
 })
 export class TransactionEntity extends Model<TransactionAttributes, TransactionCreationAttributes> {
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Primary key as transaction id',
+		example: 'adada566-9708-4903-b5d3-461ab70f779a',
+		uniqueItems: true,
+		nullable: false
+	})
 	@Column({
 		type: DataType.UUID,
 		defaultValue: UUIDV4,

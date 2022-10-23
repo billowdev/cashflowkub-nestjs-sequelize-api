@@ -50,6 +50,6 @@ export class AuthDto {
 
 }
 
-export interface RequestWithAuthDto extends FastifyRequest {
+export interface RequestWithAuth extends FastifyRequest {
   user: SessionDataDto
 }

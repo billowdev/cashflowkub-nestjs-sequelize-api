@@ -20,7 +20,12 @@ type TransferCreationAttributes = Optional<TransferAttributes, 'createdAt' | 'up
 	tableName: 'transfer'
 })
 export class TransferEntity extends Model<TransferAttributes, TransferCreationAttributes> {
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Primary key as transfer id',
+		example: 'e03cf523-e63c-47c8-8ab4-42806eb2745a',
+		uniqueItems: true,
+		nullable: false
+	})
 	@Column({
 		type: DataType.UUID,
 		defaultValue: UUIDV4,
@@ -29,7 +34,10 @@ export class TransferEntity extends Model<TransferAttributes, TransferCreationAt
 	})
 	declare id: string
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'Amount of transfer transaction',
+		example: 100.00
+	})
 	@Column({
 		type: DataType.DECIMAL(10, 2),
 	})
@@ -68,6 +76,10 @@ export class TransferEntity extends Model<TransferAttributes, TransferCreationAt
 	@BelongsTo(() => UserEntity, { onDelete: 'casCade' })
 	user: UserEntity
 	@ForeignKey(() => UserEntity)
+	@ApiProperty({
+		description: 'Foreign key as user id',
+		example: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a',
+	})
 	@Column({
 		type: DataType.UUID,
 		field: "user_id",
@@ -75,7 +87,12 @@ export class TransferEntity extends Model<TransferAttributes, TransferCreationAt
 	})
 	declare userId: string;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'When transfer was created',
+		nullable: false,
+		format: Date(),
+		example: new Date()
+	})
 	@Column({
 		type: DataType.DATE,
 		field: "created_at",
@@ -83,7 +100,12 @@ export class TransferEntity extends Model<TransferAttributes, TransferCreationAt
 	})
 	declare createdAt: Date;
 
-	@ApiProperty()
+	@ApiProperty({
+		description: 'When transfer was updated',
+		nullable: false,
+		format: Date(),
+		example: new Date()
+	})
 	@Column({
 		type: DataType.DATE,
 		field: "updated_at",

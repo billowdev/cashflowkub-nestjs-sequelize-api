@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards 
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { JwtAuthGuard } from 'src/common/guards';
-import { RequestWithAuthDto } from '../auth/dto';
+import { RequestWithAuth } from '../auth/dto';
 import { CashflowinService } from './cashflowin.service';
 import { BulkCreateCashflowinDto, CreateCashflowinDto } from './dto/create-cashflowin.dto';
 import { UpdateCashflowinDto } from './dto/update-cashflowin.dto';
@@ -48,7 +48,7 @@ export class CashflowinController {
     }
   })
   async findAll(
-    @Req() req: RequestWithAuthDto,
+    @Req() req: RequestWithAuth,
     @Res() res: FastifyReply
   ) {
     const { sub } = req.user
@@ -236,7 +236,7 @@ export class CashflowinController {
     @Param('id') id: string,
     @Body() updateCashflowinDto: UpdateCashflowinDto,
     @Res() res: FastifyReply,
-    @Req() { user }: RequestWithAuthDto,) {
+    @Req() { user }: RequestWithAuth,) {
     const data: [number, CashflowinEntity[]] = await this.cashflowinService.update(
       id,
       updateCashflowinDto,
@@ -282,7 +282,7 @@ export class CashflowinController {
       }
     }
   })
-  async remove(@Param('id') id: string, @Res() res: FastifyReply, @Req() { user }: RequestWithAuthDto) {
+  async remove(@Param('id') id: string, @Res() res: FastifyReply, @Req() { user }: RequestWithAuth) {
     const data: number = await this.cashflowinService.remove(id, user.sub);
     if (data) {
       res.status(200).send({

@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Param, Delete, Req, Res, UseGuards } from 
 import { TransactionService } from './transaction.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { RequestWithAuthDto } from 'src/auth/dto';
+import { RequestWithAuth } from 'src/auth/dto';
 import { FastifyReply } from 'fastify';
 import { TransactionEntity } from './entities/transaction.entity';
 import { JwtAuthGuard } from 'src/common/guards';
@@ -35,7 +35,7 @@ export class TransactionController {
 
   @Get()
   async findAll(
-    @Req() req: RequestWithAuthDto,
+    @Req() req: RequestWithAuth,
     @Res() res: FastifyReply
   ) {
     const userId: string = req.user.sub
@@ -57,7 +57,7 @@ export class TransactionController {
 
   @Get(':id')
   async findOne(@Param('id') id: string,
-    @Req() req: RequestWithAuthDto,
+    @Req() req: RequestWithAuth,
     @Res() res: FastifyReply) {
     const userId: string = req.user.sub
     const data: TransactionEntity = await this.transactionService.findOne(id, userId);
@@ -79,7 +79,7 @@ export class TransactionController {
 
   @Delete(':id')
   async remove(@Param('id') id: string,
-    @Req() req: RequestWithAuthDto,
+    @Req() req: RequestWithAuth,
     @Res() res: FastifyReply) {
     const userId = req.user.sub
     const data: number = await this.transactionService.remove(id, userId);

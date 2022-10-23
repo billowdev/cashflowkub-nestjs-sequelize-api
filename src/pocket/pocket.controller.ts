@@ -3,7 +3,7 @@ import { PocketService } from './pocket.service';
 import { CreatePocketDto } from './dto/create-pocket.dto';
 import { UpdatePocketDto } from './dto/update-pocket.dto';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
-import { RequestWithAuthDto } from 'src/auth/dto';
+import { RequestWithAuth } from 'src/auth/dto';
 import { FastifyReply } from 'fastify';
 import { JwtAuthGuard } from 'src/common/guards';
 import { PocketEntity } from './entities/pocket.entity';
@@ -108,7 +108,7 @@ export class PocketController {
     }
   })
   async findAll(
-    @Req() req: RequestWithAuthDto,
+    @Req() req: RequestWithAuth,
     @Res() res: FastifyReply
   ) {
     const userId: string = req.user.sub
@@ -163,7 +163,7 @@ export class PocketController {
     }
   })
   async findOne(@Param('id') id: string,
-    @Req() req: RequestWithAuthDto,
+    @Req() req: RequestWithAuth,
     @Res() res: FastifyReply) {
     const userId: string = req.user.sub
     const data: PocketEntity = await this.pocketService.findOne(id, userId);
@@ -221,7 +221,7 @@ export class PocketController {
   })
   async update(
     @Param('id') id: string, @Body() updatePocketDto: UpdatePocketDto,
-    @Req() req: RequestWithAuthDto,
+    @Req() req: RequestWithAuth,
     @Res() res: FastifyReply
   ) {
     const userId: string = req.user.sub
@@ -268,7 +268,7 @@ export class PocketController {
   })
   async remove(
     @Param('id') id: string,
-    @Req() req: RequestWithAuthDto,
+    @Req() req: RequestWithAuth,
     @Res() res: FastifyReply
   ) {
     const userId: string = req.user.sub
