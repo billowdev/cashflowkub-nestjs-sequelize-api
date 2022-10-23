@@ -8,7 +8,6 @@ import { DebtEntity } from "src/debt/entities/debt.entity";
 import { PocketEntity } from "src/pocket/entities/pocket.entity";
 import { TransferEntity } from "src/transfer/entities/transfer.entity";
 import { Role } from "./role.enum";
-import { v4 as uuidv4 } from 'uuid';
 
 import {
 	Optional,
@@ -36,7 +35,7 @@ export type UserCreationAttributes = Optional<UserAttributes, 'id' | 'firstName'
 export class UserEntity extends Model<UserAttributes, UserCreationAttributes> {
 	@ApiProperty({
 		description: 'Primary key as User ID',
-		example: uuidv4(),
+		example: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a',
 		uniqueItems: true,
 		nullable: false
 	})
