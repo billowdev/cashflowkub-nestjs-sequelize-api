@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { JwtAuthGuard } from 'src/common/guards';
 import { RequestWithAuth } from '../auth/dto';
@@ -7,6 +7,7 @@ import { CashflowinService } from './cashflowin.service';
 import { BulkCreateCashflowinDto, CreateCashflowinDto } from './dto/create-cashflowin.dto';
 import { UpdateCashflowinDto } from './dto/update-cashflowin.dto';
 import { CashflowinEntity } from './entities/cashflowin.entity';
+import { UserUnauthorizedException } from '../common/swagger-document/unauthorized.document'
 
 @ApiBearerAuth()
 @ApiTags('Cashflowins')
@@ -47,6 +48,7 @@ export class CashflowinController {
       }
     }
   })
+  @ApiUnauthorizedResponse(UserUnauthorizedException)
   async findAll(
     @Req() req: RequestWithAuth,
     @Res() res: FastifyReply
@@ -95,6 +97,7 @@ export class CashflowinController {
       }
     }
   })
+  @ApiUnauthorizedResponse(UserUnauthorizedException)
   async findOne(@Param('id') id: string, @Res() res: FastifyReply) {
     const data: CashflowinEntity = await this.cashflowinService.findOne(id);
     res.send({
@@ -140,6 +143,7 @@ export class CashflowinController {
     type: CashflowinEntity,
     isArray: true
   })
+  @ApiUnauthorizedResponse(UserUnauthorizedException)
   async bulkCreate(
     @Body() createCashflowinDto: BulkCreateCashflowinDto,
     @Res() res: FastifyReply
@@ -184,6 +188,7 @@ export class CashflowinController {
       }
     }
   })
+  @ApiUnauthorizedResponse(UserUnauthorizedException)
   async create(
     @Body() createCashflowinDto: CreateCashflowinDto,
     @Res() res: FastifyReply
@@ -232,6 +237,7 @@ export class CashflowinController {
       }
     }
   })
+  @ApiUnauthorizedResponse(UserUnauthorizedException)
   async update(
     @Param('id') id: string,
     @Body() updateCashflowinDto: UpdateCashflowinDto,
@@ -282,6 +288,7 @@ export class CashflowinController {
       }
     }
   })
+  @ApiUnauthorizedResponse(UserUnauthorizedException)
   async remove(@Param('id') id: string, @Res() res: FastifyReply, @Req() { user }: RequestWithAuth) {
     const data: number = await this.cashflowinService.remove(id, user.sub);
     if (data) {
