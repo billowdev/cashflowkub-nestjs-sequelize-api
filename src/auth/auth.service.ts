@@ -1,8 +1,9 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AuthDto, SignDto } from './dto';
+import { AuthDataDto, AuthDto, SessionDataDto, SessionDto, SignDto, TokenPayloadDto } from './dto';
 import { UserService } from 'src/user/user.service';
 import * as argon from 'argon2'
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -13,46 +14,44 @@ export class AuthService {
 	) { }
 
 	// generate token
-	private async generateToken(auth) {
-		const token = await this.jwtService.signAsync(auth);
+	private async generateToken(auth: TokenPayloadDto) {
+		const token: string = await this.jwtService.signAsync(auth);
 		return token
 	}
 	// password hasing
 	public async hashPassword(password) {
-		const hash = await argon.hash(password, { type: argon.argon2id});
+		const hash: string = await argon.hash(password, { type: argon.argon2id });
 		return hash;
 	}
 
 	// check password
 	private async comparePassword(password, dbPassword) {
-		const match = await argon.verify(dbPassword, password)
+		const match: boolean = await argon.verify(dbPassword, password)
 		return match;
 	}
 
 	// validate authentication
 	public async validateAuth(username: string, pass: string) {
-		const user = await this.userService.findOneByUsername(username);
+		const user: UserEntity = await this.userService.findOneByUsername(username);
 		if (!user) {
 			return null;
 		}
 
-		const match = await this.comparePassword(pass, user.hashPassword);
+		const match: boolean = await this.comparePassword(pass, user.hashPassword);
 		if (!match) {
 			return null;
 		}
-
-		const result = user['dataValues']
+		const result: UserEntity = user['dataValues']
 		delete result.hashPassword
 		return result;
 	}
 
-	public async signin(auth: AuthDto): Promise<SignDto> {
+	public async signin(auth: AuthDto): Promise<AuthDataDto> {
 		try {
 			const user = await this.userService.findOneByUsername(auth.username, true)
 			const token = await this.generateToken({ sub: user.id, role: user.role });
-			const response: SignDto = {
-				message: "User logged in successfully",
-				data: { user: user, token, role: user.role }
+			const response: AuthDataDto = {
+				user, token, role: user.role
 			}
 			return response
 		} catch (error) {
@@ -62,7 +61,7 @@ export class AuthService {
 	}
 
 	// signup : register service
-	public async signup(user): Promise<SignDto> {
+	public async signup(user: AuthDto): Promise<AuthDataDto> {
 		try {
 			const result = await this.userService.registerUser(user);
 			delete result['dataValues'].hashPassword
@@ -71,15 +70,26 @@ export class AuthService {
 				role: result['dataValues'].role
 			}
 			const token = await this.generateToken(payload);
-			const response: SignDto = {
-				message: "user signup successfully",
-				data: { user: result, token, role: result.role }
-			}
-			return response;
+			const data: AuthDataDto = { user: result, token, role: result.role }
+			return data;
 		} catch (error) {
 			throw new BadRequestException("User registered failure")
 		}
 	}
 
+	public async session(user: SessionDataDto): Promise<SessionDataDto> {
+		try {
+			const { sub, role } = user
+			const payload: TokenPayloadDto = {
+				sub,
+				role
+			}
+			const token: string = await this.generateToken(payload);
+			const data: SessionDataDto = { token, ...payload }
+			return data
+		} catch (error) {
+			throw new BadRequestException()
+		}
+	}
 
 }

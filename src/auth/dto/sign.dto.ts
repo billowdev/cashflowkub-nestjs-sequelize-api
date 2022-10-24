@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsObject, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
 import { Role } from 'src/user/entities/role.enum';
 import { UserEntity } from 'src/user/entities/user.entity';
 
@@ -32,7 +32,16 @@ export class AuthDataDto {
 
 export class SignDto {
   @ApiProperty({
-    description: 'Response message'
+    description: 'response status code',
+    example: 200
+  })
+  @IsNumber()
+  @IsOptional()
+  statusCode?: number;
+
+  @ApiProperty({
+    description: 'Response message',
+    example: 'loggedin was successfuly'
   })
   @IsString()
   @IsNotEmpty()
