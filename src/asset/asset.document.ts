@@ -1,5 +1,5 @@
 import { ApiParamOptions, ApiResponseOptions } from "@nestjs/swagger";
-import { AssetEntity, AssetEnum } from "./entities/asset.entity";
+import { AssetEntity } from "./entities/asset.entity";
 
 // ----------- asset create ----------- \\
 export const ApiAssetCreateResponseDocument: ApiResponseOptions = {
@@ -51,7 +51,6 @@ export const ApiAssetGetOneBadRequestResponse: ApiResponseOptions = {
 		example: {
 			statusCode: 400,
 			message: "get asset failed",
-			data: {}
 		}
 	}
 }
@@ -67,21 +66,8 @@ export const ApiAssetUpdateOkResponse: ApiResponseOptions = {
 	description: 'update asset successfuly',
 	schema: {
 		example: {
-			statusCode: 200,
-			message: "update asset successfuly",
-			data: [
-				1,
-				[{
-					id: '44d4a72e-0bde-4697-8ebb-9c2ac1e96216',
-					desc: "asset 1",
-					value: "1000.00",
-					type: AssetEnum.PRIVATE,
-					cashflowPerYear: "500.00",
-					createdAt: new Date(),
-					updatedAt: new Date(),
-					userId: '41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a'
-				}]
-			]
+			"statusCode": 200,
+			"message": "update asset successfuly"
 		}
 	}
 }
@@ -109,7 +95,6 @@ export const ApiAssetDeleteOkResponse: ApiResponseOptions = {
 		example: {
 			statusCode: 200,
 			message: "delete cashflow in by id successfuly",
-			data: 1
 		}
 	}
 }

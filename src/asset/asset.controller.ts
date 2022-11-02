@@ -46,11 +46,7 @@ export class AssetController {
     @Res() res: FastifyReply,
   ) {
     const data: AssetEntity = await this.assetService.create(createAssetDto);
-    res.status(201).send({
-      statusCode: res.statusCode,
-      message: "Create assets successfuly",
-      data
-    })
+    res.status(201).send(data)
   }
 
   @Get()
@@ -62,11 +58,7 @@ export class AssetController {
     @Req() req: RequestWithAuth,
     @Res() res: FastifyReply) {
     const data: AssetEntity[] = await this.assetService.findAll(req.user.sub);
-    res.status(200).send({
-      statusCode: res.statusCode,
-      message: "get all assets successfuly",
-      data
-    })
+    res.status(200).send(data)
   }
 
   @Get(':id')
@@ -84,13 +76,11 @@ export class AssetController {
       res.status(200).send({
         statusCode: res.statusCode,
         message: "get asset successfuly",
-        data
       })
     } else {
       res.status(400).send({
         statusCode: res.statusCode,
-        message: "get asset failed",
-        data: {}
+        message: "get asset failed"
       })
     }
   }
@@ -112,13 +102,11 @@ export class AssetController {
       res.status(200).send({
         statusCode: res.statusCode,
         message: "update asset successfuly",
-        data
       })
     } else {
       res.status(400).send({
         statusCode: res.statusCode,
         message: "update asset failed",
-        data: {}
       })
     }
   }
@@ -135,16 +123,11 @@ export class AssetController {
     @Res() res: FastifyReply,) {
     const data: number = await this.assetService.remove(id, req.user.sub);
     if (data) {
-      res.status(200).send({
-        statusCode: res.statusCode,
-        message: "delete asset successfuly",
-        data
-      })
+      res.status(200).send(data)
     } else {
       res.status(400).send({
         statusCode: res.statusCode,
         message: "delete asset failed",
-        data: {}
       })
     }
   }
