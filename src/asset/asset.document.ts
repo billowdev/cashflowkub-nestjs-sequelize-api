@@ -2,7 +2,7 @@ import { ApiParamOptions, ApiResponseOptions } from "@nestjs/swagger";
 import { AssetEntity } from "./entities/asset.entity";
 
 // ----------- asset create ----------- \\
-export const ApiAssetCreateResponseDocument: ApiResponseOptions = {
+export const ApiAssetCreateResponse: ApiResponseOptions = {
 	description: 'Create assets successfuly',
 	type: AssetEntity
 }

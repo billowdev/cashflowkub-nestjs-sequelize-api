@@ -11,7 +11,7 @@ import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';
 import { AssetEntity } from './entities/asset.entity';
 import {
-  ApiAssetCreateResponseDocument,
+  ApiAssetCreateResponse,
   ApiAssetCreateBadRequestResponse,
   ApiAssetGetAllOkResponse,
   ApiAssetGetAllBadRequestResponse,
@@ -37,7 +37,7 @@ export class AssetController {
   constructor(private readonly assetService: AssetService) { }
 
   @Post()
-  @ApiCreatedResponse(ApiAssetCreateResponseDocument)
+  @ApiCreatedResponse(ApiAssetCreateResponse)
   @ApiBadRequestResponse(ApiAssetCreateBadRequestResponse)
   @ApiForbiddenResponse(ForbiddenResponse)
   @ApiUnauthorizedResponse(UserUnauthorizedException)
