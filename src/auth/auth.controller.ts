@@ -4,8 +4,6 @@ import { AuthService } from './auth.service';
 import { AuthDataDto, AuthDto, RequestWithAuth, SessionDataDto, SessionDto, SignDto } from './dto';
 import { JwtAuthGuard, LocalGuard, UserIsExist } from '../common/guards';
 import { FastifyReply } from 'fastify';
-import { UserEntity } from 'src/user/entities/user.entity';
-
 @ApiBearerAuth()
 @ApiTags('Auth')
 @Controller('auth')
@@ -19,24 +17,20 @@ export class AuthController {
 		description: 'Created user successfuly',
 		schema: {
 			example: {
-				"statusCode": 201,
-				"message": "user signup successfully",
-				"data": {
-					"user": {
-						"createdAt": "2022-10-24T06:15:24.179Z",
-						"updatedAt": "2022-10-24T06:15:24.179Z",
-						"id": "da9fbc15-cacb-42b9-b1f9-20744c8e940c",
-						"isActive": true,
-						"role": "user",
-						"email": "billowdev@gmail.com",
-						"username": "billowdev",
-						"firstName": "Billow",
-						"lastName": "dev",
-						"phone": null
-					},
-					"token": "JSONWEBTOKEN",
-					"role": "user"
-				}
+				"user": {
+					"createdAt": "2022-10-24T06:15:24.179Z",
+					"updatedAt": "2022-10-24T06:15:24.179Z",
+					"id": "da9fbc15-cacb-42b9-b1f9-20744c8e940c",
+					"isActive": true,
+					"role": "user",
+					"email": "billowdev@gmail.com",
+					"username": "billowdev",
+					"firstName": "Billow",
+					"lastName": "dev",
+					"phone": null
+				},
+				"token": "JSONWEBTOKEN",
+				"role": "user"
 			}
 		}
 	})
@@ -44,12 +38,7 @@ export class AuthController {
 	@Post('signup')
 	async signup(@Body() dto: AuthDto, @Res() res: FastifyReply) {
 		const data: AuthDataDto = await this.authService.signup(dto)
-		const response: SignDto = {
-			statusCode: res.statusCode,
-			message: "User registered was successfully",
-			data
-		}
-		res.status(201).send(response)
+		res.status(201).send(data)
 	}
 
 	@Post('signin')
@@ -67,11 +56,7 @@ export class AuthController {
 	@UseGuards(LocalGuard)
 	async signin(@Body() dto: AuthDto, @Res() res: FastifyReply) {
 		const data: AuthDataDto = await this.authService.signin(dto)
-		res.status(200).send({
-			statusCode: res.statusCode,
-			message: "User logged in successfully",
-			data
-		})
+		res.status(200).send(data)
 	}
 
 
@@ -93,11 +78,7 @@ export class AuthController {
 	) {
 		try {
 			const data: SessionDataDto = await this.authService.session(req.user)
-			res.status(200).send({
-				status: res.statusCode,
-				message: "get session was successfuly",
-				data
-			})
+			res.status(200).send(data)
 		} catch (error) {
 			throw new BadRequestException()
 		}
