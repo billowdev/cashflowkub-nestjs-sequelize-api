@@ -1,6 +1,6 @@
 'use strict';
 import { QueryInterface } from "sequelize";
-import { AssetEnum } from "src/asset/entities/asset.entity";
+import { AssetEnum } from "src/modules/asset/entities/asset.entity";
 import { v4 as uuidv4 } from 'uuid';
 
 type AssetType = {

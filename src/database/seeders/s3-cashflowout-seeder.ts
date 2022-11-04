@@ -1,6 +1,6 @@
 'use strict';
 import { QueryInterface } from "sequelize";
-import { CashflowoutEnum } from "src/cashflowout/entities/cashflowout.entity";
+import { CashflowoutEnum } from "src/modules/cashflowout/entities/cashflowout.entity";
 import { v4 as uuidv4 } from 'uuid';
 
 type CashflowinType = {

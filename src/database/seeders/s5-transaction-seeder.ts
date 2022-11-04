@@ -1,6 +1,6 @@
 'use strict';
 import { QueryInterface } from "sequelize";
-import { TransactionEnum } from "src/transaction/entities/transaction.entity";
+import { TransactionEnum } from "src/modules/transaction/entities/transaction.entity";
 
 type TransactionType = {
 	id: string,
