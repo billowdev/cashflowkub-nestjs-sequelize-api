@@ -2,7 +2,7 @@
 
 import { QueryInterface } from "sequelize";
 import * as argon from 'argon2'
-import { Role } from "src/user/entities/role.enum";
+import { Role } from "src/modules/user/entities/role.enum";
 
 async function hashPassword(password) {
   const hash = await argon.hash(password, { type: argon.argon2id });

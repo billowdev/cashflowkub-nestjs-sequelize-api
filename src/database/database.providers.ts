@@ -1,15 +1,15 @@
 import { Sequelize } from 'sequelize-typescript';
 import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../common/core/constants';
 import { dbConfig } from './database.config';
-import { AssetEntity } from '../asset/entities/asset.entity';
-import { CashflowinEntity } from '../cashflowin/entities/cashflowin.entity';
-import { CashflowoutEntity } from '../cashflowout/entities/cashflowout.entity';
-import { CategoryEntity } from '../category/entities/category.entity';
-import { DebtEntity } from '../debt/entities/debt.entity';
-import { PocketEntity } from '../pocket/entities/pocket.entity';
-import { TransferEntity } from '../transfer/entities/transfer.entity';
-import { UserEntity } from '../user/entities/user.entity';
-import { TransactionEntity } from 'src/transaction/entities/transaction.entity';
+import { AssetEntity } from '../modules/asset/entities/asset.entity';
+import { CashflowinEntity } from '../modules/cashflowin/entities/cashflowin.entity';
+import { CashflowoutEntity } from '../modules/cashflowout/entities/cashflowout.entity';
+import { CategoryEntity } from '../modules/category/entities/category.entity';
+import { DebtEntity } from '../modules/debt/entities/debt.entity';
+import { PocketEntity } from '../modules/pocket/entities/pocket.entity';
+import { TransferEntity } from '../modules/transfer/entities/transfer.entity';
+import { UserEntity } from '../modules/user/entities/user.entity';
+import { TransactionEntity } from 'src/modules/transaction/entities/transaction.entity';
 
 export const databaseProviders = [{
    provide: SEQUELIZE,
