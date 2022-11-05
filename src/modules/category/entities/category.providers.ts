@@ -1,4 +1,4 @@
-import { CATEGORY_REPOSITORY } from '../../../common/core/constants';
+import { CATEGORY_REPOSITORY } from '../../../common/constants';
 import { CategoryEntity } from './category.entity';
 
 export const categoryProviders = [

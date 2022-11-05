@@ -3,7 +3,7 @@ import { CashflowinService } from 'src/modules/cashflowin/cashflowin.service';
 import { CashflowinEntity } from 'src/modules/cashflowin/entities/cashflowin.entity';
 import { CashflowoutService } from 'src/modules/cashflowout/cashflowout.service';
 import { CashflowoutEntity } from 'src/modules/cashflowout/entities/cashflowout.entity';
-import { TRANSACTION_REPOSITORY } from 'src/common/core/constants';
+import { TRANSACTION_REPOSITORY } from 'src/common/constants';
 import { TransferEntity } from 'src/modules/transfer/entities/transfer.entity';
 import { TransferService } from 'src/modules/transfer/transfer.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';

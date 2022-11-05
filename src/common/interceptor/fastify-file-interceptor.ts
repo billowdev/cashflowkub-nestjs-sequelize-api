@@ -1,4 +1,5 @@
 import {
+	BadRequestException,
 	CallHandler,
 	ExecutionContext,
 	Inject,
@@ -40,7 +41,7 @@ export function FastifyFileInterceptor(
 					(error: any) => {
 						if (error) {
 							// const error = transformException(err);
-							return reject(error);
+							return reject(new BadRequestException('upload image was failed'));
 						}
 						resolve();
 					},

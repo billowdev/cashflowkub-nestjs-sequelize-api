@@ -1,5 +1,5 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { DEBT_REPOSITORY } from 'src/common/core/constants';
+import { DEBT_REPOSITORY } from 'src/common/constants';
 import { CreateDebtDto } from './dto/create-debt.dto';
 import { UpdateDebtDto } from './dto/update-debt.dto';
 import { DebtEntity } from './entities/debt.entity';
