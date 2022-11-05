@@ -168,3 +168,24 @@ export const ApiUserDeleteBadRequestResponse: ApiResponseOptions = {
 		}
 	}
 }
+
+
+export const ApiUserUploadedImageOkResponse: ApiResponseOptions = {
+	description: 'upload image was successfuly',
+	schema: {
+		example: {
+			"message": "uploaded file was successfuly",
+			"file_name": "uuid-imagefilename.png"
+		}
+	}
+}
+export const ApiUserUploadedImageBadRequestResponse: ApiResponseOptions = {
+	description: 'Error image format not valid',
+	schema: {
+		example: {
+			"statusCode": 400,
+			"message": "upload image was failed",
+			"error": "Bad Request"
+		}
+	}
+}

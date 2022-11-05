@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript';
-import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../common/core/constants';
+import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../common/constants';
 import { dbConfig } from './database.config';
 import { AssetEntity } from '../modules/asset/entities/asset.entity';
 import { CashflowinEntity } from '../modules/cashflowin/entities/cashflowin.entity';

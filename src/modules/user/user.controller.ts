@@ -5,7 +5,17 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { Role } from './entities/role.enum';
 import { JwtAuthGuard, RolesGuard, UserIsExist } from 'src/common/guards';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiTags
+} from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
 import { FastifyReply } from 'fastify';
 import { diskStorage } from 'multer';
@@ -13,6 +23,7 @@ import { RequestWithAuth } from 'src/modules/auth/dto';
 import { FastifyFileInterceptor } from 'src/common/interceptor/fastify-file-interceptor';
 import { updateFileName } from 'src/utils/update-file-name.util';
 import { imageFileFilter } from 'src/utils/image-file-filter.util';
+
 import {
   ApiUserCreatedBadRequestResponse,
   ApiUserCreatedBody,
@@ -30,9 +41,12 @@ import {
   ApiUserUpdateBadRequestResponse,
   ApiUserUpdateBody,
   ApiUserUpdateOkResponse,
-  ApiUserUpdateParam
+  ApiUserUpdateParam,
+  ApiUserUploadedImageBadRequestResponse,
+  ApiUserUploadedImageOkResponse
 } from './user.document';
 import { ApiCommonForbiddenResponse } from 'src/common/swagger-document/forbidden.document';
+import { UploadImageDto } from './dto/upload-image-user.dto';
 
 @ApiBearerAuth()
 @ApiTags('Users')
@@ -142,8 +156,11 @@ export class UserController {
   }
 
   @Post('/file')
+  @ApiConsumes('multipart/form-data')
+  @ApiOkResponse(ApiUserUploadedImageOkResponse)
+  @ApiBadRequestResponse(ApiUserUploadedImageBadRequestResponse)
   @UseInterceptors(
-    FastifyFileInterceptor('File', {
+    FastifyFileInterceptor('image', {
       storage: diskStorage({
         destination: './public/uploaded/images/user',
         filename: updateFileName,
@@ -153,7 +170,7 @@ export class UserController {
   )
   async uploadFile(
     @UploadedFile() file: Express.Multer.File,
-
+    @Body() body: UploadImageDto,
     @Res() res: FastifyReply, @Req() req: RequestWithAuth) {
     try {
       await this.userService.update(req.user.sub, {
@@ -161,7 +178,7 @@ export class UserController {
       })
       res.status(200).send({
         message: 'uploaded file was successfuly',
-        file_name: file.filename
+        file_name: file.filename,
       })
     } catch (error) {
       throw new BadRequestException()
