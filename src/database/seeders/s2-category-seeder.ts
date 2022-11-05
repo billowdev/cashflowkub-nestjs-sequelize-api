@@ -1,6 +1,6 @@
 'use strict';
 import { QueryInterface } from "sequelize";
-import { CategoryEnum } from "src/category/entities/category.entity";
+import { CategoryEnum } from "src/modules/category/entities/category.entity";
 
 type CategotyType = {
 	id: string,

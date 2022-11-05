@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './user/user.module';
+import { UserModule } from './modules/user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
-import { AuthModule } from './auth/auth.module';
-import { PocketModule } from './pocket/pocket.module';
-import { TransferModule } from './transfer/transfer.module';
-import { CashflowinModule } from './cashflowin/cashflowin.module';
-import { CashflowoutModule } from './cashflowout/cashflowout.module';
-import { AssetModule } from './asset/asset.module';
-import { DebtModule } from './debt/debt.module';
-import { CategoryModule } from './category/category.module';
-import { TransactionModule } from './transaction/transaction.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { PocketModule } from './modules/pocket/pocket.module';
+import { TransferModule } from './modules/transfer/transfer.module';
+import { CashflowinModule } from './modules/cashflowin/cashflowin.module';
+import { CashflowoutModule } from './modules/cashflowout/cashflowout.module';
+import { AssetModule } from './modules/asset/asset.module';
+import { DebtModule } from './modules/debt/debt.module';
+import { CategoryModule } from './modules/category/category.module';
+import { TransactionModule } from './modules/transaction/transaction.module';
 
 @Module({
   imports: [
