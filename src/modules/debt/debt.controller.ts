@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, Res, UseGuards } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiBody, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { FastifyReply } from 'fastify';
 import { Roles } from 'src/common/decorators/roles.decorator';
 import { RequestWithAuth } from 'src/modules/auth/dto';
@@ -9,7 +9,24 @@ import { DebtService } from './debt.service';
 import { CreateDebtDto } from './dto/create-debt.dto';
 import { UpdateDebtDto } from './dto/update-debt.dto';
 import { DebtEntity } from './entities/debt.entity';
-import { ApiDebtCreateBody, ApiDebtCreatedBadRequestResponse, ApiDebtCreatedOkResponse, ApiDebtDeleteBadRequestResponse, ApiDebtDeleteOkResponse, ApiDebtDeleteParam, ApiDebtGetAllBadRequestResponse, ApiDebtGetAllOkResponse, ApiDebtGetOneBadRequestResponse, ApiDebtGetOneOkResponse, ApiDebtGetOneParam, ApiDebtUpdateBadRequestResponse, ApiDebtUpdateBody, ApiDebtUpdateOkResponse, ApiDebtUpdateParam } from './debt.document';
+import {
+  ApiDebtCreateBody,
+  ApiDebtCreatedBadRequestResponse,
+  ApiDebtCreatedOkResponse,
+  ApiDebtDeleteBadRequestResponse,
+  ApiDebtDeleteOkResponse,
+  ApiDebtDeleteParam,
+  ApiDebtGetAllBadRequestResponse,
+  ApiDebtGetAllOkResponse,
+  ApiDebtGetOneBadRequestResponse,
+  ApiDebtGetOneOkResponse,
+  ApiDebtGetOneParam,
+  ApiDebtUpdateBadRequestResponse,
+  ApiDebtUpdateBody,
+  ApiDebtUpdateOkResponse,
+  ApiDebtUpdateParam
+} from './debt.document';
+import { ApiCommonForbiddenResponse } from 'src/common/swagger-document/forbidden.document';
 
 @ApiBearerAuth()
 @Roles(Role.ADMIN, Role.PREMIUM)
@@ -23,6 +40,7 @@ export class DebtController {
   @ApiBody(ApiDebtCreateBody)
   @ApiCreatedResponse(ApiDebtCreatedOkResponse)
   @ApiBadRequestResponse(ApiDebtCreatedBadRequestResponse)
+  @ApiForbiddenResponse(ApiCommonForbiddenResponse)
   async create(@Body() createDebtDto: CreateDebtDto,
     @Res() res: FastifyReply) {
     const data: DebtEntity = await this.debtService.create(createDebtDto);
@@ -39,6 +57,7 @@ export class DebtController {
   @Get()
   @ApiOkResponse(ApiDebtGetAllOkResponse)
   @ApiBadRequestResponse(ApiDebtGetAllBadRequestResponse)
+  @ApiForbiddenResponse(ApiCommonForbiddenResponse)
   async findAll(
     @Req() req: RequestWithAuth,
     @Res() res: FastifyReply
@@ -49,22 +68,20 @@ export class DebtController {
       res.status(200).send({
         statusCode: res.statusCode,
         message: "get all debt was successfuly",
-        data
       })
     } else {
       res.status(400).send({
         statusCode: res.statusCode,
         message: "get all debt was failed",
-        data: {}
       })
     }
   }
 
   @Get(':id')
-  @ApiParam(
-    ApiDebtGetOneParam)
+  @ApiParam(ApiDebtGetOneParam)
   @ApiOkResponse(ApiDebtGetOneOkResponse)
   @ApiBadRequestResponse(ApiDebtGetOneBadRequestResponse)
+  @ApiForbiddenResponse(ApiCommonForbiddenResponse)
   async findOne(@Param('id') id: string, @Req() req: RequestWithAuth,
     @Res() res: FastifyReply) {
     const userId: string = req.user.sub
@@ -84,6 +101,7 @@ export class DebtController {
   @ApiBody(ApiDebtUpdateBody)
   @ApiOkResponse(ApiDebtUpdateOkResponse)
   @ApiBadRequestResponse(ApiDebtUpdateBadRequestResponse)
+  @ApiForbiddenResponse(ApiCommonForbiddenResponse)
   async update(@Param('id') id: string, @Body() updateDebtDto: UpdateDebtDto, @Req() req: RequestWithAuth,
     @Res() res: FastifyReply) {
     const userId: string = req.user.sub
@@ -105,7 +123,7 @@ export class DebtController {
   @ApiParam(ApiDebtDeleteParam)
   @ApiOkResponse(ApiDebtDeleteOkResponse)
   @ApiBadRequestResponse(ApiDebtDeleteBadRequestResponse)
-
+  @ApiForbiddenResponse(ApiCommonForbiddenResponse)
   async remove(@Param('id') id: string, @Req() req: RequestWithAuth,
     @Res() res: FastifyReply) {
     const userId: string = req.user.sub

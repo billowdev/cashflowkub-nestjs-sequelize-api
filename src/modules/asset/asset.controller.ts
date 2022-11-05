@@ -25,7 +25,7 @@ import {
   ApiAssetDeleteBadRequestResponse,
   ApiAssetDeleteParam
 } from './asset.document';
-import { ForbiddenResponse } from 'src/common/swagger-document/forbidden.document';
+import { ApiCommonForbiddenResponse } from 'src/common/swagger-document/forbidden.document';
 
 @ApiBearerAuth()
 @Roles(Role.ADMIN, Role.PREMIUM)
@@ -39,7 +39,7 @@ export class AssetController {
   @Post()
   @ApiCreatedResponse(ApiAssetCreateResponse)
   @ApiBadRequestResponse(ApiAssetCreateBadRequestResponse)
-  @ApiForbiddenResponse(ForbiddenResponse)
+  @ApiForbiddenResponse(ApiCommonForbiddenResponse)
   @ApiUnauthorizedResponse(UserUnauthorizedException)
   async create(
     @Body() createAssetDto: CreateAssetDto,
@@ -52,7 +52,7 @@ export class AssetController {
   @Get()
   @ApiOkResponse(ApiAssetGetAllOkResponse)
   @ApiBadRequestResponse(ApiAssetGetAllBadRequestResponse)
-  @ApiForbiddenResponse(ForbiddenResponse)
+  @ApiForbiddenResponse(ApiCommonForbiddenResponse)
   @ApiUnauthorizedResponse(UserUnauthorizedException)
   async findAll(
     @Req() req: RequestWithAuth,
@@ -65,7 +65,7 @@ export class AssetController {
   @ApiParam(ApiAssetGetOneParam)
   @ApiOkResponse(ApiAssetGetOneOkResponse)
   @ApiBadRequestResponse(ApiAssetGetOneBadRequestResponse)
-  @ApiForbiddenResponse(ForbiddenResponse)
+  @ApiForbiddenResponse(ApiCommonForbiddenResponse)
   @ApiUnauthorizedResponse(UserUnauthorizedException)
   async findOne(
     @Param('id') id: string,
@@ -89,7 +89,7 @@ export class AssetController {
   @ApiParam(ApiAssetUpdateParam)
   @ApiOkResponse(ApiAssetUpdateOkResponse)
   @ApiBadRequestResponse(ApiAssetUpdateBadRequestResponse)
-  @ApiForbiddenResponse(ForbiddenResponse)
+  @ApiForbiddenResponse(ApiCommonForbiddenResponse)
   @ApiUnauthorizedResponse(UserUnauthorizedException)
   async update(@Param('id') id: string,
     @Body() updateAssetDto: UpdateAssetDto,
@@ -115,7 +115,7 @@ export class AssetController {
   @ApiParam(ApiAssetDeleteParam)
   @ApiOkResponse(ApiAssetDeleteOkResponse)
   @ApiBadRequestResponse(ApiAssetDeleteBadRequestResponse)
-  @ApiForbiddenResponse(ForbiddenResponse)
+  @ApiForbiddenResponse(ApiCommonForbiddenResponse)
   @ApiUnauthorizedResponse(UserUnauthorizedException)
   async remove(
     @Param('id') id: string,
