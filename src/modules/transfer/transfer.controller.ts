@@ -6,6 +6,7 @@ import { JwtAuthGuard } from 'src/common/guards';
 import { RequestWithAuth } from 'src/modules/auth/dto';
 import { FastifyReply } from 'fastify';
 import { TransferEntity } from './entities/transfer.entity';
+import { ApiTransferCreatedBadRequestResponse, ApiTransferCreatedBody, ApiTransferCreatedOkResponse, ApiTransferDeleteBadRequestResponse, ApiTransferDeleteOkResponse, ApiTransferDeleteParam, ApiTransferGetAllBadRequestResponse, ApiTransferGetAllOkResponse, ApiTransferGetOneBadRequestResponse, ApiTransferGetOneOkResponse, ApiTransferGetOneParam } from './transfer.document';
 
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
@@ -17,85 +18,22 @@ export class TransferController {
   ) { }
 
   @Post()
-  @ApiBody({
-    description: 'The body of transfer for create',
-    schema: {
-      example: {
-        userId: "41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a",
-        amount: 100,
-        fromPocketId: "8407abe9-cbdf-4745-b634-681f42693ee9",
-        toPocketId: "416c355b-e095-4007-9713-218e050dbae7"
-      }
-    }
-  })
-  @ApiCreatedResponse({
-    description: 'create transfer was successfuly',
-    schema: {
-      example: {
-        statusCode: 201,
-        message: "create transfer successfuly",
-        data: {
-          createdAt: "2022-10-23T08:47:11.494Z",
-          updatedAt: "2022-10-23T08:47:11.494Z",
-          id: "e03cf523-e63c-47c8-8ab4-42806eb2745a",
-          userId: "41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a",
-          amount: "100.00",
-          fromPocketId: "8407abe9-cbdf-4745-b634-681f42693ee9",
-          toPocketId: "416c355b-e095-4007-9713-218e050dbae7"
-        }
-      }
-    }
-  })
-  @ApiBadRequestResponse({
-    description: 'create transfer was failed',
-    schema: {
-      example: {
-        statusCode: 400,
-        message: "create transfer was failed",
-        error: "Bad Request"
-      }
-    }
-  })
+  @ApiBody(ApiTransferCreatedBody)
+  @ApiCreatedResponse(ApiTransferCreatedOkResponse)
+  @ApiBadRequestResponse(ApiTransferCreatedBadRequestResponse)
   async create(@Body() createTransferDto: CreateTransferDto,
     @Res() res: FastifyReply) {
     const data: TransferEntity = await this.transferService.create(createTransferDto);
     res.status(201).send({
       statusCode: res.statusCode,
-      message: 'create transfer successfuly',
+      message: 'create transfer was successfuly',
       data
     })
   }
 
   @Get()
-  @ApiOkResponse({
-    description: 'get all transfer was successfuly',
-    schema: {
-      example: {
-        statusCode: 200,
-        message: "get all transfer was successfuly",
-        data:
-          [{
-            createdAt: "2022-10-23T08:47:11.494Z",
-            updatedAt: "2022-10-23T08:47:11.494Z",
-            id: "e03cf523-e63c-47c8-8ab4-42806eb2745a",
-            userId: "41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a",
-            amount: "100.00",
-            fromPocketId: "8407abe9-cbdf-4745-b634-681f42693ee9",
-            toPocketId: "416c355b-e095-4007-9713-218e050dbae7"
-          }]
-      }
-    }
-  })
-  @ApiBadRequestResponse({
-    description: 'get all transfer was failed',
-    schema: {
-      example: {
-        statusCode: 400,
-        message: "get all transfer was failed",
-        error: "Bad Request"
-      }
-    }
-  })
+  @ApiOkResponse(ApiTransferGetAllOkResponse)
+  @ApiBadRequestResponse(ApiTransferGetAllBadRequestResponse)
   async findAll(
     @Req() req: RequestWithAuth,
     @Res() res: FastifyReply
@@ -104,47 +42,15 @@ export class TransferController {
     const data: TransferEntity[] = await this.transferService.findAll(userId);
     res.status(200).send({
       statusCode: res.statusCode,
-      message: 'get all transfer successfuly',
+      message: 'get all transfer was successfuly',
       data
     })
   }
 
   @Get(':id')
-  @ApiParam({
-    name: 'id',
-    description: 'Enter your transfer id that you want to request data',
-    example: 'e03cf523-e63c-47c8-8ab4-42806eb2745a'
-  })
-  @ApiOkResponse({
-    description: 'get transfer was successfuly',
-    schema: {
-      example: {
-        statusCode: 200,
-        message: "get transfer was successfuly",
-        data:
-        {
-          createdAt: "2022-10-23T08:47:11.494Z",
-          updatedAt: "2022-10-23T08:47:11.494Z",
-          id: "e03cf523-e63c-47c8-8ab4-42806eb2745a",
-          userId: "41b4f7c2-b221-4a6b-a0e3-d7ec80e0119a",
-          amount: "100.00",
-          fromPocketId: "8407abe9-cbdf-4745-b634-681f42693ee9",
-          toPocketId: "416c355b-e095-4007-9713-218e050dbae7"
-        }
-
-      }
-    }
-  })
-  @ApiBadRequestResponse({
-    description: 'get transfer was failed',
-    schema: {
-      example: {
-        statusCode: 400,
-        message: "get transfer was failed",
-        error: "Bad Request"
-      }
-    }
-  })
+  @ApiParam(ApiTransferGetOneParam)
+  @ApiOkResponse(ApiTransferGetOneOkResponse)
+  @ApiBadRequestResponse(ApiTransferGetOneBadRequestResponse)
   async findOne(
     @Param('id') id: string,
     @Req() req: RequestWithAuth,
@@ -155,43 +61,20 @@ export class TransferController {
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
-        message: 'get transfer successfuly',
-        data
+        message: 'get transfer was successfuly',
       })
     } else {
       res.status(400).send({
         statusCode: res.statusCode,
-        message: 'get transfer failed',
-        data: {}
+        message: 'get transfer was failed',
       })
     }
   }
 
   @Delete(':id')
-  @ApiParam({
-    name: 'id',
-    description: 'Enter your transfer id that you want to delete data',
-    example: 'e03cf523-e63c-47c8-8ab4-42806eb2745a'
-  })
-  @ApiOkResponse({
-    description: 'delete transfer was successfuly',
-    schema: {
-      example: {
-        statusCode: 200,
-        message: "delete transfer was successfuly",
-        data: 1
-      }
-    }
-  })
-  @ApiBadRequestResponse({
-    description: 'delete transfer was failed', schema: {
-      example: {
-        statusCode: 400,
-        message: "delete transfer was failed",
-        error: "Bad Request"
-      }
-    }
-  })
+  @ApiParam(ApiTransferDeleteParam)
+  @ApiOkResponse(ApiTransferDeleteOkResponse)
+  @ApiBadRequestResponse(ApiTransferDeleteBadRequestResponse)
   async remove(
     @Param('id') id: string,
     @Req() req: RequestWithAuth,
@@ -202,14 +85,12 @@ export class TransferController {
     if (data) {
       res.status(200).send({
         statusCode: res.statusCode,
-        message: 'delete transfer successfuly',
-        data
+        message: 'delete transfer was successfuly',
       })
     } else {
       res.status(400).send({
         statusCode: res.statusCode,
-        message: 'delete transfer failed',
-        data: {}
+        message: 'delete transfer was failed',
       })
     }
   }
