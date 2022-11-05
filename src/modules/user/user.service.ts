@@ -1,6 +1,6 @@
 import { BadRequestException, forwardRef, Inject, Injectable } from '@nestjs/common';
 import { AuthService } from 'src/modules/auth/auth.service';
-import { USER_REPOSITORY } from 'src/common/core/constants';
+import { USER_REPOSITORY } from 'src/common/constants';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserEntity } from './entities/user.entity';

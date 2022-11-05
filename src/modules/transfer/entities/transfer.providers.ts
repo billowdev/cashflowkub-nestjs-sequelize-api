@@ -1,4 +1,4 @@
-import { TRANSFER_REPOSITORY } from "src/common/core/constants";
+import { TRANSFER_REPOSITORY } from "src/common/constants";
 import { TransferEntity } from "./transfer.entity";
 
 export const transferProviders = [

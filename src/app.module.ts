@@ -15,7 +15,6 @@ import { TransactionModule } from './modules/transaction/transaction.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
-    
     DatabaseModule,
     AuthModule,
     UserModule,
